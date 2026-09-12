@@ -1,0 +1,40 @@
+/* ==========================================================================
+   SQL CASE FILES // THEME COLOR PALETTE CONFIGURATION
+   --------------------------------------------------------------------------
+   Edit the values in this file to change colors across the entire website.
+   ========================================================================== */
+
+:root {
+  /* --- 1. Base Layout Surfaces --- */
+  --color-sidebar-bg: #000000;         /* Complete Black for Sidebar */
+  --color-sidebar-surface: #140909;    /* Elevated surface inside sidebar (profile, nav hover) */
+  --color-sidebar-border: #261212;     /* Sidebar border */
+
+  --color-canvas-bg: #EFEFEF;          /* Main workspace canvas background (Platinum Off-White) */
+  --color-card-bg: #FFFFFF;            /* Problem/Objective card background */
+  --color-card-border: #ded5d5;        /* Card border on light canvas */
+  --color-card-callout: #f9f6f6;       /* Objective target callout background */
+
+  /* --- 2. Dark Terminal & Header Components --- */
+  --color-onyx: #170E0E;               /* Midnight Onyx for interactive terminal & top bar */
+  --color-terminal-inner: #100909;     /* Code editor textarea background & table footer */
+  --color-terminal-toolbar: #1a0f0f;   /* Terminal bottom action bar */
+  --color-dark-surface: #241616;       /* Dark button/element surface */
+  --color-dark-surface-hover: #331c1c; /* Dark button hover */
+  --color-dark-border: #3d1515;        /* Borders for dark components & modals */
+  --color-dark-border-subtle: #2d1212; /* Inner dividers inside terminal */
+
+  /* --- 3. Accents & Call-to-Actions --- */
+  --color-blood-red: #8F0E0E;          /* Blood Red for Run button, table headers, clue categories */
+  --color-blood-red-hover: #a81212;    /* Blood Red hover */
+  --color-scarlet: #D93E3E;            /* Scarlet Red for Submit button, OBJECTIVE badge, active state */
+  --color-scarlet-hover: #c02e2e;      /* Scarlet Red hover */
+
+  /* --- 4. Typography --- */
+  --color-text-dark: #170E0E;          /* Primary dark text on light canvas */
+  --color-text-subtle: #2b1f1f;        /* Body text on problem card */
+  --color-text-light: #EFEFEF;         /* Light text on dark terminal/sidebar */
+  --color-text-muted: #997777;         /* Detective secondary metadata text */
+  --color-text-placeholder: #775555;   /* Input placeholder */
+  --color-white: #FFFFFF;              /* Pure white */
+}

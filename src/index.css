@@ -1,22 +1,24 @@
+@import './theme/colors.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Custom scrollbars for hacker terminal feel */
+/* Custom scrollbars driven by theme variables */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #170E0E;
+  background: var(--color-sidebar-bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #8F0E0E;
+  background: var(--color-blood-red);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #D93E3E;
+  background: var(--color-scarlet);
 }

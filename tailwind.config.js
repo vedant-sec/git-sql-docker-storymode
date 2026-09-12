@@ -7,28 +7,31 @@ export default {
   theme: {
     extend: {
       colors: {
-        palette: {
-          black: '#170E0E',
-          darkSurface: '#241616',
-          border: '#3d1515',
-          darkRed: '#8F0E0E',
-          scarlet: '#D93E3E',
-          scarletHover: '#c02e2e',
-          light: '#EFEFEF',
-          white: '#FFFFFF',
-          textMuted: '#997777'
-        },
-        cyber: {
-          bg: '#170E0E',
-          panel: '#241616',
-          border: '#3d1515',
-          accent: '#D93E3E',
-          terminal: '#100909',
-          green: '#10b981',
-          amber: '#D93E3E',
-          red: '#8F0E0E',
-          purple: '#8F0E0E',
-          cyan: '#D93E3E'
+        theme: {
+          sidebarBg: 'var(--color-sidebar-bg)',
+          sidebarSurface: 'var(--color-sidebar-surface)',
+          sidebarBorder: 'var(--color-sidebar-border)',
+          canvasBg: 'var(--color-canvas-bg)',
+          cardBg: 'var(--color-card-bg)',
+          cardBorder: 'var(--color-card-border)',
+          cardCallout: 'var(--color-card-callout)',
+          onyx: 'var(--color-onyx)',
+          terminalInner: 'var(--color-terminal-inner)',
+          terminalToolbar: 'var(--color-terminal-toolbar)',
+          darkSurface: 'var(--color-dark-surface)',
+          darkSurfaceHover: 'var(--color-dark-surface-hover)',
+          darkBorder: 'var(--color-dark-border)',
+          darkBorderSubtle: 'var(--color-dark-border-subtle)',
+          bloodRed: 'var(--color-blood-red)',
+          bloodRedHover: 'var(--color-blood-red-hover)',
+          scarlet: 'var(--color-scarlet)',
+          scarletHover: 'var(--color-scarlet-hover)',
+          textDark: 'var(--color-text-dark)',
+          textSubtle: 'var(--color-text-subtle)',
+          textLight: 'var(--color-text-light)',
+          textMuted: 'var(--color-text-muted)',
+          textPlaceholder: 'var(--color-text-placeholder)',
+          white: 'var(--color-white)',
         }
       },
       fontFamily: {
