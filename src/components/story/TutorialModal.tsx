@@ -1,0 +1,107 @@
+import React from 'react';
+import { X, BookOpen, Radio, ShieldCheck } from 'lucide-react';
+import { ChapterDefinition } from '../../types/game';
+import { CHARACTERS } from '../../data/storyline';
+
+interface TutorialModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  chapter: ChapterDefinition;
+}
+
+export const TutorialModal: React.FC<TutorialModalProps> = ({ isOpen, onClose, chapter }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 font-mono">
+      <div className="bg-[#12151e] border border-slate-700/80 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-in fade-in zoom-in-95 duration-200">
+        {/* Header */}
+        <div className="bg-[#0c0f16] px-5 py-3.5 border-b border-slate-800 flex items-center justify-between">
+          <div className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
+              <BookOpen className="w-4 h-4 text-amber-400" />
+            </div>
+            <div>
+              <div className="text-[10px] text-amber-400 font-bold uppercase tracking-widest">
+                MISSION BRIEFING & TUTORIAL
+              </div>
+              <h3 className="text-sm font-bold text-slate-100">
+                {chapter.title} — {chapter.subtitle}
+              </h3>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-5 overflow-y-auto space-y-4 flex-1">
+          {/* Radio Transmission */}
+          <div>
+            <div className="flex items-center space-x-2 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">
+              <Radio className="w-3.5 h-3.5 text-cyan-400" />
+              <span>FORENSIC COMMS INTERCEPT</span>
+            </div>
+
+            <div className="space-y-2.5">
+              {chapter.storyIntro.map((msg, idx) => {
+                const char =
+                  Object.values(CHARACTERS).find(c => c.name.includes(msg.speaker)) ||
+                  CHARACTERS.ramos;
+
+                return (
+                  <div
+                    key={idx}
+                    className="bg-[#181c27] border border-slate-800/80 rounded-xl p-3.5 text-xs shadow-sm"
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <span
+                        className="font-bold text-[11px]"
+                        style={{ color: char.badgeColor || '#06b6d4' }}
+                      >
+                        {msg.speaker}
+                      </span>
+                      {msg.timestamp && (
+                        <span className="text-[10px] text-slate-500">{msg.timestamp}</span>
+                      )}
+                    </div>
+                    <p className="text-slate-300 leading-relaxed font-sans text-xs">{msg.text}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Detective How-to Tips */}
+          <div className="bg-[#181c27] border border-slate-800 rounded-xl p-4">
+            <div className="flex items-center space-x-2 text-xs font-bold text-cyan-400 uppercase tracking-wider mb-2">
+              <ShieldCheck className="w-4 h-4 text-cyan-400" />
+              <span>Detective Field Guide</span>
+            </div>
+            <ul className="text-xs text-slate-300 space-y-2 font-sans">
+              <li>• Read the target instruction on the <strong>Objective Card</strong>.</li>
+              <li>• Write your query or command in the <strong>Terminal Editor</strong> below.</li>
+              <li>• Use the <strong>Seasons menu</strong> on the left to inspect the <strong>Database Schema</strong>, learn the <strong>Concept Used</strong>, or unlock progressive <strong>Hints</strong>.</li>
+              <li>• Click <strong>Run</strong> to preview your result, or <strong>Submit</strong> to check if you solved the case evidence!</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="bg-[#0c0f16] px-5 py-3 border-t border-slate-800 flex justify-end">
+          <button
+            onClick={onClose}
+            className="px-4 py-1.5 text-xs bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition"
+          >
+            Ready for Duty
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
