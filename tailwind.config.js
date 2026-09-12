@@ -8,30 +8,27 @@ export default {
     extend: {
       colors: {
         palette: {
-          dark: '#1C0228',
-          darker: '#13011b',
-          surface: '#240632',
-          surfaceAlt: '#2d093e',
-          border: '#45105b',
-          borderLight: '#5c1779',
-          wine: '#881E3F',
-          crimson: '#BF2D42',
-          coral: '#F0593F',
-          coralHover: '#f67059',
-          text: '#fdedea',
-          textMuted: '#b98f9c'
+          black: '#170E0E',
+          darkSurface: '#241616',
+          border: '#3d1515',
+          darkRed: '#8F0E0E',
+          scarlet: '#D93E3E',
+          scarletHover: '#c02e2e',
+          light: '#EFEFEF',
+          white: '#FFFFFF',
+          textMuted: '#997777'
         },
         cyber: {
-          bg: '#1C0228',
-          panel: '#240632',
-          border: '#45105b',
-          accent: '#F0593F',
-          terminal: '#14011d',
+          bg: '#170E0E',
+          panel: '#241616',
+          border: '#3d1515',
+          accent: '#D93E3E',
+          terminal: '#100909',
           green: '#10b981',
-          amber: '#F0593F',
-          red: '#BF2D42',
-          purple: '#881E3F',
-          cyan: '#F0593F'
+          amber: '#D93E3E',
+          red: '#8F0E0E',
+          purple: '#8F0E0E',
+          cyan: '#D93E3E'
         }
       },
       fontFamily: {
