@@ -47,10 +47,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onOpenFileEditor,
   tool
 }) => {
+  // Track which season accordion is open (defaults to current chapter)
   const [expandedSeasonId, setExpandedSeasonId] = useState<string>(currentChapterId);
 
   const toggleSeason = (chId: string) => {
     if (expandedSeasonId === chId) {
+      // already open, allow toggle or keep selected
       setExpandedSeasonId('');
     } else {
       setExpandedSeasonId(chId);
@@ -59,26 +61,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
   };
 
   return (
-    <aside className="w-64 h-full bg-theme-sidebarBg text-theme-textLight flex flex-col justify-between border-r border-theme-sidebarBorder font-mono select-none flex-shrink-0">
+    <aside className="w-64 h-full bg-theme-sidebar text-slate-300 flex flex-col justify-between border-r border-theme-sidebarBorder font-mono select-none flex-shrink-0">
       {/* Top Section */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden">
         {/* Brand Header */}
         <div className="p-4 border-b border-theme-sidebarBorder flex items-center justify-between">
           <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-lg bg-theme-bloodRed/30 border border-theme-scarlet/60 flex items-center justify-center text-theme-scarlet font-black text-xs shadow-inner">
+            <div className="w-8 h-8 rounded-lg bg-theme-sidebarSurface border border-theme-sidebarBorder flex items-center justify-center text-theme-scarlet font-bold text-xs shadow-inner">
               SQL
             </div>
             <div>
-              <div className="text-xs font-bold tracking-wider text-theme-white flex items-center space-x-1">
+              <div className="text-xs font-bold tracking-wider text-slate-100 flex items-center space-x-1">
                 <span>SQL Cases</span>
               </div>
-              <div className="text-[10px] text-theme-scarlet tracking-widest font-semibold uppercase">
+              <div className="text-[10px] text-cyan-400 tracking-widest font-semibold uppercase">
                 DETECTIVE
               </div>
             </div>
           </div>
           <button
-            className="p-1 rounded text-theme-textMuted hover:text-theme-white hover:bg-theme-sidebarSurface transition"
+            className="p-1 rounded text-slate-500 hover:text-slate-300 hover:bg-slate-800 transition"
             title="Toggle Sidebar"
           >
             <Layers className="w-4 h-4" />
@@ -88,16 +90,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Detective Profile Card */}
         <div className="mx-3 mt-3.5 mb-2.5 p-2.5 rounded-xl bg-theme-sidebarSurface border border-theme-sidebarBorder flex items-center space-x-3 shadow-sm">
           <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-theme-bloodRed to-theme-scarlet p-[1.5px] flex-shrink-0">
-            <div className="w-full h-full rounded-full bg-theme-sidebarBg flex items-center justify-center text-xs text-theme-scarlet font-bold">
+            <div className="w-full h-full rounded-full bg-theme-sidebar flex items-center justify-center text-xs text-theme-scarlet font-bold">
               👤
             </div>
           </div>
           <div className="min-w-0 flex-1">
-            <div className="text-xs font-bold text-theme-white truncate">
+            <div className="text-xs font-bold text-slate-200 truncate">
               Dt. Arceus_101
             </div>
-            <div className="flex items-center space-x-1 text-[10px] text-theme-scarlet font-semibold">
-              <span className="w-1.5 h-1.5 rounded-full bg-theme-scarlet animate-pulse" />
+            <div className="flex items-center space-x-1 text-[10px] text-emerald-400 font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               <span>2 active cases</span>
             </div>
           </div>
@@ -105,7 +107,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* SEASONS SECTION */}
         <div className="px-3 py-2">
-          <div className="text-[10px] font-bold text-theme-textMuted tracking-wider uppercase px-2 mb-1.5">
+          <div className="text-[10px] font-bold text-slate-500 tracking-wider uppercase px-2 mb-1.5">
             SEASONS & CASES
           </div>
 
@@ -122,27 +124,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     onClick={() => toggleSeason(ch.id)}
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition ${
                       isSelected
-                        ? 'bg-theme-bloodRed/35 text-theme-scarlet border border-theme-scarlet/60 shadow-sm'
+                        ? 'bg-theme-bloodRed/20 text-theme-scarlet border border-theme-scarlet/40'
                         : 'text-slate-300 hover:bg-theme-sidebarSurface hover:text-white border border-transparent'
                     }`}
                   >
                     <div className="flex items-center space-x-2 truncate">
-                      <Folder className={`w-3.5 h-3.5 ${isSelected ? 'text-theme-scarlet' : 'text-theme-textMuted'}`} />
-                      <span className="truncate font-bold">Season {seasonNum}</span>
-                      <span className="text-[10px] text-theme-textMuted font-normal truncate uppercase">
+                      <Folder className={`w-3.5 h-3.5 ${isSelected ? 'text-theme-scarlet' : 'text-slate-400'}`} />
+                      <span className="truncate">Season {seasonNum}</span>
+                      <span className="text-[10px] text-slate-500 font-normal truncate uppercase">
                         ({ch.tool})
                       </span>
                     </div>
                     {isExpanded ? (
-                      <ChevronDown className="w-3.5 h-3.5 text-theme-scarlet flex-shrink-0" />
+                      <ChevronDown className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
                     ) : (
-                      <ChevronRight className="w-3.5 h-3.5 text-theme-textMuted flex-shrink-0" />
+                      <ChevronRight className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
                     )}
                   </button>
 
                   {/* Branches: Schema, Concept Used, Hint */}
                   {isExpanded && (
-                    <div className="pl-4 pr-1 py-1 space-y-1 border-l-2 border-theme-bloodRed/60 ml-4 my-1">
+                    <div className="pl-4 pr-1 py-1 space-y-1 border-l-2 border-theme-bloodRed/40 ml-4 my-1">
                       {/* Branch 1: Schema */}
                       <button
                         onClick={() => {
@@ -157,9 +159,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                             }, 100);
                           }
                         }}
-                        className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-md text-[11px] text-slate-300 hover:text-theme-scarlet hover:bg-theme-sidebarSurface transition group text-left"
+                        className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-md text-[11px] text-slate-300 hover:text-white hover:bg-theme-sidebarSurface transition group text-left"
                       >
-                        <Database className="w-3.5 h-3.5 text-theme-bloodRed group-hover:text-theme-scarlet group-hover:scale-110 transition flex-shrink-0" />
+                        <Database className="w-3.5 h-3.5 text-theme-scarlet group-hover:scale-110 transition flex-shrink-0" />
                         <span className="truncate">Database Schema</span>
                       </button>
 
@@ -173,7 +175,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                             setTimeout(() => onOpenConcept(), 100);
                           }
                         }}
-                        className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-md text-[11px] text-slate-300 hover:text-theme-scarlet hover:bg-theme-sidebarSurface transition group text-left"
+                        className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-md text-[11px] text-slate-300 hover:text-white hover:bg-theme-sidebarSurface transition group text-left"
                       >
                         <Lightbulb className="w-3.5 h-3.5 text-theme-scarlet group-hover:scale-110 transition flex-shrink-0" />
                         <span className="truncate">Concept Used</span>
@@ -189,9 +191,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                             setTimeout(() => onOpenHint(), 100);
                           }
                         }}
-                        className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-md text-[11px] text-slate-300 hover:text-theme-scarlet hover:bg-theme-sidebarSurface transition group text-left"
+                        className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-md text-[11px] text-slate-300 hover:text-white hover:bg-theme-sidebarSurface transition group text-left"
                       >
-                        <HelpCircle className="w-3.5 h-3.5 text-theme-bloodRed group-hover:text-theme-scarlet group-hover:scale-110 transition flex-shrink-0" />
+                        <HelpCircle className="w-3.5 h-3.5 text-theme-scarlet group-hover:scale-110 transition flex-shrink-0" />
                         <span className="truncate">Forensic Hint</span>
                       </button>
 
@@ -202,7 +204,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                             if (!isSelected) onSelectChapter(ch.id);
                             onOpenFileEditor();
                           }}
-                          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-md text-[11px] text-slate-300 hover:text-theme-scarlet hover:bg-theme-sidebarSurface transition group text-left"
+                          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-md text-[11px] text-slate-300 hover:text-white hover:bg-theme-sidebarSurface transition group text-left"
                         >
                           <FileCode className="w-3.5 h-3.5 text-theme-scarlet group-hover:scale-110 transition flex-shrink-0" />
                           <span className="truncate">Workspace Files</span>
@@ -211,7 +213,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
                       {/* Level Quick-Selector within Season */}
                       <div className="pt-1.5 pb-0.5 border-t border-theme-sidebarBorder mt-1">
-                        <div className="text-[9px] text-theme-textMuted font-bold uppercase px-2 mb-1">
+                        <div className="text-[9px] text-slate-500 font-bold uppercase px-2 mb-1">
                           Objectives:
                         </div>
                         <div className="flex flex-wrap gap-1 px-1">
@@ -228,10 +230,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
                                 }}
                                 className={`w-6 h-6 rounded flex items-center justify-center text-[10px] font-bold transition ${
                                   isPuzActive
-                                    ? 'bg-theme-scarlet text-theme-white shadow-md shadow-theme-scarlet/30'
+                                    ? 'bg-theme-scarlet text-white shadow-sm'
                                     : isPuzSolved
-                                    ? 'bg-theme-bloodRed text-theme-textLight border border-theme-scarlet'
-                                    : 'bg-theme-sidebarSurface text-theme-textMuted hover:bg-theme-darkSurfaceHover hover:text-white'
+                                    ? 'bg-theme-bloodRed/60 text-white border border-theme-scarlet/50'
+                                    : 'bg-theme-sidebarSurface text-slate-400 hover:bg-theme-darkSurface hover:text-white'
                                 }`}
                                 title={puz.title}
                               >
@@ -255,55 +257,55 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* Secondary Detective Navigation Links */}
         <div className="px-3 py-2 border-t border-theme-sidebarBorder mt-1">
-          <div className="text-[10px] font-bold text-theme-textMuted tracking-wider uppercase px-2 mb-1.5">
+          <div className="text-[10px] font-bold text-slate-500 tracking-wider uppercase px-2 mb-1.5">
             NAVIGATE
           </div>
           <nav className="space-y-1 text-xs">
-            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-slate-300 hover:bg-theme-sidebarSurface hover:text-theme-textLight transition text-left">
-              <FolderKanban className="w-4 h-4 text-theme-bloodRed" />
+            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-slate-300 hover:bg-theme-sidebarSurface hover:text-white transition text-left">
+              <FolderKanban className="w-4 h-4 text-slate-400" />
               <div>
                 <div className="font-semibold text-slate-200">Cases</div>
-                <div className="text-[10px] text-theme-textMuted font-normal">Browse case files</div>
+                <div className="text-[10px] text-slate-500 font-normal">Browse case files</div>
               </div>
             </button>
 
-            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-slate-300 hover:bg-theme-sidebarSurface hover:text-theme-textLight transition text-left">
-              <Archive className="w-4 h-4 text-theme-bloodRed" />
+            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-slate-300 hover:bg-theme-sidebarSurface hover:text-white transition text-left">
+              <Archive className="w-4 h-4 text-slate-400" />
               <div>
                 <div className="font-semibold text-slate-200">Case Vault</div>
-                <div className="text-[10px] text-theme-textMuted font-normal">Classified Archives</div>
+                <div className="text-[10px] text-slate-500 font-normal">Classified Archives</div>
               </div>
             </button>
 
-            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-slate-300 hover:bg-theme-sidebarSurface hover:text-theme-textLight transition text-left">
-              <GraduationCap className="w-4 h-4 text-theme-bloodRed" />
+            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-slate-300 hover:bg-theme-sidebarSurface hover:text-white transition text-left">
+              <GraduationCap className="w-4 h-4 text-slate-400" />
               <div>
                 <div className="font-semibold text-slate-200">Academy</div>
-                <div className="text-[10px] text-theme-textMuted font-normal">Training Manuals</div>
+                <div className="text-[10px] text-slate-500 font-normal">Training Manuals</div>
               </div>
             </button>
 
-            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-slate-300 hover:bg-theme-sidebarSurface hover:text-theme-textLight transition text-left">
-              <Award className="w-4 h-4 text-theme-bloodRed" />
+            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-slate-300 hover:bg-theme-sidebarSurface hover:text-white transition text-left">
+              <Award className="w-4 h-4 text-slate-400" />
               <div>
                 <div className="font-semibold text-slate-200">Badges</div>
-                <div className="text-[10px] text-theme-textMuted font-normal">View achievements</div>
+                <div className="text-[10px] text-slate-500 font-normal">View achievements</div>
               </div>
             </button>
 
-            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-slate-300 hover:bg-theme-sidebarSurface hover:text-theme-textLight transition text-left">
+            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-slate-300 hover:bg-theme-sidebarSurface hover:text-white transition text-left">
               <Bot className="w-4 h-4 text-theme-scarlet" />
               <div>
                 <div className="font-semibold text-slate-200">SQL Detective</div>
-                <div className="text-[10px] text-theme-textMuted font-normal">AI Detective Assistant</div>
+                <div className="text-[10px] text-slate-500 font-normal">AI Detective Assistant</div>
               </div>
             </button>
 
-            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-slate-300 hover:bg-theme-sidebarSurface hover:text-theme-textLight transition text-left">
-              <Settings className="w-4 h-4 text-theme-bloodRed" />
+            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-slate-300 hover:bg-theme-sidebarSurface hover:text-white transition text-left">
+              <Settings className="w-4 h-4 text-slate-400" />
               <div>
                 <div className="font-semibold text-slate-200">Settings</div>
-                <div className="text-[10px] text-theme-textMuted font-normal">Game settings</div>
+                <div className="text-[10px] text-slate-500 font-normal">Game settings</div>
               </div>
             </button>
           </nav>
@@ -311,20 +313,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Bottom Footer Section */}
-      <div className="p-3 border-t border-theme-sidebarBorder bg-theme-sidebarBg text-xs">
+      <div className="p-3 border-t border-theme-sidebarBorder bg-theme-sidebar text-xs">
         <div className="flex items-center justify-between text-slate-400 px-1 mb-2">
           <div className="flex items-center space-x-1.5 text-theme-scarlet font-bold">
             <Coins className="w-4 h-4" />
-            <span className="text-xs text-theme-textLight">20</span>
+            <span className="text-xs">20</span>
           </div>
-          <span className="text-[10px] text-theme-textMuted font-semibold tracking-wider">v2.0</span>
+          <span className="text-[10px] text-slate-600 font-semibold tracking-wider">v2.0</span>
         </div>
 
         <button className="w-full flex items-center justify-center space-x-1.5 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-theme-sidebarSurface transition text-xs font-semibold">
-          <LifeBuoy className="w-3.5 h-3.5 text-theme-bloodRed" />
+          <LifeBuoy className="w-3.5 h-3.5" />
           <span>Support</span>
         </button>
       </div>
     </aside>
   );
 };
+

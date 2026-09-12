@@ -381,7 +381,7 @@ export function App() {
   const seasonNumberStr = String(currentChapterIndex + 1).padStart(2, '0');
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-theme-sidebarBg text-theme-textDark font-sans">
+    <div className="flex h-screen w-screen overflow-hidden bg-[#10131a] text-slate-900 font-sans">
       {/* Left Menu Panel / Sidebar */}
       <Sidebar
         chapters={ALL_CHAPTERS}
@@ -398,27 +398,27 @@ export function App() {
       />
 
       {/* Main Workspace (Right Side of Menu Panel) */}
-      <main className="flex-1 h-full overflow-y-auto bg-theme-canvasBg flex flex-col">
+      <main className="flex-1 h-full overflow-y-auto bg-theme-canvas flex flex-col">
         {/* Top Header Pill Bar */}
         <div className="p-4 md:p-6 pb-2 w-full max-w-5xl mx-auto">
-          <div className="bg-theme-onyx text-theme-textLight rounded-2xl px-5 py-3 flex items-center justify-between shadow-xl border border-theme-darkBorder">
+          <div className="bg-theme-onyx text-theme-textLight rounded-2xl px-5 py-3 flex items-center justify-between shadow-lg border border-theme-darkBorder">
             {/* Left: Back button & Case title */}
             <div className="flex items-center space-x-3.5">
               <button
                 onClick={handlePrevPuzzle}
                 disabled={progress.currentPuzzleIndex === 0}
-                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-theme-darkSurface hover:bg-theme-darkSurfaceHover text-theme-textLight disabled:opacity-30 disabled:pointer-events-none text-xs font-semibold transition border border-theme-darkBorder"
+                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-theme-darkSurface hover:bg-theme-darkSurfaceHover text-slate-300 disabled:opacity-30 disabled:pointer-events-none text-xs font-semibold transition border border-theme-darkBorderSubtle"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Back</span>
               </button>
 
               <div className="flex items-center space-x-2.5">
-                <div className="w-7 h-7 rounded-lg bg-theme-bloodRed border border-theme-scarlet flex items-center justify-center text-theme-white font-black text-xs">
+                <div className="w-7 h-7 rounded-lg bg-theme-bloodRed/20 border border-theme-scarlet/40 flex items-center justify-center text-theme-scarlet font-black text-xs">
                   SQL
                 </div>
                 <div>
-                  <div className="text-xs font-extrabold tracking-wide uppercase text-theme-white">
+                  <div className="text-xs font-extrabold tracking-wide uppercase text-white">
                     SQL CASE FILES
                   </div>
                   <div className="text-[10px] text-theme-scarlet font-mono font-semibold tracking-wider uppercase">
@@ -432,20 +432,20 @@ export function App() {
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setIsTutorialOpen(true)}
-                className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg bg-theme-bloodRed hover:bg-theme-bloodRedHover text-theme-white text-xs font-semibold transition border border-theme-scarlet shadow-sm"
+                className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg bg-theme-darkSurface hover:bg-theme-darkSurfaceHover text-theme-scarlet text-xs font-semibold transition border border-theme-scarlet/30 shadow-sm"
               >
-                <BookOpen className="w-3.5 h-3.5 text-theme-white" />
+                <BookOpen className="w-3.5 h-3.5 text-theme-scarlet" />
                 <span>Tutorial</span>
               </button>
 
               <button
                 onClick={() => setIsCluesOpen(true)}
-                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-theme-darkSurface hover:bg-theme-darkSurfaceHover text-theme-textLight text-xs font-semibold transition border border-theme-darkBorder"
+                className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg bg-theme-darkSurface hover:bg-theme-darkSurfaceHover text-emerald-300 text-xs font-semibold transition border border-emerald-500/20"
                 title="View Collected Evidence"
               >
-                <Shield className="w-3.5 h-3.5 text-theme-scarlet" />
+                <Shield className="w-3.5 h-3.5 text-emerald-400" />
                 <span className="hidden sm:inline">Evidence</span>
-                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-theme-scarlet text-theme-white font-mono font-bold">
+                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-emerald-950 text-emerald-300 font-mono">
                   {progress.collectedClues.length}
                 </span>
               </button>
@@ -456,7 +456,7 @@ export function App() {
                     resetProgress();
                   }
                 }}
-                className="p-1.5 rounded-lg bg-theme-darkSurface hover:bg-theme-bloodRed/40 hover:text-theme-scarlet text-theme-textMuted transition border border-theme-darkBorder"
+                className="p-1.5 rounded-lg bg-theme-darkSurface hover:bg-theme-bloodRed/30 hover:text-theme-scarlet text-slate-400 transition border border-theme-darkBorderSubtle"
                 title="Reset Game Progress"
               >
                 <RotateCcw className="w-3.5 h-3.5" />

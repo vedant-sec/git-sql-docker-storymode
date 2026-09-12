@@ -46,21 +46,19 @@ export const FileEditorModal: React.FC<FileEditorModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 font-mono">
-      <div className="bg-theme-onyx border border-theme-darkBorder w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[80vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 font-mono">
+      <div className="bg-slate-900 border border-slate-700 w-full max-w-4xl rounded-xl shadow-2xl overflow-hidden flex flex-col h-[80vh]">
         {/* Modal Header */}
-        <div className="bg-theme-terminalInner px-5 py-3.5 border-b border-theme-darkBorderSubtle flex items-center justify-between">
-          <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-lg bg-theme-bloodRed/30 border border-theme-scarlet/60 flex items-center justify-center">
-              <FileCode className="w-4 h-4 text-theme-scarlet" />
-            </div>
-            <h3 className="text-sm font-bold tracking-wide text-white">
+        <div className="bg-slate-950 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <FileCode className="w-5 h-5 text-cyan-400" />
+            <h3 className="text-sm font-semibold tracking-wide text-slate-200">
               VIRTUAL WORKSPACE FILE EDITOR
             </h3>
           </div>
           <button
             onClick={onClose}
-            className="text-theme-textMuted hover:text-white p-1 rounded-lg hover:bg-theme-darkSurface transition"
+            className="text-slate-400 hover:text-white p-1 rounded hover:bg-slate-800 transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -69,8 +67,8 @@ export const FileEditorModal: React.FC<FileEditorModalProps> = ({
         {/* Editor Body */}
         <div className="flex flex-1 overflow-hidden">
           {/* File sidebar */}
-          <div className="w-56 bg-theme-terminalInner/80 border-r border-theme-darkBorderSubtle p-3 space-y-1 overflow-y-auto">
-            <div className="text-[11px] font-bold text-theme-textMuted uppercase tracking-wider mb-2 px-2">
+          <div className="w-56 bg-slate-950/60 border-r border-slate-800 p-3 space-y-1 overflow-y-auto">
+            <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-2 px-2">
               Workspace Files
             </div>
             {fileNames.map(f => {
@@ -80,15 +78,15 @@ export const FileEditorModal: React.FC<FileEditorModalProps> = ({
                 <button
                   key={f}
                   onClick={() => setSelectedFile(f)}
-                  className={`w-full text-left px-3 py-2 rounded-lg text-xs flex items-center justify-between transition ${
+                  className={`w-full text-left px-2.5 py-1.5 rounded text-xs flex items-center justify-between transition ${
                     selectedFile === f
-                      ? 'bg-theme-bloodRed/35 text-theme-scarlet border border-theme-scarlet/60'
-                      : 'text-slate-300 hover:bg-theme-darkSurface hover:text-white'
+                      ? 'bg-cyan-950/50 text-cyan-300 border border-cyan-800/80'
+                      : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
                   }`}
                 >
-                  <span className="truncate font-medium">{f}</span>
+                  <span className="truncate">{f}</span>
                   {isConflicted && (
-                    <span className="text-white text-[10px] font-black px-1.5 py-0.5 rounded bg-theme-bloodRed border border-theme-scarlet">
+                    <span className="text-rose-400 text-[10px] font-bold px-1 py-0.5 rounded bg-rose-950/80">
                       CONFLICT
                     </span>
                   )}
@@ -98,10 +96,10 @@ export const FileEditorModal: React.FC<FileEditorModalProps> = ({
           </div>
 
           {/* Code Edit Area */}
-          <div className="flex-1 flex flex-col bg-theme-onyx">
+          <div className="flex-1 flex flex-col bg-slate-900/90">
             {/* Status notification bar */}
             {hasConflictMarkers && (
-              <div className="bg-theme-bloodRed/40 border-b border-theme-scarlet/60 px-4 py-2.5 flex items-center space-x-2 text-theme-scarlet text-xs font-semibold">
+              <div className="bg-amber-950/60 border-b border-amber-800/60 px-4 py-2 flex items-center space-x-2 text-amber-300 text-xs">
                 <AlertTriangle className="w-4 h-4 flex-shrink-0" />
                 <span>
                   <strong>Merge Conflict Detected:</strong> Remove the `&lt;&lt;&lt;&lt;&lt;&lt;&lt;`, `=======`, and `&gt;&gt;&gt;&gt;&gt;&gt;&gt;` markers, keep the resolved code, and click Save.
@@ -110,38 +108,38 @@ export const FileEditorModal: React.FC<FileEditorModalProps> = ({
             )}
 
             {savedSuccess && (
-              <div className="bg-theme-bloodRed/30 border-b border-theme-scarlet/60 px-4 py-2.5 flex items-center space-x-2 text-theme-textLight text-xs font-semibold">
-                <CheckCircle2 className="w-4 h-4 text-theme-scarlet flex-shrink-0" />
+              <div className="bg-emerald-950/60 border-b border-emerald-800/60 px-4 py-2 flex items-center space-x-2 text-emerald-300 text-xs">
+                <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
                 <span>File saved to virtual filesystem successfully!</span>
               </div>
             )}
 
-            <div className="flex-1 p-3.5 bg-theme-terminalInner">
+            <div className="flex-1 p-3">
               <textarea
                 value={content}
                 onChange={e => setContent(e.target.value)}
-                className="w-full h-full bg-[#0c0505] border border-theme-darkBorderSubtle rounded-xl p-3.5 text-xs font-mono text-theme-textLight focus:outline-none focus:border-theme-scarlet resize-none selection:bg-theme-bloodRed leading-relaxed"
+                className="w-full h-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs font-mono text-slate-200 focus:outline-none focus:border-cyan-500/80 resize-none selection:bg-cyan-900 leading-relaxed"
                 spellCheck={false}
               />
             </div>
 
             {/* Footer */}
-            <div className="bg-theme-terminalInner px-5 py-3 border-t border-theme-darkBorderSubtle flex items-center justify-between">
-              <div className="text-[11px] text-theme-textMuted">
-                Editing: <span className="text-theme-scarlet font-semibold">{selectedFile}</span> ({content.split('\n').length} lines)
+            <div className="bg-slate-950 px-4 py-3 border-t border-slate-800 flex items-center justify-between">
+              <div className="text-[11px] text-slate-500">
+                Editing: <span className="text-cyan-400 font-semibold">{selectedFile}</span> ({content.split('\n').length} lines)
               </div>
-              <div className="flex space-x-2.5">
+              <div className="flex space-x-2">
                 <button
                   onClick={onClose}
-                  className="px-3.5 py-1.5 text-xs text-theme-textMuted hover:text-white rounded-lg hover:bg-theme-darkSurface transition"
+                  className="px-3 py-1.5 text-xs text-slate-400 hover:text-white rounded hover:bg-slate-800 transition"
                 >
                   Close
                 </button>
                 <button
                   onClick={handleSave}
-                  className="px-4 py-1.5 text-xs bg-theme-scarlet hover:bg-theme-scarletHover text-theme-white font-black rounded-lg flex items-center space-x-1.5 transition shadow-md shadow-theme-scarlet/25"
+                  className="px-4 py-1.5 text-xs bg-cyan-600 hover:bg-cyan-500 text-white rounded font-medium flex items-center space-x-1.5 transition shadow-lg shadow-cyan-900/30"
                 >
-                  <Save className="w-3.5 h-3.5 stroke-[2.5]" />
+                  <Save className="w-3.5 h-3.5" />
                   <span>Save File</span>
                 </button>
               </div>
