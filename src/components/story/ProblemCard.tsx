@@ -12,6 +12,29 @@ interface ProblemCardProps {
   onNextPuzzle: () => void;
 }
 
+// Realistic Silver Paperclip Component
+const SilverPaperclip = ({ className = '' }: { className?: string }) => (
+  <svg
+    viewBox="0 0 24 60"
+    className={`w-6 h-14 pointer-events-none ${className}`}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M7 16V47C7 50.866 10.134 54 14 54C17.866 54 21 50.866 21 47V13C21 7.47715 16.5228 3 11 3C5.47715 3 1 7.47715 1 13V48"
+      stroke="#78716c"
+      strokeWidth="2.8"
+      strokeLinecap="round"
+    />
+    <path
+      d="M7.5 16V47C7.5 50.5 10.5 53.5 14 53.5C17.5 53.5 20.5 50.5 20.5 47V13C20.5 7.8 16.2 3.5 11 3.5C5.8 3.5 1.5 7.8 1.5 13V48"
+      stroke="#e7e5e4"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
 export const ProblemCard: React.FC<ProblemCardProps> = ({
   puzzle,
   puzzleIndex,
@@ -51,48 +74,50 @@ export const ProblemCard: React.FC<ProblemCardProps> = ({
 
   return (
     <div className="relative pt-7 select-none font-sans">
-      {/* Protruding Manila Folder Tab */}
-      <div className="absolute top-0 left-8 z-10 flex items-center space-x-2 px-5 py-2 manila-tab border-t-2 border-l-2 border-r-2 border-[#cfbfa2] text-stone-900 text-xs font-typewriter font-bold shadow-md">
+      {/* Protruding Manila Folder Top Tab */}
+      <div className="absolute top-0 left-8 z-10 flex items-center space-x-2 px-6 py-2 manila-tab border-t-2 border-l-2 border-r-2 border-[#cfbfa2] text-stone-900 text-xs font-typewriter font-bold shadow-md">
         <span className="w-2 h-2 rounded-full bg-theme-bloodRed animate-ping" />
-        <span className="tracking-wider uppercase">DOSSIER FILE #{puzzleIndex + 1} OF {totalPuzzles}</span>
+        <span className="tracking-wider uppercase">INCIDENT FILE #{puzzleIndex + 1} OF {totalPuzzles}</span>
       </div>
 
-      {/* Manila Paper Report Container */}
-      <div className="relative manila-paper border-2 border-[#cbbca0] rounded-b-xl rounded-tr-xl p-6 md:p-8 shadow-2xl overflow-hidden">
+      {/* Manila Paper Report Container with Stacked Pages Effect */}
+      <div className="relative manila-paper stacked-pages-effect border-2 border-[#cbbca0] rounded-b-xl rounded-tr-xl p-6 md:p-8 shadow-2xl overflow-visible">
         {/* Brass Staple Accent in Top Left */}
-        <div className="absolute top-3 left-3 pointer-events-none">
+        <div className="absolute top-3 left-4 pointer-events-none">
           <div className="brass-staple transform -rotate-12" />
         </div>
 
-        {/* Paperclip in Top Right */}
-        <div className="absolute top-3 right-8 flex items-center space-x-1.5 text-stone-500 pointer-events-none opacity-80">
-          <Paperclip className="w-5 h-5 text-stone-600 rotate-45" />
-          <span className="text-[9.5px] font-typewriter tracking-widest uppercase text-stone-500">
-            INCIDENT DOCKET #{puzzleIndex + 1}
-          </span>
+        {/* Silver Paperclip Clamped at Top Right */}
+        <div className="absolute -top-3 right-10 z-20 silver-paperclip transform rotate-6">
+          <SilverPaperclip />
         </div>
 
-        {/* Precinct Official Header & Diagonal Red Ink Stamp */}
+        {/* Silver Paperclip Clamped at Bottom Right */}
+        <div className="absolute -bottom-4 right-14 z-20 silver-paperclip transform -rotate-12">
+          <SilverPaperclip />
+        </div>
+
+        {/* Official Police Letterhead & Red Ink Stamp */}
         <div className="border-b-2 border-stone-400/80 pb-3 mb-4 mt-1">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div>
-              <div className="text-[11px] font-black tracking-widest text-stone-800 font-typewriter uppercase">
-                METROPOLITAN POLICE DEPARTMENT // FORENSIC INVESTIGATION SQUAD
+              <div className="text-[11.5px] font-black tracking-widest text-stone-900 font-typewriter uppercase">
+                METROPOLITAN POLICE DEPARTMENT // CYBER CRIMES &amp; FORENSICS SQUAD
               </div>
-              <div className="text-[10px] text-stone-600 font-typewriter tracking-wide uppercase">
-                CRIME CLASSIFICATION: UNAUTHORIZED EXFILTRATION & INTERNAL FRAUD
+              <div className="text-[10px] text-stone-600 font-typewriter tracking-wide uppercase mt-0.5">
+                CRIME CLASSIFICATION: UNAUTHORIZED EXFILTRATION &amp; INTERNAL FRAUD
               </div>
             </div>
 
-            {/* Stylized Diagonal Red-Ink Stamp */}
+            {/* Diagonal Red-Ink Rubber Stamp */}
             <div className="flex-shrink-0 pt-1 md:pt-0">
               {isSolved ? (
                 <div className="rubber-stamp rubber-stamp-green rubber-stamp-diagonal text-xs tracking-widest animate-stamp-slam">
                   ✓ EVIDENCE SECURED // RESOLVED
                 </div>
               ) : (
-                <div className="rubber-stamp rubber-stamp-diagonal text-[11px] tracking-wider text-red-700 border-red-700 shadow-md">
-                  CONFIDENTIAL // URGENT: FORENSIC AUDIT
+                <div className="rubber-stamp rubber-stamp-audit text-xs tracking-wider">
+                  [ URGENT: FORENSIC AUDIT ]
                 </div>
               )}
             </div>
@@ -109,10 +134,10 @@ export const ProblemCard: React.FC<ProblemCardProps> = ({
             </h3>
           </div>
 
-          {/* Witness Statement / Forensic Narrative */}
+          {/* Witness Statement / Forensic Intercept Narrative */}
           <div className="text-[13.5px] text-stone-900 font-report leading-relaxed bg-[#fbf6ec]/80 p-4 rounded border border-[#dfd2be] shadow-inner">
             <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 block mb-1.5 font-typewriter">
-              [WITNESS DEPOSITION & INTERCEPT RECORD]:
+              [WITNESS DEPOSITION &amp; INTERCEPT RECORD]:
             </span>
             {renderFormattedText(puzzle.description)}
           </div>
@@ -127,6 +152,16 @@ export const ProblemCard: React.FC<ProblemCardProps> = ({
             </div>
             <div className="text-[13.5px] text-stone-950 font-typewriter font-semibold leading-relaxed pl-6">
               {renderFormattedText(puzzle.objective)}
+            </div>
+
+            {/* Handwritten Blue Pen Margin Note from Chief Detective */}
+            <div className="mt-3 pt-2 border-t border-[#d8c8ab] flex items-center justify-between">
+              <div className="handwritten-blue-note">
+                CHECK SENDER-ACCOUNT DATA ➔
+              </div>
+              <span className="text-[9px] text-stone-500 font-typewriter uppercase">
+                DET. MARGIN NOTE
+              </span>
             </div>
           </div>
         </div>

@@ -25,58 +25,82 @@
    DIEGETIC DETECTIVE'S DESK & RETRO FORENSIC INTERFACE
    ========================================================================== */
 
-/* Top-Down Investigator's Wooden Desk Surface */
+/* Top-Down Investigator's Wooden Desk Surface with Warm Overhead Lamp Spotlight */
 .detective-desk-bg, .wood-desk-surface {
-  background-color: #140b08;
+  background-color: #120805;
   background-image: 
-    radial-gradient(ellipse at 50% 15%, rgba(65, 30, 20, 0.5) 0%, transparent 65%),
-    radial-gradient(circle at bottom right, rgba(20, 9, 6, 0.9) 0%, transparent 70%),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.012) 0px, rgba(255, 255, 255, 0.012) 2px, transparent 2px, transparent 32px),
-    linear-gradient(rgba(0, 0, 0, 0.25) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 64px 100%, 100% 24px;
+    /* Warm overhead desk lamp spotlight casting pool of light from upper-right */
+    radial-gradient(ellipse 900px 750px at 78% 12%, rgba(255, 230, 165, 0.22) 0%, rgba(220, 145, 50, 0.10) 40%, transparent 72%),
+    /* Ambient warm fill around center desk blotter */
+    radial-gradient(ellipse 800px 600px at 48% 45%, rgba(70, 32, 18, 0.5) 0%, transparent 75%),
+    /* Heavy cinematic vignette darkening outer edges */
+    radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(4, 2, 2, 0.88) 100%),
+    /* Fine mahogany timber grain horizontal streaks */
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.015) 0px, rgba(255, 255, 255, 0.015) 1px, transparent 1px, transparent 18px),
+    /* Vertical wood grain variation */
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0px, rgba(0, 0, 0, 0.06) 2px, transparent 2px, transparent 36px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 72px, 72px 100%;
 }
 
 /* Central Leather Desk Blotter Pad */
 .leather-blotter {
-  background-color: #190e0b;
+  background-color: #170d0a;
   background-image: 
-    radial-gradient(circle at center, rgba(40, 22, 16, 0.4) 0%, transparent 80%),
-    linear-gradient(to bottom, rgba(255,255,255,0.02), rgba(0,0,0,0.4));
+    radial-gradient(circle at 65% 25%, rgba(60, 32, 22, 0.45) 0%, transparent 75%),
+    linear-gradient(to bottom, rgba(255,255,255,0.03), rgba(0,0,0,0.45));
   box-shadow: 
-    0 12px 35px -6px rgba(0, 0, 0, 0.8),
-    inset 0 0 1px 1px rgba(255, 255, 255, 0.06),
-    inset 0 0 15px rgba(0, 0, 0, 0.6);
-  border: 1px solid #331a11;
-  outline: 1px dashed rgba(180, 110, 60, 0.35);
-  outline-offset: -5px;
+    0 16px 45px -8px rgba(0, 0, 0, 0.95),
+    inset 0 0 1px 1.5px rgba(255, 255, 255, 0.06),
+    inset 0 0 25px rgba(0, 0, 0, 0.7);
+  border: 1.5px solid #2e170e;
+  outline: 1.5px dashed rgba(190, 115, 60, 0.35);
+  outline-offset: -6px;
 }
 
 /* Worn Leather Case Binder */
 .leather-binder {
-  background-color: #24120b;
+  background-color: #1f0f09;
   background-image:
-    linear-gradient(135deg, rgba(60, 32, 20, 0.4) 0%, rgba(20, 10, 6, 0.8) 100%),
-    radial-gradient(circle at 20% 30%, rgba(85, 45, 28, 0.25) 0%, transparent 50%),
-    repeating-linear-gradient(45deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 6px);
+    linear-gradient(135deg, rgba(70, 36, 22, 0.45) 0%, rgba(18, 9, 5, 0.85) 100%),
+    radial-gradient(circle at 20% 30%, rgba(95, 48, 28, 0.3) 0%, transparent 50%),
+    repeating-linear-gradient(45deg, rgba(0,0,0,0.035) 0px, rgba(0,0,0,0.035) 2px, transparent 2px, transparent 6px);
   box-shadow:
-    6px 0 25px rgba(0, 0, 0, 0.75),
-    inset 2px 0 6px rgba(255, 255, 255, 0.08),
-    inset -3px 0 8px rgba(0, 0, 0, 0.8);
-  border-right: 2px solid #3d1f14;
+    8px 0 30px rgba(0, 0, 0, 0.85),
+    inset 2px 0 8px rgba(255, 255, 255, 0.09),
+    inset -4px 0 10px rgba(0, 0, 0, 0.85);
+  border-right: 2.5px solid #3d1e13;
 }
 
-/* Protruding Physical Paper Index Tabs */
+/* Stacked Pages Shadow Behind Binder and Manila Folder */
+.stacked-pages-effect {
+  box-shadow:
+    0 1px 0 1px #ded3be,
+    0 2px 0 2px #cbbea7,
+    0 3px 0 3px #b8ab94,
+    0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* Brass Corner Protector Cap */
+.brass-corner {
+  width: 22px;
+  height: 22px;
+  background: linear-gradient(135deg, #dfbc55 0%, #a67c1e 50%, #dfbc55 100%);
+  border: 1px solid #6b4e10;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.7), inset 0 1px 1px rgba(255,255,255,0.7);
+}
+
+/* Protruding Physical Paper Index Tabs along Right Edge */
 .index-tab-paper {
   background-color: #ece3cf;
-  background-image: linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(0,0,0,0.04));
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0.65), rgba(0,0,0,0.05));
   color: #1c140e;
   box-shadow: 
-    3px 2px 6px rgba(0,0,0,0.45),
-    inset 0 0 4px rgba(180, 140, 90, 0.2);
+    3px 2px 8px rgba(0,0,0,0.55),
+    inset 0 0 4px rgba(180, 140, 90, 0.25);
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
   border-top: 1px solid #dfd3bb;
-  border-right: 1.5px solid #c9b99a;
+  border-right: 2px solid #c9b99a;
   border-bottom: 2px solid #b8a584;
 }
 
@@ -85,11 +109,34 @@
   background-image: linear-gradient(to bottom, #ef4444, #b91c1c);
   color: #ffffff;
   box-shadow: 
-    4px 3px 10px rgba(0,0,0,0.6),
-    0 0 10px rgba(220, 38, 38, 0.4);
+    5px 3px 12px rgba(0,0,0,0.7),
+    0 0 12px rgba(220, 38, 38, 0.45);
   border-top: 1px solid #f87171;
-  border-right: 2px solid #991b1b;
-  border-bottom: 2.5px solid #7f1d1d;
+  border-right: 2.5px solid #991b1b;
+  border-bottom: 3px solid #7f1d1d;
+}
+
+/* Pinned Yellow Index Note Card */
+.pinned-yellow-card {
+  background-color: #fef08a;
+  background-image:
+    linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(0,0,0,0.05)),
+    repeating-linear-gradient(0deg, transparent 0px, transparent 15px, rgba(74, 144, 226, 0.25) 15px, rgba(74, 144, 226, 0.25) 16px);
+  color: #1e293b;
+  box-shadow: 
+    0 6px 14px -2px rgba(0,0,0,0.5),
+    0 2px 4px rgba(0,0,0,0.3);
+  border: 1px solid #facc15;
+}
+
+/* Real Brass Pushpin */
+.brass-pushpin {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffd700 0%, #b8860b 60%, #5c4308 100%);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.8);
+  border: 1px solid #8b6508;
 }
 
 /* Manila Folder / Aged Incident Report Paper */
@@ -100,16 +147,21 @@
     radial-gradient(circle at 10% 20%, rgba(210, 180, 140, 0.12) 0%, transparent 50%);
   box-shadow:
     0 2px 5px rgba(0, 0, 0, 0.15),
-    0 16px 36px -6px rgba(0, 0, 0, 0.55),
-    inset 0 0 20px rgba(180, 150, 110, 0.1);
+    0 18px 40px -6px rgba(0, 0, 0, 0.65),
+    inset 0 0 20px rgba(180, 150, 110, 0.12);
 }
 
 /* Manila Folder Tab Top */
 .manila-tab {
   background-color: #ebdcb9;
   border-top-left-radius: 8px;
-  border-top-right-radius: 14px;
-  box-shadow: 0 -3px 6px rgba(0,0,0,0.08);
+  border-top-right-radius: 16px;
+  box-shadow: 0 -4px 8px rgba(0,0,0,0.12);
+}
+
+/* Silver Paperclip */
+.silver-paperclip {
+  filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.4));
 }
 
 /* Red Ink Rubber Stamps */
@@ -134,11 +186,33 @@
   border-style: double;
 }
 
+.rubber-stamp-audit {
+  transform: rotate(-11deg);
+  border-width: 3.5px;
+  border-style: double;
+  border-color: #dc2626;
+  color: #dc2626;
+  text-shadow: 0 0 1px rgba(220, 38, 38, 0.4);
+  box-shadow: inset 0 0 5px rgba(220, 38, 38, 0.2), 0 0 3px rgba(220, 38, 38, 0.25);
+}
+
 .rubber-stamp-green {
   color: #059669;
   border-color: #059669;
   text-shadow: 0 0 1px rgba(5, 150, 105, 0.3);
   box-shadow: inset 0 0 4px rgba(5, 150, 105, 0.15), 0 0 2px rgba(5, 150, 105, 0.2);
+}
+
+/* Handwritten Blue Pen Margin Note */
+.handwritten-blue-note {
+  font-family: 'Caveat', cursive;
+  color: #1d4ed8;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-shadow: 0 0 1px rgba(29, 78, 216, 0.3);
+  transform: rotate(-3deg);
+  display: inline-block;
 }
 
 /* Rubber Stamp Slam Animation on Objective Success */
@@ -174,8 +248,214 @@
 }
 
 /* ==========================================================================
-   RETRO CRT FORENSIC INTERCEPT TERMINAL
+   AUTHENTIC DESK PROPS (COFFEE STAIN, GLASSES, NOTEPAD, BRASS LAMP)
    ========================================================================== */
+
+/* Realistic Dried Coffee Mug Ring Stain on Timber */
+.coffee-ring-stain {
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  border: 3.5px solid rgba(105, 52, 20, 0.42);
+  position: relative;
+  pointer-events: none;
+  filter: blur(0.3px);
+  box-shadow:
+    inset 0 0 12px rgba(85, 42, 15, 0.35),
+    0 0 6px rgba(115, 58, 25, 0.25);
+}
+
+.coffee-ring-stain::before {
+  content: "";
+  position: absolute;
+  top: 6px; left: 8px; right: 4px; bottom: 8px;
+  border-radius: 50%;
+  border: 2px solid rgba(85, 40, 15, 0.28);
+  filter: blur(0.4px);
+}
+
+.coffee-ring-stain::after {
+  content: "";
+  position: absolute;
+  bottom: 2px; right: 10px;
+  width: 14px; height: 8px;
+  border-radius: 50%;
+  background: rgba(85, 40, 15, 0.38);
+  filter: blur(0.8px);
+}
+
+/* Wireframe Detective Reading Glasses / Spectacles */
+.spectacles-prop {
+  position: relative;
+  width: 130px;
+  height: 55px;
+  pointer-events: none;
+  filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.75));
+}
+
+/* Spiral Detective Scratch Notepad */
+.spiral-notepad {
+  background-color: #fbf7ee;
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0px, transparent 15px, rgba(147, 197, 253, 0.4) 15px, rgba(147, 197, 253, 0.4) 16px),
+    linear-gradient(90deg, transparent 24px, rgba(239, 68, 68, 0.35) 24px, rgba(239, 68, 68, 0.35) 25px, transparent 25px);
+  border-radius: 6px;
+  box-shadow:
+    3px 6px 18px rgba(0,0,0,0.65),
+    inset 0 0 10px rgba(180, 150, 110, 0.18);
+  border: 1px solid #dcd1ba;
+}
+
+/* Spiral Metal Rings */
+.spiral-ring {
+  width: 8px;
+  height: 18px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #9ca3af 0%, #f3f4f6 50%, #4b5563 100%);
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+}
+
+/* Brass Desk Lamp Shade Fixture in Upper Right */
+.brass-lamp-fixture {
+  position: absolute;
+  top: -20px;
+  right: -10px;
+  width: 180px;
+  height: 140px;
+  pointer-events: none;
+  z-index: 25;
+}
+
+.brass-lamp-shade {
+  width: 140px;
+  height: 55px;
+  background: linear-gradient(135deg, #166534 0%, #14532d 60%, #052e16 100%);
+  border-radius: 60px 60px 8px 8px;
+  border: 2px solid #854d0e;
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.8),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    0 0 45px rgba(255, 220, 130, 0.5);
+  position: relative;
+}
+
+.brass-lamp-neck {
+  width: 12px;
+  height: 60px;
+  background: linear-gradient(90deg, #ca8a04 0%, #fef08a 40%, #854d0e 100%);
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+  border-radius: 3px;
+  position: absolute;
+  top: 45px;
+  right: 50px;
+  transform: rotate(-15deg);
+}
+
+/* Blueprint / Transit Map peeking underneath */
+.blueprint-map {
+  background-color: #0d2847;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 16px 16px;
+  border: 1px solid #1e4976;
+  box-shadow: 2px 4px 14px rgba(0,0,0,0.6);
+}
+
+/* ==========================================================================
+   RETRO CRT FORENSIC INTERCEPT TERMINAL & MONITOR CHASSIS
+   ========================================================================== */
+
+/* Monitor Outer Chassis - Vintage Grey-Brown Beveled Enclosure */
+.crt-monitor-chassis {
+  background: linear-gradient(145deg, #241c19 0%, #140e0c 60%, #1f1714 100%);
+  border: 5px solid #332420;
+  box-shadow: 
+    0 22px 50px rgba(0, 0, 0, 0.9),
+    inset 0 3px 5px rgba(255, 255, 255, 0.12),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.95);
+  border-radius: 20px;
+}
+
+/* Speaker Grille Slits on Right Panel */
+.speaker-grille-slit {
+  width: 100%;
+  height: 3px;
+  background: #090403;
+  border-bottom: 1px solid #3d2a24;
+  border-radius: 1px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.9);
+}
+
+/* Industrial Rotary Control Knobs */
+.rotary-knob {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #3f312c 0%, #1c1412 70%, #0f0a09 100%);
+  border: 2px solid #523e38;
+  box-shadow: 
+    0 4px 8px rgba(0,0,0,0.8),
+    inset 0 1px 2px rgba(255,255,255,0.25);
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.15s ease-out;
+}
+
+.rotary-knob::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 9px;
+  background: #f59e0b;
+  border-radius: 1px;
+  box-shadow: 0 0 3px #f59e0b;
+}
+
+.rotary-knob:active {
+  transform: rotate(25deg);
+}
+
+/* Metal Stenciled Specification Plate Badge */
+.metal-spec-plate {
+  background: linear-gradient(180deg, #574c43 0%, #2e2621 100%);
+  border: 1px solid #75665a;
+  box-shadow: 
+    inset 0 1px 1px rgba(255,255,255,0.4),
+    0 1px 3px rgba(0,0,0,0.8);
+  border-radius: 3px;
+}
+
+/* Status Indicator LEDs */
+.status-led-green {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 8px #10b981, 0 0 2px #ffffff;
+  border: 1px solid #064e3b;
+}
+
+.status-led-amber {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #f59e0b;
+  box-shadow: 0 0 8px #f59e0b, 0 0 2px #ffffff;
+  border: 1px solid #78350f;
+}
+
+.status-led-red {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #ef4444;
+  box-shadow: 0 0 8px #ef4444, 0 0 2px #ffffff;
+  border: 1px solid #7f1d1d;
+}
 
 /* Monitor Bezel Frame */
 .crt-bezel {
@@ -193,7 +473,7 @@
   position: relative;
   overflow: hidden;
   background-color: #090404;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.95);
+  box-shadow: inset 0 0 22px rgba(0, 0, 0, 0.98);
 }
 
 .crt-screen::before {
@@ -201,11 +481,11 @@
   display: block;
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%);
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.45) 50%);
   background-size: 100% 4px;
   z-index: 20;
   pointer-events: none;
-  opacity: 0.7;
+  opacity: 0.72;
 }
 
 /* Phosphor Amber Text & Glow */

@@ -17,6 +17,47 @@ import { TableSchema } from './types/sql';
 import { ALL_CHAPTERS } from './data/chapters';
 import { audioFx } from './utils/audioEffects';
 
+// Authentic Desk Props Components
+const SpectaclesProp = () => (
+  <svg
+    viewBox="0 0 160 70"
+    className="w-28 h-12 pointer-events-none drop-shadow-xl"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    {/* Left Lens Wire Rim */}
+    <circle cx="45" cy="35" r="24" stroke="#d4af37" strokeWidth="2.5" fill="rgba(255,255,255,0.04)" />
+    <circle cx="45" cy="35" r="23" stroke="#854d0e" strokeWidth="1" />
+    <path d="M30 22 C40 18, 50 18, 60 22" stroke="rgba(255,255,255,0.3)" strokeWidth="2" strokeLinecap="round" />
+    {/* Right Lens Wire Rim */}
+    <circle cx="115" cy="35" r="24" stroke="#d4af37" strokeWidth="2.5" fill="rgba(255,255,255,0.04)" />
+    <circle cx="115" cy="35" r="23" stroke="#854d0e" strokeWidth="1" />
+    <path d="M100 22 C110 18, 120 18, 130 22" stroke="rgba(255,255,255,0.3)" strokeWidth="2" strokeLinecap="round" />
+    {/* Nose Bridge */}
+    <path d="M69 32 Q80 24 91 32" stroke="#d4af37" strokeWidth="2.5" strokeLinecap="round" />
+    {/* Temples / Arms */}
+    <path d="M21 34 L3 12" stroke="#d4af37" strokeWidth="2.5" strokeLinecap="round" />
+    <path d="M139 34 L157 12" stroke="#d4af37" strokeWidth="2.5" strokeLinecap="round" />
+  </svg>
+);
+
+const BrassKeysProp = () => (
+  <svg
+    viewBox="0 0 90 90"
+    className="w-16 h-16 pointer-events-none drop-shadow-lg"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    {/* Key Ring */}
+    <circle cx="35" cy="35" r="18" stroke="#ca8a04" strokeWidth="3" />
+    <circle cx="35" cy="35" r="16" stroke="#fef08a" strokeWidth="1" />
+    {/* Skeleton Key 1 */}
+    <path d="M48 46 L76 74 L71 79 L66 74 L62 78 L56 72" stroke="#ca8a04" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+    {/* Skeleton Key 2 */}
+    <path d="M42 50 L62 82 L57 85 L54 80 L50 82" stroke="#a16207" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
 export function App() {
   const {
     progress,
@@ -79,7 +120,6 @@ export function App() {
       const initFiles = currentChapter.initialFiles || {};
       setVirtualFiles({ ...initFiles });
 
-      // Build recovered branch commit for Vance's recovered branch
       const recoveredHash = 'c7f912a';
       const git = new GitEngine({
         initialized: false,
@@ -153,7 +193,6 @@ export function App() {
       dockerEngineRef.current = docker;
     }
 
-    // Set greeting / chapter start banner in terminal
     setTerminalLogs([
       {
         id: 'init-banner',
@@ -174,7 +213,6 @@ export function App() {
     const logId = Math.random().toString(36).substring(2, 9);
     const now = new Date().toLocaleTimeString();
 
-    // Add input log
     setTerminalLogs(prev => [
       ...prev,
       {
@@ -232,7 +270,6 @@ export function App() {
             }
           ]);
 
-          // Validate puzzle
           if (currentPuzzle.validate) {
             const validation = currentPuzzle.validate({
               query: command,
@@ -332,7 +369,6 @@ export function App() {
     }
   };
 
-  // Virtual file editor save
   const handleSaveFile = (fileName: string, content: string) => {
     setVirtualFiles(prev => ({ ...prev, [fileName]: content }));
 
@@ -384,8 +420,8 @@ export function App() {
   const seasonNumberStr = String(currentChapterIndex + 1).padStart(2, '0');
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#0a0505] text-slate-100 font-sans">
-      {/* Left Menu Panel / Sidebar */}
+    <div className="flex h-screen w-screen overflow-hidden bg-[#090403] text-slate-100 font-sans">
+      {/* Left Menu Panel / Leather Case Binder */}
       <Sidebar
         chapters={ALL_CHAPTERS}
         currentChapterId={currentChapter.id}
@@ -400,10 +436,49 @@ export function App() {
         tool={currentChapter.tool}
       />
 
-      {/* Main Workspace (Top-Down Investigator's Desk with Leather Blotter) */}
-      <main className="flex-1 h-full overflow-y-auto wood-desk-surface flex flex-col relative p-3 md:p-6">
+      {/* Main Workspace: Top-Down Eye-Level Mahogany Desk Surface */}
+      <main className="flex-1 h-full overflow-y-auto wood-desk-surface flex flex-col relative p-3 md:p-6 lg:p-8 select-none">
+        {/* Overhead Banker's Brass Desk Lamp in Top-Right Corner */}
+        <div className="brass-lamp-fixture hidden sm:block">
+          <div className="brass-lamp-neck" />
+          <div className="brass-lamp-shade" />
+        </div>
+
+        {/* Realistic Coffee Mug Ring Stain on Desk Timber in Top-Left */}
+        <div className="absolute top-6 left-8 coffee-ring-stain hidden md:block opacity-75" />
+
+        {/* Blueprint / Transit Map peeking under top-left of blotter */}
+        <div className="absolute top-10 left-16 w-36 h-28 blueprint-map rounded-sm transform -rotate-6 opacity-35 pointer-events-none hidden xl:block" />
+
+        {/* Ring of Brass Keys on Desk in Bottom-Right */}
+        <div className="absolute bottom-6 right-8 hidden lg:block opacity-85 pointer-events-none transform rotate-12">
+          <BrassKeysProp />
+        </div>
+
+        {/* Spiral Detective Scratch Notepad & Spectacles in Bottom-Left */}
+        <div className="absolute bottom-8 left-6 hidden 2xl:flex flex-col items-center pointer-events-none z-10">
+          <div className="w-52 p-3 spiral-notepad text-stone-900 shadow-2xl transform -rotate-3 mb-2">
+            <div className="flex justify-between px-2 -mt-5 mb-2">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="spiral-ring" />
+              ))}
+            </div>
+            <div className="text-[8.5px] font-black uppercase tracking-wider text-red-700 font-typewriter border-b border-red-300 pb-0.5 mb-1.5">
+              FORENSIC LEAD NOTES
+            </div>
+            <div className="text-xs font-handwriting leading-tight text-blue-900 font-bold space-y-1">
+              <div>• Vance exfil routing at 02:28</div>
+              <div>• Intercept rogue port 8080</div>
+              <div>• Match sender-account hashes</div>
+            </div>
+          </div>
+          <div className="transform rotate-6 -mt-4">
+            <SpectaclesProp />
+          </div>
+        </div>
+
         {/* Central Leather Desk Blotter Pad Container */}
-        <div className="w-full max-w-5xl mx-auto flex-1 flex flex-col space-y-4 leather-blotter rounded-2xl p-4 md:p-6 shadow-2xl">
+        <div className="w-full max-w-5xl mx-auto flex-1 flex flex-col space-y-4 leather-blotter rounded-2xl p-4 md:p-6 shadow-2xl relative z-20">
           {/* Top Brass & Leather Desk Nameplate Header */}
           <div className="w-full">
             <div className="bg-[#140808]/90 text-stone-100 rounded-xl px-5 py-3 flex items-center justify-between shadow-xl border-2 border-[#3d1818] backdrop-blur-md">
@@ -412,7 +487,7 @@ export function App() {
                 <button
                   onClick={handlePrevPuzzle}
                   disabled={progress.currentPuzzleIndex === 0}
-                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-[#240e0e] hover:bg-[#381616] text-stone-300 disabled:opacity-30 disabled:pointer-events-none text-xs font-bold font-typewriter transition border border-[#4a1c1c]"
+                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-[#240e0e] hover:bg-[#381616] text-stone-300 disabled:opacity-30 disabled:pointer-events-none text-xs font-bold font-typewriter transition border border-[#4a1c1c] active:translate-y-0.5"
                   title="Return to Prior Case Objective"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
@@ -444,7 +519,7 @@ export function App() {
                     audioFx.playPaper();
                     setIsTutorialOpen(true);
                   }}
-                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-[#240e0e] hover:bg-[#381616] text-amber-300 text-xs font-bold font-typewriter transition border border-amber-600/40 shadow-sm"
+                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-[#240e0e] hover:bg-[#381616] text-amber-300 text-xs font-bold font-typewriter transition border border-amber-600/40 shadow-sm active:translate-y-0.5"
                 >
                   <BookOpen className="w-3.5 h-3.5 text-amber-400" />
                   <span className="hidden sm:inline">FIELD MANUAL</span>
@@ -455,7 +530,7 @@ export function App() {
                     audioFx.playPaper();
                     setIsCluesOpen(true);
                   }}
-                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-[#102418] hover:bg-[#183624] text-emerald-300 text-xs font-bold font-typewriter transition border border-emerald-600/50"
+                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-[#102418] hover:bg-[#183624] text-emerald-300 text-xs font-bold font-typewriter transition border border-emerald-600/50 active:translate-y-0.5"
                   title="View Collected Evidence Vault"
                 >
                   <Shield className="w-3.5 h-3.5 text-emerald-400" />
@@ -472,7 +547,7 @@ export function App() {
                       resetProgress();
                     }
                   }}
-                  className="p-1.5 rounded bg-[#240e0e] hover:bg-rose-950 text-stone-400 hover:text-rose-300 transition border border-[#4a1c1c]"
+                  className="p-1.5 rounded bg-[#240e0e] hover:bg-rose-950 text-stone-400 hover:text-rose-300 transition border border-[#4a1c1c] active:translate-y-0.5"
                   title="Purge Case Progress & Restart"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />

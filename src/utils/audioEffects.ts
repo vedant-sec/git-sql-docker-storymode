@@ -201,6 +201,33 @@ class SoundSynthesizer {
       osc.stop(now + 0.04);
     } catch {}
   }
+
+  /**
+   * Heavy detented rotary knob / switch click.
+   */
+  public playDial(): void {
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(320, now);
+      osc.frequency.exponentialRampToValueAtTime(80, now + 0.035);
+
+      gain.gain.setValueAtTime(0.25, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.035);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.035);
+    } catch {}
+  }
 }
 
 export const audioFx = new SoundSynthesizer();

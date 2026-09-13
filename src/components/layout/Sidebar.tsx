@@ -74,58 +74,79 @@ export const Sidebar: React.FC<SidebarProps> = ({
   };
 
   return (
-    <aside className="w-76 h-full leather-binder text-stone-300 flex flex-col justify-between font-mono select-none flex-shrink-0 relative shadow-2xl z-30">
-      {/* Decorative Brass Spine Eyelets on Left Edge */}
-      <div className="absolute left-1.5 top-0 bottom-0 flex flex-col justify-around pointer-events-none z-40 opacity-50">
+    <aside className="w-80 h-full leather-binder text-stone-300 flex flex-col justify-between font-mono select-none flex-shrink-0 relative shadow-2xl z-30 border-r-4 border-[#33170c]">
+      {/* Brass Corner Caps */}
+      <div className="absolute top-0 left-0 brass-corner rounded-tl-sm pointer-events-none z-50" />
+      <div className="absolute bottom-0 left-0 brass-corner rounded-bl-sm pointer-events-none z-50" />
+
+      {/* Decorative Brass Spine Eyelets & Rivets on Left Edge */}
+      <div className="absolute left-1.5 top-0 bottom-0 flex flex-col justify-around pointer-events-none z-40 opacity-70">
         {[...Array(6)].map((_, i) => (
           <div
             key={i}
-            className="w-3 h-8 rounded-sm bg-gradient-to-r from-stone-600 via-amber-200 to-stone-800 shadow-[inset_0_1px_2px_rgba(0,0,0,0.9),0_2px_4px_rgba(0,0,0,0.9)] border border-stone-900"
+            className="w-3.5 h-7 rounded-sm bg-gradient-to-r from-stone-600 via-amber-200 to-stone-800 shadow-[inset_0_1px_2px_rgba(0,0,0,0.9),0_2px_4px_rgba(0,0,0,0.9)] border border-stone-900"
           />
         ))}
       </div>
 
       {/* Main Leather Binder Content */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden pl-4 pr-1">
-        {/* Leather Binder Header / Foil Stamped Emblem */}
-        <div className="p-4 border-b border-[#3d1f14] bg-gradient-to-b from-[#2a130a] to-[#1a0c06]">
-          <div className="flex items-center justify-between mb-2">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden pl-5 pr-2">
+        {/* Binder Header: Stamped Criminal Dossier Case Binder V4.1 */}
+        <div className="pt-4 pb-3 border-b-2 border-[#3d1f14]">
+          <div className="flex items-center justify-between mb-1.5">
             <span className="rubber-stamp text-[8.5px] px-1.5 py-0.2 tracking-widest text-[#d93e3e] border-[#d93e3e]">
-              CONFIDENTIAL DOSSIER
+              CLASSIFIED DOSSIER
             </span>
-            <span className="text-[9px] text-amber-500/70 font-bold font-typewriter">
-              REGISTRY #409-X
+            <span className="text-[9px] text-amber-400 font-bold font-typewriter">
+              FILE REGISTRY #409-X
             </span>
           </div>
 
           <div className="flex items-center space-x-2.5 mt-2">
-            <div className="w-9 h-9 rounded-md bg-[#160904] border border-[#522514] flex items-center justify-center text-amber-500 shadow-inner">
+            <div className="w-9 h-9 rounded-md bg-[#130703] border border-[#522514] flex items-center justify-center text-amber-500 shadow-inner">
               <Fingerprint className="w-5 h-5 text-amber-500" />
             </div>
             <div>
               <div className="text-xs font-black tracking-wider text-stone-100 font-typewriter uppercase">
-                CASE INVESTIGATION BINDER
+                CRIMINAL DOSSIER Case Binder V4.1
               </div>
-              <div className="text-[9.5px] text-amber-400 tracking-widest font-bold uppercase flex items-center space-x-1">
+              <div className="text-[9px] text-amber-400/90 tracking-widest font-bold uppercase flex items-center space-x-1 font-typewriter">
                 <span>METROPOLITAN CRIME ARCHIVES</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Investigator ID Card Pinned in Binder */}
-        <div className="mx-2 mt-3 mb-3 p-3 rounded-lg bg-[#140804] border border-[#3d1c10] shadow-md relative overflow-hidden">
-          <div className="flex items-center space-x-3">
-            <div className="w-9 h-9 rounded bg-[#0a0402] border border-[#522514] flex items-center justify-center relative">
+        {/* Pinned Yellow Index Note Card: CASE S03: INFRASTRUCTURE (or active case note) */}
+        <div className="my-3 p-3 rounded pinned-yellow-card relative shadow-lg transform -rotate-1 transition-transform hover:rotate-0">
+          {/* Brass Pushpin at top center */}
+          <div className="absolute -top-2 left-1/2 -translate-x-1/2 brass-pushpin z-20 pointer-events-none" />
+
+          <div className="text-[9px] font-bold tracking-wider text-stone-700 uppercase font-typewriter flex items-center justify-between">
+            <span>MEMO // ACTIVE TARGET</span>
+            <span className="text-red-700 font-black">PRIORITY 1</span>
+          </div>
+          <div className="text-xs font-black text-stone-900 font-typewriter mt-1 tracking-tight">
+            CASE S03: INFRASTRUCTURE & RECOVERY
+          </div>
+          <div className="text-[10px] text-stone-800 font-typewriter mt-0.5 leading-snug">
+            Exfiltrate root hashes • Decode network traces • Seize rogue nodes
+          </div>
+        </div>
+
+        {/* Investigator ID Record Badge */}
+        <div className="mb-3 p-2.5 rounded-lg bg-[#140804] border border-[#3d1c10] shadow-md relative overflow-hidden">
+          <div className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 rounded bg-[#0a0402] border border-[#522514] flex items-center justify-center relative flex-shrink-0">
               <span className="text-xs">🕵️‍♂️</span>
               <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 animate-pulse ring-2 ring-black" />
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center justify-between">
-                <span className="text-[9px] font-bold text-stone-400 uppercase tracking-wider font-typewriter">
-                  ACTIVE INVESTIGATOR
+                <span className="text-[8.5px] font-bold text-stone-400 uppercase tracking-wider font-typewriter">
+                  ASSIGNED DETECTIVE
                 </span>
-                <span className="text-[9px] text-emerald-400 font-bold uppercase">
+                <span className="text-[8.5px] text-emerald-400 font-bold uppercase">
                   ACTIVE WARRANT
                 </span>
               </div>
@@ -136,9 +157,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         </div>
 
-        {/* CASE DOSSIERS WITH PROTRUDING PAPER INDEX TABS */}
-        <div className="px-2 py-1">
-          <div className="flex items-center justify-between px-2 mb-2.5">
+        {/* CASE DOSSIERS WITH PHYSICAL PROTRUDING PAPER INDEX TABS */}
+        <div className="py-1">
+          <div className="flex items-center justify-between px-1 mb-2.5">
             <span className="text-[9.5px] font-bold text-amber-400/90 tracking-widest uppercase font-typewriter flex items-center space-x-1">
               <Bookmark className="w-3 h-3 text-amber-500" />
               <span>CASE INDEX TABS</span>
@@ -148,7 +169,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </span>
           </div>
 
-          <div className="space-y-2.5">
+          <div className="space-y-3">
             {chapters.map((ch, chIdx) => {
               const seasonNum = chIdx + 1;
               const isSelected = ch.id === currentChapterId;
@@ -157,15 +178,37 @@ export const Sidebar: React.FC<SidebarProps> = ({
               const isChapterComplete = solvedCount === ch.puzzles.length;
               const rotationClass = TAB_ROTATIONS[chIdx % TAB_ROTATIONS.length];
 
+              // Diegetic tab labels matching physical case tabs
+              const tabLabel =
+                ch.tool === 'sql'
+                  ? `CASE S01: ${chIdx === 0 ? 'AUDIT' : 'ANALYSIS'}`
+                  : ch.tool === 'git'
+                  ? 'CASE S02: GIT FORENSICS'
+                  : 'CASE S03: DOCKER RUNTIME';
+
               return (
                 <div
                   key={ch.id}
-                  className={`rounded-lg transition-all duration-200 border ${
+                  className={`rounded-lg transition-all duration-200 border relative ${
                     isSelected
-                      ? 'bg-[#1b0c06] border-[#6b2e16] shadow-xl shadow-black/80'
-                      : 'bg-[#120703] border-[#2e140b] hover:border-[#4d2212]'
+                      ? 'bg-[#1a0c06] border-[#6b2e16] shadow-xl shadow-black/80'
+                      : 'bg-[#110603] border-[#2e140b] hover:border-[#4d2212]'
                   }`}
                 >
+                  {/* Protruding Physical Paper Index Tab sticking out to the right */}
+                  <div className="absolute -right-3 top-2.5 z-20 pointer-events-none">
+                    <div
+                      className={`text-[9px] font-black px-2 py-0.5 font-typewriter tracking-wider uppercase transition-transform transform shadow-lg ${rotationClass} ${
+                        isSelected
+                          ? 'index-tab-active scale-110 translate-x-1'
+                          : isChapterComplete
+                          ? 'bg-emerald-950 text-emerald-300 border border-emerald-700'
+                          : 'index-tab-paper'
+                      }`}
+                    >
+                      {tabLabel}
+                    </div>
+                  </div>
                   {/* Protruding Paper Index Tab Header */}
                   <button
                     onClick={() => toggleSeason(ch.id)}
