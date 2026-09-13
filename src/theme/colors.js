@@ -38,4 +38,17 @@ export const themeColors = {
   textMuted: '#997777',
   textPlaceholder: '#775555',
   white: '#FFFFFF',
+
+  // Physical Detective Materials & CRT Mainframe
+  manilaPaper: '#F5EFE1',
+  manilaTab: '#E5DCBE',
+  manilaBorder: '#D2C4A7',
+  stampRed: '#B91C1C',
+  stampRedBorder: '#991B1B',
+  deskSurface: '#120909',
+  deskVignette: '#0A0404',
+  pinRed: '#DC2626',
+  stringRed: '#EF4444',
+  amberPhosphor: '#F59E0B',
 };
+

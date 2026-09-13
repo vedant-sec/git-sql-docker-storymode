@@ -1,6 +1,7 @@
 import React from 'react';
-import { X, Database, Table } from 'lucide-react';
+import { X, Database, Table, Fingerprint } from 'lucide-react';
 import { TableSchema } from '../../types/sql';
+import { audioFx } from '../../utils/audioEffects';
 
 interface SchemaModalProps {
   isOpen: boolean;
@@ -12,76 +13,95 @@ export const SchemaModal: React.FC<SchemaModalProps> = ({ isOpen, onClose, schem
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 font-mono">
-      <div className="bg-slate-900 border border-slate-700 w-full max-w-3xl rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 font-mono select-none">
+      <div className="bg-[#120808] border-2 border-[#4a1c1c] w-full max-w-3xl rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
         {/* Header */}
-        <div className="bg-slate-950 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Database className="w-5 h-5 text-cyan-400" />
-            <h3 className="text-sm font-semibold tracking-wide text-slate-200 uppercase">
-              SQLITE DATABASE SCHEMA // NEXUS FINANCIAL
-            </h3>
+        <div className="bg-gradient-to-r from-[#1c0a0a] via-[#2a0e0e] to-[#1c0a0a] px-5 py-3.5 border-b-2 border-[#4a1c1c] flex items-center justify-between">
+          <div className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 rounded bg-[#331111] border border-theme-scarlet/60 flex items-center justify-center">
+              <Database className="w-4 h-4 text-theme-scarlet" />
+            </div>
+            <div>
+              <div className="flex items-center space-x-2">
+                <span className="rubber-stamp text-[9px] px-1.5 py-0.2 tracking-widest text-[#d93e3e] border-[#d93e3e]">
+                  CONFIDENTIAL
+                </span>
+                <span className="text-[10px] text-stone-400 font-typewriter">POLICE EVIDENCE ARCHIVE #901</span>
+              </div>
+              <h3 className="text-sm font-black tracking-wide text-white uppercase font-typewriter mt-0.5">
+                CRIME SCENE RECORDS // SUSPECT DATABASE
+              </h3>
+            </div>
           </div>
           <button
-            onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded hover:bg-slate-800 transition"
+            onClick={() => {
+              audioFx.playClick();
+              onClose();
+            }}
+            className="text-stone-400 hover:text-white p-1 rounded bg-[#2a0e0e] hover:bg-[#3d1515] transition border border-[#4a1c1c]"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-4 overflow-y-auto space-y-4 flex-1">
+        <div className="p-5 overflow-y-auto space-y-4 flex-1 bg-[#0d0505]">
           {schemas.length === 0 ? (
-            <div className="text-center py-8 text-slate-500 text-sm">
-              Connecting to database schema...
+            <div className="text-center py-10 text-stone-500 text-xs font-typewriter">
+              -- INTERCEPTING RELATIONAL DATABASE SCHEMA TELEMETRY... --
             </div>
           ) : (
             schemas.map(table => (
-            <div key={table.name} className="border border-slate-800 rounded-lg overflow-hidden bg-slate-950/70">
-              <div className="bg-slate-900/90 px-3 py-2 border-b border-slate-800 flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <Table className="w-4 h-4 text-cyan-400" />
-                  <span className="text-xs font-bold text-slate-200 uppercase">{table.name}</span>
+              <div key={table.name} className="border-2 border-[#3d1818] rounded-lg overflow-hidden bg-[#140808] shadow-md">
+                <div className="bg-[#1c0a0a] px-4 py-2.5 border-b border-[#3d1818] flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Table className="w-4 h-4 text-theme-scarlet" />
+                    <span className="text-xs font-bold text-white uppercase font-typewriter">{table.name}</span>
+                  </div>
+                  <span className="text-[11px] text-stone-400 font-typewriter">
+                    {table.sampleCount} RECORDS ARCHIVED
+                  </span>
                 </div>
-                <span className="text-[11px] text-slate-400">
-                  {table.sampleCount} rows
-                </span>
-              </div>
-              <div className="p-2 overflow-x-auto">
-                <table className="w-full text-left text-xs">
-                  <thead>
-                    <tr className="text-slate-500 border-b border-slate-800/80 text-[11px]">
-                      <th className="py-1 px-2 font-semibold">COLUMN</th>
-                      <th className="py-1 px-2 font-semibold">TYPE</th>
-                      <th className="py-1 px-2 font-semibold">KEY</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-800/50">
-                    {table.columns.map(col => (
-                      <tr key={col.name} className="hover:bg-slate-900/30">
-                        <td className="py-1 px-2 font-medium text-slate-300">{col.name}</td>
-                        <td className="py-1 px-2 text-cyan-400 font-mono text-[11px]">{col.type}</td>
-                        <td className="py-1 px-2 text-[10px] text-amber-400">
-                          {col.primaryKey ? 'PRIMARY KEY' : ''}
-                        </td>
+                <div className="p-2 overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead>
+                      <tr className="text-stone-400 border-b border-[#2d1212] text-[11px] font-typewriter">
+                        <th className="py-1.5 px-3 font-semibold">COLUMN ATTR</th>
+                        <th className="py-1.5 px-3 font-semibold">DATA TYPE</th>
+                        <th className="py-1.5 px-3 font-semibold">INDEX / KEY</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-[#240e0e]">
+                      {table.columns.map(col => (
+                        <tr key={col.name} className="hover:bg-[#220d0d] transition">
+                          <td className="py-1.5 px-3 font-medium text-stone-200">{col.name}</td>
+                          <td className="py-1.5 px-3 text-theme-scarlet font-mono text-[11px]">{col.type}</td>
+                          <td className="py-1.5 px-3 text-[10px] text-amber-400 font-typewriter">
+                            {col.primaryKey ? '★ PRIMARY KEY' : ''}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-          ))
-        )}
+            ))
+          )}
         </div>
 
         {/* Footer */}
-        <div className="bg-slate-950 px-4 py-2.5 border-t border-slate-800 flex justify-end">
+        <div className="bg-[#140808] px-5 py-3 border-t-2 border-[#4a1c1c] flex justify-between items-center text-xs">
+          <span className="text-[10px] text-stone-500 font-typewriter">
+            RESTRICTED ACCESS // INTERNAL POLICE INQUIRY
+          </span>
           <button
-            onClick={onClose}
-            className="px-4 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 rounded font-medium transition"
+            onClick={() => {
+              audioFx.playClick();
+              onClose();
+            }}
+            className="px-4 py-1.5 text-xs bg-theme-bloodRed hover:bg-theme-bloodRedHover text-white rounded font-bold font-typewriter transition border border-theme-scarlet"
           >
-            Close Schema
+            DISMISS RECORDS
           </button>
         </div>
       </div>

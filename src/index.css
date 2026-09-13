@@ -2,21 +2,156 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom scrollbars for hacker terminal feel */
+/* Custom scrollbars for detective terminal feel */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: #0d0606;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #2a1515;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #4a1f1f;
 }
+
+/* ==========================================================================
+   DETECTIVE DESK & PHYSICAL INVESTIGATION MATERIALS
+   ========================================================================== */
+
+/* Dark Mahogany Detective Desk Background with Vignette */
+.detective-desk-bg {
+  background-color: #120909;
+  background-image: 
+    radial-gradient(ellipse at 50% 10%, rgba(45, 20, 20, 0.4) 0%, transparent 70%),
+    radial-gradient(circle at bottom right, rgba(20, 8, 8, 0.8) 0%, transparent 60%),
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 24px 24px, 24px 24px;
+}
+
+/* Manila Folder / Aged Incident Report Paper */
+.manila-paper {
+  background-color: #f6efe2;
+  background-image:
+    linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(0,0,0,0.02)),
+    radial-gradient(circle at 10% 20%, rgba(210, 180, 140, 0.08) 0%, transparent 40%);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.12),
+    0 8px 24px -4px rgba(0, 0, 0, 0.28),
+    inset 0 0 16px rgba(180, 150, 110, 0.08);
+}
+
+/* Manila Folder Tab Top */
+.manila-tab {
+  background-color: #ebdfc8;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 12px;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.06);
+}
+
+/* Red Ink Rubber Stamp */
+.rubber-stamp {
+  display: inline-block;
+  font-family: 'Special Elite', monospace;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #b91c1c;
+  border: 2.5px dashed #b91c1c;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  transform: rotate(-3deg);
+  text-shadow: 0 0 1px rgba(185, 28, 28, 0.3);
+  box-shadow: inset 0 0 4px rgba(185, 28, 28, 0.15), 0 0 2px rgba(185, 28, 28, 0.2);
+  mask-image: radial-gradient(circle at center, black 85%, transparent 100%);
+  user-select: none;
+}
+
+.rubber-stamp-green {
+  color: #059669;
+  border-color: #059669;
+  text-shadow: 0 0 1px rgba(5, 150, 105, 0.3);
+  box-shadow: inset 0 0 4px rgba(5, 150, 105, 0.15), 0 0 2px rgba(5, 150, 105, 0.2);
+}
+
+/* Rubber Stamp Slam Animation on Objective Success */
+@keyframes stamp-slam {
+  0% {
+    opacity: 0;
+    transform: scale(2.4) rotate(-14deg);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(0.96) rotate(-2deg);
+  }
+  82% {
+    transform: scale(1.04) rotate(-4deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-3deg);
+  }
+}
+
+.animate-stamp-slam {
+  animation: stamp-slam 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* CRT Mainframe Scanlines */
+.crt-screen {
+  position: relative;
+  overflow: hidden;
+}
+
+.crt-screen::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
+  background-size: 100% 4px;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+/* Corrupted Trace / Terminal Glitch Shake */
+@keyframes glitch-shake {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3px, 2px); }
+  40% { transform: translate(3px, -1px); }
+  60% { transform: translate(-2px, -2px); }
+  80% { transform: translate(2px, 1px); }
+  100% { transform: translate(0, 0); }
+}
+
+.glitch-active {
+  animation: glitch-shake 0.25s ease-in-out;
+  filter: drop-shadow(-2px 0 red) drop-shadow(2px 0 cyan);
+}
+
+/* Phosphor Amber Glow */
+.text-phosphor-amber {
+  color: #fbbf24;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
+}
+
+/* Phosphor Red Glow */
+.text-phosphor-red {
+  color: #f87171;
+  text-shadow: 0 0 8px rgba(248, 113, 113, 0.5);
+}
+
+/* Corkboard & Red String */
+.red-string-line {
+  background: linear-gradient(90deg, #dc2626 0%, #ef4444 50%, #dc2626 100%);
+  box-shadow: 0 0 6px rgba(220, 38, 38, 0.8);
+}
+

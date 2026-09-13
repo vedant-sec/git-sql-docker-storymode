@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, FileCode, Save, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { audioFx } from '../../utils/audioEffects';
 
 interface FileEditorModalProps {
   isOpen: boolean;
@@ -39,6 +40,7 @@ export const FileEditorModal: React.FC<FileEditorModalProps> = ({
 
   const handleSave = () => {
     if (selectedFile) {
+      audioFx.playClick();
       onSaveFile(selectedFile, content);
       setSavedSuccess(true);
       setTimeout(() => setSavedSuccess(false), 2000);
@@ -46,19 +48,32 @@ export const FileEditorModal: React.FC<FileEditorModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 font-mono">
-      <div className="bg-slate-900 border border-slate-700 w-full max-w-4xl rounded-xl shadow-2xl overflow-hidden flex flex-col h-[80vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 font-mono select-none">
+      <div className="bg-[#120808] border-2 border-[#4a1c1c] w-full max-w-4xl rounded-xl shadow-2xl overflow-hidden flex flex-col h-[80vh]">
         {/* Modal Header */}
-        <div className="bg-slate-950 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <FileCode className="w-5 h-5 text-cyan-400" />
-            <h3 className="text-sm font-semibold tracking-wide text-slate-200">
-              VIRTUAL WORKSPACE FILE EDITOR
-            </h3>
+        <div className="bg-gradient-to-r from-[#1c0a0a] via-[#2a0e0e] to-[#1c0a0a] px-5 py-3.5 border-b-2 border-[#4a1c1c] flex items-center justify-between">
+          <div className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 rounded bg-[#331111] border border-theme-scarlet/60 flex items-center justify-center">
+              <FileCode className="w-4 h-4 text-theme-scarlet" />
+            </div>
+            <div>
+              <div className="flex items-center space-x-2">
+                <span className="rubber-stamp text-[9px] px-1.5 py-0.2 tracking-widest text-[#d93e3e] border-[#d93e3e]">
+                  CONFIDENTIAL FILES
+                </span>
+                <span className="text-[10px] text-stone-400 font-typewriter">VIRTUAL FILE SYSTEM DISK</span>
+              </div>
+              <h3 className="text-sm font-black tracking-wide text-white uppercase font-typewriter mt-0.5">
+                EXFILTRATED WORKSPACE ARTIFACTS
+              </h3>
+            </div>
           </div>
           <button
-            onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded hover:bg-slate-800 transition"
+            onClick={() => {
+              audioFx.playClick();
+              onClose();
+            }}
+            className="text-stone-400 hover:text-white p-1 rounded bg-[#2a0e0e] hover:bg-[#3d1515] transition border border-[#4a1c1c]"
           >
             <X className="w-5 h-5" />
           </button>
@@ -67,9 +82,9 @@ export const FileEditorModal: React.FC<FileEditorModalProps> = ({
         {/* Editor Body */}
         <div className="flex flex-1 overflow-hidden">
           {/* File sidebar */}
-          <div className="w-56 bg-slate-950/60 border-r border-slate-800 p-3 space-y-1 overflow-y-auto">
-            <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-2 px-2">
-              Workspace Files
+          <div className="w-60 bg-[#0d0505] border-r-2 border-[#3d1818] p-3 space-y-1.5 overflow-y-auto">
+            <div className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2 px-2 font-typewriter">
+              INTERCEPTED ARTIFACTS
             </div>
             {fileNames.map(f => {
               const isConflicted =
@@ -77,16 +92,19 @@ export const FileEditorModal: React.FC<FileEditorModalProps> = ({
               return (
                 <button
                   key={f}
-                  onClick={() => setSelectedFile(f)}
-                  className={`w-full text-left px-2.5 py-1.5 rounded text-xs flex items-center justify-between transition ${
+                  onClick={() => {
+                    audioFx.playPaper();
+                    setSelectedFile(f);
+                  }}
+                  className={`w-full text-left px-2.5 py-2 rounded text-xs flex items-center justify-between transition border ${
                     selectedFile === f
-                      ? 'bg-cyan-950/50 text-cyan-300 border border-cyan-800/80'
-                      : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
+                      ? 'bg-[#291010] text-theme-scarlet border-[#541c1c] font-bold'
+                      : 'text-stone-400 hover:bg-[#1f0c0c] hover:text-white border-transparent'
                   }`}
                 >
-                  <span className="truncate">{f}</span>
+                  <span className="truncate font-mono">{f}</span>
                   {isConflicted && (
-                    <span className="text-rose-400 text-[10px] font-bold px-1 py-0.5 rounded bg-rose-950/80">
+                    <span className="text-rose-400 text-[9px] font-black px-1 py-0.2 rounded bg-rose-950/80 border border-rose-800">
                       CONFLICT
                     </span>
                   )}
@@ -96,21 +114,21 @@ export const FileEditorModal: React.FC<FileEditorModalProps> = ({
           </div>
 
           {/* Code Edit Area */}
-          <div className="flex-1 flex flex-col bg-slate-900/90">
+          <div className="flex-1 flex flex-col bg-[#090404]">
             {/* Status notification bar */}
             {hasConflictMarkers && (
-              <div className="bg-amber-950/60 border-b border-amber-800/60 px-4 py-2 flex items-center space-x-2 text-amber-300 text-xs">
-                <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+              <div className="bg-[#2e1010] border-b-2 border-rose-900 px-4 py-2 flex items-center space-x-2 text-rose-300 text-xs font-typewriter">
+                <AlertTriangle className="w-4 h-4 flex-shrink-0 text-rose-400" />
                 <span>
-                  <strong>Merge Conflict Detected:</strong> Remove the `&lt;&lt;&lt;&lt;&lt;&lt;&lt;`, `=======`, and `&gt;&gt;&gt;&gt;&gt;&gt;&gt;` markers, keep the resolved code, and click Save.
+                  <strong>MERGE CONFLICT ACTIVE:</strong> Remove the `&lt;&lt;&lt;&lt;&lt;&lt;&lt;`, `=======`, and `&gt;&gt;&gt;&gt;&gt;&gt;&gt;` conflict markers, keep the verified code, and click Save.
                 </span>
               </div>
             )}
 
             {savedSuccess && (
-              <div className="bg-emerald-950/60 border-b border-emerald-800/60 px-4 py-2 flex items-center space-x-2 text-emerald-300 text-xs">
-                <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
-                <span>File saved to virtual filesystem successfully!</span>
+              <div className="bg-[#0f2918] border-b-2 border-emerald-700 px-4 py-2 flex items-center space-x-2 text-emerald-300 text-xs font-typewriter animate-stamp-slam">
+                <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-emerald-400" />
+                <span>Artifact saved into virtual repository filesystem successfully!</span>
               </div>
             )}
 
@@ -118,29 +136,32 @@ export const FileEditorModal: React.FC<FileEditorModalProps> = ({
               <textarea
                 value={content}
                 onChange={e => setContent(e.target.value)}
-                className="w-full h-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs font-mono text-slate-200 focus:outline-none focus:border-cyan-500/80 resize-none selection:bg-cyan-900 leading-relaxed"
+                className="w-full h-full bg-[#0d0505] border-2 border-[#2b1010] rounded-lg p-3 text-xs font-mono text-stone-200 focus:outline-none focus:border-theme-scarlet/80 resize-none selection:bg-theme-bloodRed selection:text-white leading-relaxed"
                 spellCheck={false}
               />
             </div>
 
             {/* Footer */}
-            <div className="bg-slate-950 px-4 py-3 border-t border-slate-800 flex items-center justify-between">
-              <div className="text-[11px] text-slate-500">
-                Editing: <span className="text-cyan-400 font-semibold">{selectedFile}</span> ({content.split('\n').length} lines)
+            <div className="bg-[#140808] px-5 py-3 border-t-2 border-[#3d1818] flex items-center justify-between">
+              <div className="text-[11px] text-stone-500 font-typewriter">
+                EXHIBIT: <span className="text-theme-scarlet font-bold font-mono">{selectedFile}</span> ({content.split('\n').length} LINES)
               </div>
               <div className="flex space-x-2">
                 <button
-                  onClick={onClose}
-                  className="px-3 py-1.5 text-xs text-slate-400 hover:text-white rounded hover:bg-slate-800 transition"
+                  onClick={() => {
+                    audioFx.playClick();
+                    onClose();
+                  }}
+                  className="px-3.5 py-1.5 text-xs text-stone-400 hover:text-white rounded bg-[#210d0d] hover:bg-[#331414] font-typewriter transition border border-[#3d1515]"
                 >
-                  Close
+                  DISMISS
                 </button>
                 <button
                   onClick={handleSave}
-                  className="px-4 py-1.5 text-xs bg-cyan-600 hover:bg-cyan-500 text-white rounded font-medium flex items-center space-x-1.5 transition shadow-lg shadow-cyan-900/30"
+                  className="px-4 py-1.5 text-xs bg-theme-bloodRed hover:bg-theme-bloodRedHover text-white rounded font-bold font-typewriter flex items-center space-x-1.5 transition shadow-lg shadow-black/50 border border-theme-scarlet"
                 >
                   <Save className="w-3.5 h-3.5" />
-                  <span>Save File</span>
+                  <span>COMMIT FILE CHANGES</span>
                 </button>
               </div>
             </div>

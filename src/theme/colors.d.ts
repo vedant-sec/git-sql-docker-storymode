@@ -23,6 +23,17 @@ export interface ThemeColors {
   textMuted: string;
   textPlaceholder: string;
   white: string;
+  manilaPaper: string;
+  manilaTab: string;
+  manilaBorder: string;
+  stampRed: string;
+  stampRedBorder: string;
+  deskSurface: string;
+  deskVignette: string;
+  pinRed: string;
+  stringRed: string;
+  amberPhosphor: string;
 }
 
 export declare const themeColors: ThemeColors;
+

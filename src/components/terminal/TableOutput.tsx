@@ -8,37 +8,37 @@ interface TableOutputProps {
 
 export const TableOutput: React.FC<TableOutputProps> = ({ columns, values, executionTimeMs }) => {
   if (columns.length === 0) {
-    return <div className="text-slate-500 italic py-1">Query completed with 0 rows returned.</div>;
+    return <div className="text-stone-500 italic py-1 font-typewriter">-- 0 RECORDS MATCHED CRITERIA --</div>;
   }
 
   return (
-    <div className="my-2 border border-slate-700/80 rounded-md overflow-hidden bg-slate-950/70 shadow-lg text-xs font-mono">
+    <div className="my-2 border border-[#421a1a] rounded-lg overflow-hidden bg-[#0c0505] shadow-lg text-xs font-mono">
       <div className="overflow-x-auto max-h-72">
         <table className="w-full text-left border-collapse">
-          <thead className="bg-slate-900 border-b border-slate-700/90 text-cyan-400 font-semibold uppercase tracking-wider sticky top-0">
+          <thead className="bg-[#1c0b0b] border-b-2 border-[#4a1c1c] text-theme-scarlet font-bold uppercase tracking-wider sticky top-0 font-typewriter">
             <tr>
               {columns.map((col, idx) => (
-                <th key={idx} className="py-2 px-3 border-r border-slate-800 last:border-r-0 whitespace-nowrap">
+                <th key={idx} className="py-2 px-3 border-r border-[#331414] last:border-r-0 whitespace-nowrap text-[11px]">
                   {col}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/80">
+          <tbody className="divide-y divide-[#261010]">
             {values.map((row, rowIdx) => (
               <tr
                 key={rowIdx}
-                className="hover:bg-cyan-950/20 transition-colors odd:bg-slate-900/40 even:bg-slate-950/40"
+                className="hover:bg-[#261010]/70 transition-colors odd:bg-[#0c0606] even:bg-[#120808]"
               >
                 {row.map((cell, cellIdx) => (
                   <td
                     key={cellIdx}
-                    className="py-1.5 px-3 border-r border-slate-800/60 last:border-r-0 text-slate-300 whitespace-nowrap"
+                    className="py-1.5 px-3 border-r border-[#261010] last:border-r-0 text-stone-200 whitespace-nowrap"
                   >
                     {cell === null ? (
-                      <span className="text-slate-600 italic">NULL</span>
+                      <span className="text-stone-600 italic">NULL</span>
                     ) : typeof cell === 'number' ? (
-                      <span className="text-emerald-400 font-medium">{cell}</span>
+                      <span className="text-amber-400 font-bold">{cell}</span>
                     ) : (
                       String(cell)
                     )}
@@ -49,12 +49,12 @@ export const TableOutput: React.FC<TableOutputProps> = ({ columns, values, execu
           </tbody>
         </table>
       </div>
-      <div className="bg-slate-900/80 px-3 py-1.5 border-t border-slate-800 flex justify-between items-center text-[11px] text-slate-400">
+      <div className="bg-[#170808] px-3 py-1.5 border-t border-[#3b1717] flex justify-between items-center text-[11px] text-stone-400 font-typewriter">
         <span>
-          Showing <strong className="text-cyan-400">{values.length}</strong> row{values.length === 1 ? '' : 's'}
+          RECORDS INTERCEPTED: <strong className="text-theme-scarlet">{values.length}</strong> ROW{values.length === 1 ? '' : 'S'}
         </span>
         {executionTimeMs !== undefined && (
-          <span className="text-slate-500">Query latency: {executionTimeMs} ms</span>
+          <span className="text-stone-500">LINE LATENCY: {executionTimeMs} MS</span>
         )}
       </div>
     </div>

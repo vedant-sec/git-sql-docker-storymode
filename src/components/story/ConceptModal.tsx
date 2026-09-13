@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, Lightbulb, Code2, CheckCircle, BookOpen } from 'lucide-react';
 import { ConceptDefinition } from '../../types/game';
+import { audioFx } from '../../utils/audioEffects';
 
 interface ConceptModalProps {
   isOpen: boolean;
@@ -18,55 +19,62 @@ export const ConceptModal: React.FC<ConceptModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 font-mono">
-      <div className="bg-[#12151d] border border-slate-700/80 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-in fade-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 font-mono select-none">
+      <div className="bg-[#120808] border-2 border-[#4a1c1c] w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
         {/* Header */}
-        <div className="bg-[#0b0e14] px-5 py-3.5 border-b border-slate-800 flex items-center justify-between">
+        <div className="bg-gradient-to-r from-[#1c0a0a] via-[#2a0e0e] to-[#1c0a0a] px-5 py-3.5 border-b-2 border-[#4a1c1c] flex items-center justify-between">
           <div className="flex items-center space-x-2.5">
-            <div className="w-7 h-7 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
-              <Lightbulb className="w-4 h-4 text-amber-400" />
+            <div className="w-8 h-8 rounded bg-[#331111] border border-theme-scarlet/60 flex items-center justify-center">
+              <Lightbulb className="w-4 h-4 text-theme-scarlet" />
             </div>
             <div>
-              <div className="text-[10px] uppercase font-bold text-amber-400/90 tracking-widest">
-                {seasonTitle || 'CORE FORENSIC CONCEPT'}
+              <div className="flex items-center space-x-2">
+                <span className="rubber-stamp text-[9px] px-1.5 py-0.2 tracking-widest text-[#d93e3e] border-[#d93e3e]">
+                  STANDARD PROCEDURES
+                </span>
+                <span className="text-[10px] text-stone-400 font-typewriter">
+                  {seasonTitle || 'FORENSIC INVESTIGATION PLAYBOOK'}
+                </span>
               </div>
-              <h3 className="text-sm font-bold tracking-wide text-slate-100">
-                {concept?.title || 'SQL Analysis Fundamentals'}
+              <h3 className="text-sm font-black tracking-wide text-white uppercase font-typewriter mt-0.5">
+                {concept?.title || 'Investigative Query Methodology'}
               </h3>
             </div>
           </div>
           <button
-            onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
+            onClick={() => {
+              audioFx.playClick();
+              onClose();
+            }}
+            className="text-stone-400 hover:text-white p-1 rounded bg-[#2a0e0e] hover:bg-[#3d1515] transition border border-[#4a1c1c]"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-5 overflow-y-auto space-y-4 flex-1">
+        <div className="p-5 overflow-y-auto space-y-4 flex-1 bg-[#0d0505]">
           {/* Concept Explanation */}
-          <div className="bg-[#181c26] border border-slate-800 rounded-xl p-4">
-            <div className="flex items-center space-x-2 text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-              <BookOpen className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Concept Overview</span>
+          <div className="bg-[#140808] border-2 border-[#3d1818] rounded-lg p-4 shadow-sm">
+            <div className="flex items-center space-x-2 text-xs font-bold text-stone-300 uppercase tracking-wider mb-2 font-typewriter">
+              <BookOpen className="w-3.5 h-3.5 text-theme-scarlet" />
+              <span>FORENSIC OPERATIONAL PRINCIPLE</span>
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed font-sans">
+            <p className="text-xs text-stone-300 leading-relaxed font-report">
               {concept?.description || 'Understanding relational queries, filtering clauses, and grouping functions to parse forensic datasets.'}
             </p>
           </div>
 
           {/* Code Example */}
           {concept?.example && (
-            <div className="bg-[#0e1118] border border-slate-800 rounded-xl p-4">
-              <div className="flex items-center justify-between text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+            <div className="bg-[#0a0404] border-2 border-[#3d1818] rounded-lg p-4 shadow-inner">
+              <div className="flex items-center justify-between text-xs font-bold text-stone-400 uppercase tracking-wider mb-2 font-typewriter">
                 <div className="flex items-center space-x-2">
                   <Code2 className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Syntax Pattern</span>
+                  <span>SYNTAX BLUEPRINT // CANONICAL INTERCEPT</span>
                 </div>
-                <span className="text-[10px] text-slate-500">CANONICAL EXAMPLE</span>
               </div>
-              <pre className="text-xs text-emerald-300 font-mono bg-[#07090e] p-3.5 rounded-lg border border-slate-800/80 overflow-x-auto whitespace-pre leading-relaxed">
+              <pre className="text-xs text-amber-300 font-mono bg-[#140808] p-3.5 rounded border border-[#2e1313] overflow-x-auto whitespace-pre leading-relaxed">
                 {concept.example}
               </pre>
             </div>
@@ -74,14 +82,14 @@ export const ConceptModal: React.FC<ConceptModalProps> = ({
 
           {/* Key Takeaways */}
           {concept?.keyPoints && concept.keyPoints.length > 0 && (
-            <div className="bg-[#181c26] border border-slate-800 rounded-xl p-4">
-              <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2.5">
-                Key Detective Takeaways
+            <div className="bg-[#140808] border-2 border-[#3d1818] rounded-lg p-4">
+              <div className="text-xs font-bold text-stone-300 uppercase tracking-wider mb-2.5 font-typewriter">
+                TACTICAL FIELD OBSERVATIONS:
               </div>
               <ul className="space-y-2">
                 {concept.keyPoints.map((pt, idx) => (
-                  <li key={idx} className="flex items-start space-x-2 text-xs text-slate-300">
-                    <CheckCircle className="w-3.5 h-3.5 text-cyan-400 flex-shrink-0 mt-0.5" />
+                  <li key={idx} className="flex items-start space-x-2 text-xs text-stone-300 font-report">
+                    <CheckCircle className="w-3.5 h-3.5 text-theme-scarlet flex-shrink-0 mt-0.5" />
                     <span>{pt}</span>
                   </li>
                 ))}
@@ -91,16 +99,18 @@ export const ConceptModal: React.FC<ConceptModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="bg-[#0b0e14] px-5 py-3 border-t border-slate-800 flex justify-end">
+        <div className="bg-[#140808] px-5 py-3 border-t-2 border-[#4a1c1c] flex justify-end">
           <button
-            onClick={onClose}
-            className="px-4 py-1.5 text-xs bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg transition shadow-md shadow-amber-950"
+            onClick={() => {
+              audioFx.playClick();
+              onClose();
+            }}
+            className="px-5 py-1.5 text-xs bg-theme-bloodRed hover:bg-theme-bloodRedHover text-white font-bold rounded font-typewriter transition border border-theme-scarlet"
           >
-            Understood
+            ACKNOWLEDGE DIRECTIVE
           </button>
         </div>
       </div>
     </div>
   );
 };
-

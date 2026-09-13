@@ -12,8 +12,10 @@ export default {
         theme: themeColors
       },
       fontFamily: {
-        mono: ['"JetBrains Mono"', 'Menlo', 'Monaco', 'Consolas', '"Courier New"', 'monospace'],
-        sans: ['Inter', 'system-ui', 'sans-serif']
+        mono: ['"Fira Code"', '"JetBrains Mono"', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        typewriter: ['"Special Elite"', '"Courier Prime"', 'Courier', 'monospace'],
+        report: ['"Courier Prime"', 'Courier', 'monospace'],
       }
     },
   },
