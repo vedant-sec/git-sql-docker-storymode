@@ -39,7 +39,7 @@ export const HintDrawer: React.FC<HintDrawerProps> = ({
                 <span className="text-[10px] text-stone-400 font-typewriter">FREQ: 142.85 MHz</span>
               </div>
               <h3 className="text-sm font-black tracking-wide text-white uppercase font-typewriter mt-0.5">
-                CONFIDENTIAL INFORMANT INTEL
+                INFORMANT TIP // WIRETAP HINT
               </h3>
             </div>
           </div>

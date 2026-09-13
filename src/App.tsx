@@ -400,88 +400,88 @@ export function App() {
         tool={currentChapter.tool}
       />
 
-      {/* Main Workspace (Detective Investigation Desk) */}
-      <main className="flex-1 h-full overflow-y-auto detective-desk-bg flex flex-col relative">
-        {/* Top Police Dispatch Header */}
-        <div className="p-4 md:p-6 pb-2 w-full max-w-5xl mx-auto">
-          <div className="bg-[#140808]/90 text-stone-100 rounded-xl px-5 py-3 flex items-center justify-between shadow-2xl border-2 border-[#3d1818] backdrop-blur-md">
-            {/* Left: Prior file & Case dossier title */}
-            <div className="flex items-center space-x-3.5">
-              <button
-                onClick={handlePrevPuzzle}
-                disabled={progress.currentPuzzleIndex === 0}
-                className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-[#240e0e] hover:bg-[#381616] text-stone-300 disabled:opacity-30 disabled:pointer-events-none text-xs font-bold font-typewriter transition border border-[#4a1c1c]"
-                title="Return to Previous Case Objective"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span>&lt; PRIOR LEAD</span>
-              </button>
+      {/* Main Workspace (Top-Down Investigator's Desk with Leather Blotter) */}
+      <main className="flex-1 h-full overflow-y-auto wood-desk-surface flex flex-col relative p-3 md:p-6">
+        {/* Central Leather Desk Blotter Pad Container */}
+        <div className="w-full max-w-5xl mx-auto flex-1 flex flex-col space-y-4 leather-blotter rounded-2xl p-4 md:p-6 shadow-2xl">
+          {/* Top Brass & Leather Desk Nameplate Header */}
+          <div className="w-full">
+            <div className="bg-[#140808]/90 text-stone-100 rounded-xl px-5 py-3 flex items-center justify-between shadow-xl border-2 border-[#3d1818] backdrop-blur-md">
+              {/* Left: Prior file & Case dossier title */}
+              <div className="flex items-center space-x-3.5">
+                <button
+                  onClick={handlePrevPuzzle}
+                  disabled={progress.currentPuzzleIndex === 0}
+                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-[#240e0e] hover:bg-[#381616] text-stone-300 disabled:opacity-30 disabled:pointer-events-none text-xs font-bold font-typewriter transition border border-[#4a1c1c]"
+                  title="Return to Prior Case Objective"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span>◀ PRIOR LEAD</span>
+                </button>
 
-              <div className="flex items-center space-x-2.5">
-                <div className="w-8 h-8 rounded bg-[#240e0e] border border-theme-scarlet/60 flex items-center justify-center text-theme-scarlet font-black text-xs shadow-inner">
-                  NPD
-                </div>
-                <div>
-                  <div className="text-xs font-black tracking-wider uppercase text-white font-typewriter flex items-center space-x-2">
-                    <span>POLICE FORENSIC DESK</span>
-                    <span className="text-[9px] px-1.5 py-0.2 rounded bg-theme-bloodRed text-white font-mono uppercase">
-                      ACTIVE CASE
-                    </span>
+                <div className="flex items-center space-x-2.5">
+                  <div className="w-8 h-8 rounded bg-[#240e0e] border border-theme-scarlet/60 flex items-center justify-center text-theme-scarlet font-black text-xs shadow-inner">
+                    NPD
                   </div>
-                  <div className="text-[10px] text-theme-scarlet font-typewriter font-bold tracking-wider uppercase">
-                    DOSSIER: S{seasonNumberStr} — {currentChapter.subtitle.toUpperCase()}
+                  <div>
+                    <div className="text-xs font-black tracking-wider uppercase text-white font-typewriter flex items-center space-x-2">
+                      <span>POLICE FORENSIC DESK</span>
+                      <span className="text-[9px] px-1.5 py-0.2 rounded bg-theme-bloodRed text-white font-mono uppercase">
+                        ACTIVE CASE
+                      </span>
+                    </div>
+                    <div className="text-[10px] text-amber-400 font-typewriter font-bold tracking-wider uppercase">
+                      DOSSIER: S{seasonNumberStr} — {currentChapter.subtitle.toUpperCase()}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Right: Field Manual, Evidence Vault, Purge */}
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => {
-                  audioFx.playPaper();
-                  setIsTutorialOpen(true);
-                }}
-                className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-[#240e0e] hover:bg-[#381616] text-theme-scarlet text-xs font-bold font-typewriter transition border border-theme-scarlet/40 shadow-sm"
-              >
-                <BookOpen className="w-3.5 h-3.5 text-theme-scarlet" />
-                <span className="hidden sm:inline">FIELD MANUAL</span>
-              </button>
+              {/* Right: Field Manual, Evidence Vault, Purge */}
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => {
+                    audioFx.playPaper();
+                    setIsTutorialOpen(true);
+                  }}
+                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-[#240e0e] hover:bg-[#381616] text-amber-300 text-xs font-bold font-typewriter transition border border-amber-600/40 shadow-sm"
+                >
+                  <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+                  <span className="hidden sm:inline">FIELD MANUAL</span>
+                </button>
 
-              <button
-                onClick={() => {
-                  audioFx.playPaper();
-                  setIsCluesOpen(true);
-                }}
-                className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-[#102418] hover:bg-[#183624] text-emerald-300 text-xs font-bold font-typewriter transition border border-emerald-600/50"
-                title="View Collected Evidence Locker"
-              >
-                <Shield className="w-3.5 h-3.5 text-emerald-400" />
-                <span className="hidden sm:inline">EVIDENCE VAULT</span>
-                <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-300 font-mono font-bold">
-                  {progress.collectedClues.length}
-                </span>
-              </button>
+                <button
+                  onClick={() => {
+                    audioFx.playPaper();
+                    setIsCluesOpen(true);
+                  }}
+                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-[#102418] hover:bg-[#183624] text-emerald-300 text-xs font-bold font-typewriter transition border border-emerald-600/50"
+                  title="View Collected Evidence Vault"
+                >
+                  <Shield className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="hidden sm:inline">EVIDENCE VAULT</span>
+                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-300 font-mono font-bold">
+                    {progress.collectedClues.length}
+                  </span>
+                </button>
 
-              <button
-                onClick={() => {
-                  audioFx.playClick();
-                  if (window.confirm('WARNING: Purge all collected evidence, records, and restart forensic investigation from Chapter 1?')) {
-                    resetProgress();
-                  }
-                }}
-                className="p-1.5 rounded bg-[#240e0e] hover:bg-rose-950 text-stone-400 hover:text-rose-300 transition border border-[#4a1c1c]"
-                title="Purge Case Progress & Restart"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-              </button>
+                <button
+                  onClick={() => {
+                    audioFx.playClick();
+                    if (window.confirm('WARNING: Purge all collected evidence, records, and restart forensic investigation from Chapter 1?')) {
+                      resetProgress();
+                    }
+                  }}
+                  className="p-1.5 rounded bg-[#240e0e] hover:bg-rose-950 text-stone-400 hover:text-rose-300 transition border border-[#4a1c1c]"
+                  title="Purge Case Progress & Restart"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Core Workspace: Strictly Problem & Code Editor */}
-        <div className="flex-1 px-4 md:px-6 py-3 w-full max-w-5xl mx-auto space-y-5 pb-8">
-          {/* 1. Problem / Objective Card */}
+          {/* 1. Manila Evidence Folder & Incident Report */}
           <ProblemCard
             puzzle={currentPuzzle}
             puzzleIndex={progress.currentPuzzleIndex}
@@ -491,7 +491,7 @@ export function App() {
             onNextPuzzle={handleNextPuzzle}
           />
 
-          {/* 2. Code Editor & Terminal */}
+          {/* 2. Retro CRT Intercept Terminal */}
           <Terminal
             tool={currentChapter.tool}
             logs={terminalLogs}
