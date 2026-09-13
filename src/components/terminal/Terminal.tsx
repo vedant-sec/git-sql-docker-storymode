@@ -1,5 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Play, Check, Radio, History, Trash2, ShieldCheck, ChevronDown, ChevronUp, Terminal as TerminalIcon, AlertTriangle } from 'lucide-react';
+import {
+  Play,
+  Check,
+  Radio,
+  History,
+  Trash2,
+  ShieldCheck,
+  ChevronDown,
+  ChevronUp,
+  AlertTriangle,
+} from 'lucide-react';
 import { TableOutput } from './TableOutput';
 import { QueryResult } from '../../types/sql';
 import { ToolType } from '../../types/game';
@@ -29,29 +39,16 @@ function parseAnsi(text: string): React.ReactNode[] {
   const parts = text.split(/(\x1b\[[0-9;]*m)/g);
   let currentColor = 'text-amber-200';
 
-  return parts.map((part, idx) => {
-    if (part === '\x1b[31m') {
-      currentColor = 'text-rose-400';
-      return null;
-    } else if (part === '\x1b[32m') {
-      currentColor = 'text-emerald-400';
-      return null;
-    } else if (part === '\x1b[33m') {
-      currentColor = 'text-amber-400';
-      return null;
-    } else if (part === '\x1b[36m') {
-      currentColor = 'text-cyan-400';
-      return null;
-    } else if (part === '\x1b[0m') {
-      currentColor = 'text-amber-200';
-      return null;
-    }
-    return (
-      <span key={idx} className={currentColor}>
-        {part}
-      </span>
-    );
-  }).filter(Boolean);
+  return parts
+    .map((part, idx) => {
+      if (part === '\x1b[31m') { currentColor = 'text-rose-400'; return null; }
+      if (part === '\x1b[32m') { currentColor = 'text-emerald-400'; return null; }
+      if (part === '\x1b[33m') { currentColor = 'text-amber-400'; return null; }
+      if (part === '\x1b[36m') { currentColor = 'text-cyan-400'; return null; }
+      if (part === '\x1b[0m') { currentColor = 'text-amber-200'; return null; }
+      return <span key={idx} className={currentColor}>{part}</span>;
+    })
+    .filter(Boolean) as React.ReactNode[];
 }
 
 export const Terminal: React.FC<TerminalProps> = ({
@@ -62,35 +59,33 @@ export const Terminal: React.FC<TerminalProps> = ({
   inputCode,
   setInputCode,
   isLoading,
-  onOpenHint
+  onOpenHint,
 }) => {
-  const [showQueryLog, setShowQueryLog] = useState(true);
+  const [showLog, setShowLog] = useState(true);
   const [hasGlitch, setHasGlitch] = useState(false);
+  const [knobAngle, setKnobAngle] = useState({ brightness: 45, contrast: -30 });
   const logEndRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    if (showQueryLog) {
+    if (showLog) {
       logEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [logs, showQueryLog]);
+  }, [logs, showLog]);
 
-  // Monitor logs for error or success to trigger tactile audio & animations
   useEffect(() => {
     if (logs.length > 0) {
-      const lastLog = logs[logs.length - 1];
-      if (lastLog.type === 'error') {
+      const last = logs[logs.length - 1];
+      if (last.type === 'error') {
         audioFx.playGlitch();
         setHasGlitch(true);
-        const timer = setTimeout(() => setHasGlitch(false), 500);
-        return () => clearTimeout(timer);
-      } else if (lastLog.type === 'success') {
+        const t = setTimeout(() => setHasGlitch(false), 500);
+        return () => clearTimeout(t);
+      } else if (last.type === 'success') {
         audioFx.playStamp();
       }
     }
   }, [logs]);
 
-  // Handle Ctrl+Enter or Ctrl+E to run
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if ((e.ctrlKey || e.metaKey) && (e.key === 'Enter' || e.key === 'e' || e.key === 'E')) {
       e.preventDefault();
@@ -105,14 +100,11 @@ export const Terminal: React.FC<TerminalProps> = ({
     onExecuteCommand(trimmed);
   };
 
-  const handleSubmit = () => {
-    const trimmed = inputCode.trim();
-    if (!trimmed || isLoading) return;
+  const handleKnobClick = (knob: 'brightness' | 'contrast') => {
     audioFx.playClick();
-    onExecuteCommand(trimmed);
+    setKnobAngle(prev => ({ ...prev, [knob]: prev[knob] + 45 }));
   };
 
-  // Compute line count for gutter
   const lineCount = Math.max(inputCode.split('\n').length, 4);
   const lineNumbers = Array.from({ length: lineCount }, (_, i) => i + 1);
 
@@ -123,247 +115,217 @@ export const Terminal: React.FC<TerminalProps> = ({
       ? 'FORENSIC CODE SHELL // GIT COMMIT AUDITOR'
       : 'RUNTIME CONTAINER AUDITOR // DOCKER DAEMON';
 
-  const [brightnessRotation, setBrightnessRotation] = useState(45);
-  const [contrastRotation, setContrastRotation] = useState(120);
-
-  const handleBrightnessTurn = () => {
-    audioFx.playDial();
-    setBrightnessRotation(prev => (prev + 30) % 360);
-  };
-
-  const handleContrastTurn = () => {
-    audioFx.playDial();
-    setContrastRotation(prev => (prev + 30) % 360);
-  };
-
   return (
-    <div className={`flex flex-col space-y-3 font-mono select-none ${hasGlitch ? 'glitch-active' : ''}`}>
-      {/* Heavy Industrial CRT Monitor Chassis Sitting on the Desk */}
-      <div className="crt-monitor-chassis p-4 md:p-5 relative">
-        {/* Four Corner Industrial Hex Screws */}
-        <div className="absolute top-2.5 left-2.5 hex-screw pointer-events-none" />
-        <div className="absolute top-2.5 right-2.5 hex-screw pointer-events-none" />
-        <div className="absolute bottom-2.5 left-2.5 hex-screw pointer-events-none" />
-        <div className="absolute bottom-2.5 right-2.5 hex-screw pointer-events-none" />
+    <div className={`font-mono select-none ${hasGlitch ? 'glitch-active' : ''}`}>
+      {/* === CRT MONITOR CHASSIS === */}
+      <div className="crt-chassis p-3 relative">
 
-        {/* Industrial Stenciled Specification Badge & Dual LEDs */}
-        <div className="flex items-center justify-between px-3 py-1.5 mb-3 metal-spec-plate border border-[#4a3a34]">
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center space-x-1.5">
-              <span className="status-led-green animate-pulse" />
-              <span className="text-[9px] font-bold text-emerald-400 font-typewriter uppercase tracking-wider">
-                ● LINE CLEAR // READY
-              </span>
-            </div>
-            <div className="hidden sm:flex items-center space-x-1.5">
-              <span className="status-led-amber" />
-              <span className="text-[9px] font-bold text-amber-500 font-typewriter uppercase tracking-wider">
-                ● PWR
-              </span>
-            </div>
-            <span className="text-[10.5px] font-black tracking-widest text-amber-300 font-typewriter uppercase">
-              SERIAL NO. FT-991 // FORENSIC INTERCEPT UNIT
+        {/* Four corner hex screws */}
+        <div className="absolute top-2.5 left-2.5 hex-screw" />
+        <div className="absolute top-2.5 right-2.5 hex-screw" />
+        <div className="absolute bottom-2.5 left-2.5 hex-screw" />
+        <div className="absolute bottom-2.5 right-2.5 hex-screw" />
+
+        {/* Metal spec badge row */}
+        <div className="flex items-center justify-between px-3 py-1.5 mb-2 border-b border-[#3a2020]/60">
+          <div className="flex items-center space-x-2">
+            <div className="status-led-green animate-pulse" />
+            <span className="text-[9px] font-black tracking-widest text-amber-500/80 font-typewriter uppercase">
+              SIGNAL NO. FT-991 / FORENSIC INTERCEPT UNIT
             </span>
           </div>
 
           <div className="flex items-center space-x-3">
-            <span className="text-[9px] text-stone-400 font-typewriter hidden sm:inline uppercase">
-              MODEL: CRT-V4.0 // AMBER PHOSPHOR
-            </span>
+            {/* Log toggle */}
             <button
               onClick={() => {
                 audioFx.playClick();
-                setShowQueryLog(prev => !prev);
+                setShowLog(prev => !prev);
               }}
-              className="flex items-center space-x-1.5 px-2.5 py-0.5 rounded bg-[#160c0a] hover:bg-[#2e1515] text-amber-400 text-[10px] font-bold font-typewriter transition border border-[#522b22]"
+              className="flex items-center space-x-1.5 px-2.5 py-0.5 rounded bg-[#190d0d] hover:bg-[#2c1515] text-amber-400 text-[10px] font-bold font-typewriter transition border border-[#4a2020]"
             >
               <History className="w-3 h-3 text-amber-500" />
               <span>LOG TELEMETRY</span>
-              {showQueryLog ? (
-                <ChevronUp className="w-3 h-3" />
-              ) : (
-                <ChevronDown className="w-3 h-3" />
-              )}
+              {showLog ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
             </button>
           </div>
         </div>
 
-        {/* Main CRT Screen and Side Hardware Panel Container */}
-        <div className="flex flex-col md:flex-row gap-3">
-          {/* Left / Center: CRT Monitor Screen with Scanlines & Amber Phosphor */}
-          <div className="flex-1 crt-screen rounded-lg border-3 border-[#2b1212] overflow-hidden flex flex-col shadow-2xl">
-            {/* Screen Status Subheader */}
-            <div className="bg-[#140808] px-4 py-2 border-b border-[#2b1212] flex items-center justify-between text-xs relative z-30">
-              <div className="flex items-center space-x-2">
-                <TerminalIcon className="w-3.5 h-3.5 text-amber-500" />
-                <span className="text-amber-400 font-bold tracking-widest text-[11px] font-typewriter">
-                  {consoleHeader}
-                </span>
+        {/* === CRT SCREEN AREA === */}
+        <div className="flex gap-3">
+          {/* Main screen column */}
+          <div className="flex-1 min-w-0">
+            <div className="crt-screen rounded-lg border-2 border-[#2b1010] flex flex-col">
+
+              {/* Screen status header */}
+              <div className="bg-[#120606] px-4 py-2 border-b border-[#261010] flex items-center justify-between text-xs relative z-30">
+                <div className="flex items-center space-x-2">
+                  <span className="text-[10px] font-black tracking-widest text-amber-500/80 font-typewriter">
+                    {consoleHeader}
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className={`w-2 h-2 rounded-full ${isLoading ? 'bg-amber-400 animate-ping' : 'bg-emerald-400 animate-pulse'}`} />
+                  <span className="text-[9px] font-bold text-amber-500/70 font-typewriter uppercase tracking-widest">
+                    {isLoading ? 'TRACING...' : '● LINE CLEAR // READY'}
+                  </span>
+                </div>
               </div>
 
-              <div className="flex items-center space-x-2">
-                <span
-                  className={`w-2 h-2 rounded-full ${
-                    isLoading ? 'bg-amber-400 animate-ping' : 'bg-emerald-400 animate-pulse'
-                  }`}
-                />
-                <span className="text-[10px] font-bold text-amber-500 uppercase tracking-widest font-typewriter">
-                  {isLoading ? 'TRACING SIGNAL...' : 'LINE ARMED // READY'}
-                </span>
-              </div>
-            </div>
+              {/* Code editor input */}
+              <div className="flex min-h-[130px] max-h-[240px] overflow-y-auto relative z-30 bg-[#060202]">
+                {/* Line numbers */}
+                <div className="w-9 py-2 pr-3 text-right select-none text-amber-800/70 text-xs leading-6 font-mono border-r border-[#1e0c0c] flex-shrink-0">
+                  {lineNumbers.map(n => (
+                    <div key={n}>{n}</div>
+                  ))}
+                </div>
 
-            {/* Code Editor Body with Phosphor Amber Glow */}
-            <div className="flex min-h-[145px] max-h-[260px] p-2 overflow-y-auto relative z-30 bg-[#070303]">
-              {/* Line Numbers Gutter */}
-              <div className="w-8 py-1.5 text-right pr-3 select-none text-amber-700/80 text-xs leading-6 font-mono border-r border-[#261010]">
-                {lineNumbers.map(num => (
-                  <div key={num}>{num}</div>
-                ))}
+                {/* Textarea */}
+                <div className="flex-1 relative min-w-0">
+                  <textarea
+                    value={inputCode}
+                    onChange={e => setInputCode(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder={
+                      tool === 'sql'
+                        ? '-- Forensic SQL intercept query... (Ctrl+E to dispatch)'
+                        : tool === 'git'
+                        ? '# Git forensic command... (e.g. git status, git log)'
+                        : '# Docker runtime command... (e.g. docker ps, docker run)'
+                    }
+                    className="w-full h-full bg-transparent px-3 py-2 text-xs font-mono amber-phosphor-input placeholder:text-stone-700 focus:outline-none resize-none leading-6 whitespace-pre tracking-wide selection:bg-amber-900 selection:text-white"
+                    rows={lineCount}
+                    spellCheck={false}
+                  />
+                </div>
               </div>
 
-              {/* Textarea Input Area with Amber Phosphor Glow & Cursor */}
-              <div className="flex-1 relative">
-                <textarea
-                  ref={textareaRef}
-                  value={inputCode}
-                  onChange={e => setInputCode(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder={
-                    tool === 'sql'
-                      ? '-- Enter forensic SQL intercept query... (Ctrl+E or Ctrl+Enter to dispatch)'
-                      : tool === 'git'
-                      ? '# Enter Git forensic command... (e.g. git status, git log)'
-                      : '# Enter Docker runtime command... (e.g. docker ps, docker run)'
-                  }
-                  className="w-full h-full bg-transparent px-3 py-1.5 text-xs font-mono amber-phosphor-input placeholder:text-stone-700 focus:outline-none resize-none leading-6 whitespace-pre tracking-wide selection:bg-amber-900 selection:text-white"
-                  rows={lineCount}
-                  spellCheck={false}
-                />
-              </div>
-            </div>
+              {/* Action toolbar */}
+              <div className="bg-[#100505] px-4 py-2.5 border-t-2 border-[#231010] flex items-center justify-between relative z-30">
+                <div>
+                  {onOpenHint && (
+                    <button
+                      onClick={() => {
+                        audioFx.playClick();
+                        onOpenHint();
+                      }}
+                      className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-[#1a0e07] hover:bg-[#2e1a0d] text-emerald-400 border border-emerald-700/40 text-[11px] font-bold font-typewriter transition"
+                    >
+                      <Radio className="w-3.5 h-3.5" />
+                      <span>WIRETAP HINT</span>
+                    </button>
+                  )}
+                </div>
 
-            {/* Industrial Push Button Action Bar */}
-            <div className="bg-[#120707] px-4 py-3 border-t-2 border-[#2b1212] flex items-center justify-between relative z-30">
-              {/* Left: Informant Tip / Wiretap Hint Button */}
-              <div>
-                {onOpenHint && (
+                <div className="flex items-center space-x-2.5">
                   <button
-                    onClick={() => {
-                      audioFx.playClick();
-                      onOpenHint();
-                    }}
-                    className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-[#1f0f08] hover:bg-[#33180d] text-emerald-400 border border-emerald-600/40 text-xs font-bold font-typewriter transition shadow-sm active:translate-y-0.5"
+                    onClick={handleRun}
+                    disabled={isLoading || !inputCode.trim()}
+                    className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded bg-[#220f08] hover:bg-[#361710] text-amber-200 disabled:opacity-40 text-[11px] font-bold font-typewriter transition border border-[#4a2010] active:translate-y-px"
                   >
-                    <Radio className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>INFORMANTS / WIRETAP HINT</span>
+                    <Play className="w-3.5 h-3.5 fill-current text-amber-400" />
+                    <span>TEST INTERCEPT</span>
                   </button>
-                )}
-              </div>
 
-              {/* Right: Test Intercept & Execute Warrant */}
-              <div className="flex items-center space-x-3">
-                <button
-                  onClick={handleRun}
-                  disabled={isLoading || !inputCode.trim()}
-                  className="flex items-center space-x-1.5 px-4 py-1.5 rounded bg-[#24100a] hover:bg-[#381a10] text-amber-200 disabled:opacity-40 text-xs font-bold font-typewriter transition border border-[#4d2214] active:translate-y-0.5 shadow-sm"
-                >
-                  <Play className="w-3.5 h-3.5 fill-current text-amber-400" />
-                  <span>TEST INTERCEPT</span>
-                </button>
-
-                <button
-                  onClick={handleSubmit}
-                  disabled={isLoading || !inputCode.trim()}
-                  className="flex items-center space-x-2 px-5 py-1.5 rounded bg-theme-bloodRed hover:bg-theme-bloodRedHover text-white disabled:opacity-40 text-xs font-black font-typewriter tracking-wider shadow-lg shadow-black/80 transition border border-theme-scarlet active:translate-y-0.5"
-                >
-                  <Check className="w-4 h-4 stroke-[3]" />
-                  <span>EXECUTE WARRANT // SUBMIT EVIDENCE</span>
-                </button>
+                  <button
+                    onClick={handleRun}
+                    disabled={isLoading || !inputCode.trim()}
+                    className="flex items-center space-x-2 px-5 py-1.5 rounded bg-theme-bloodRed hover:bg-theme-bloodRedHover text-white disabled:opacity-40 text-[11px] font-black font-typewriter tracking-wider shadow-lg border border-theme-scarlet active:translate-y-px"
+                  >
+                    <Check className="w-4 h-4 stroke-[3]" />
+                    <span>EXECUTE WARRANT</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Right: Authentic Hardware Speaker Grille & Dual Rotary Knobs */}
-          <div className="w-full md:w-20 bg-[#160f0d] rounded-lg border-2 border-[#2b1a16] p-2.5 flex flex-row md:flex-col justify-between items-center shadow-inner">
-            {/* Speaker Grille with Horizontal Slits */}
-            <div className="w-full space-y-1 py-1">
-              <div className="text-[8px] text-stone-500 font-typewriter text-center uppercase tracking-widest mb-1 hidden md:block">
-                AUDIO
-              </div>
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="speaker-grille-slit" />
+          {/* Right side panel — speaker grilles + rotary knobs */}
+          <div className="flex flex-col items-center justify-between w-10 flex-shrink-0 py-2">
+            {/* Speaker grille top */}
+            <div className="speaker-grille w-full">
+              {[...Array(10)].map((_, i) => (
+                <div key={i} className="speaker-slit w-full" />
               ))}
             </div>
 
-            {/* Rotary Dials Section */}
-            <div className="flex flex-row md:flex-col items-center gap-3 my-1">
-              {/* Brightness Knob */}
-              <div className="flex flex-col items-center">
+            {/* Rotary knobs */}
+            <div className="flex flex-col items-center space-y-3">
+              <div className="flex flex-col items-center space-y-1">
                 <div
-                  onClick={handleBrightnessTurn}
-                  style={{ transform: `rotate(${brightnessRotation}deg)` }}
                   className="rotary-knob"
-                  title="Adjust CRT Screen Brightness"
+                  style={{ transform: `rotate(${knobAngle.brightness}deg)` }}
+                  onClick={() => handleKnobClick('brightness')}
+                  title="Brightness"
                 />
-                <span className="text-[8px] text-amber-600/80 font-typewriter uppercase mt-1 font-bold">
-                  BRT
-                </span>
+                <span className="text-[7px] text-stone-600 font-typewriter uppercase tracking-wider">BRITE</span>
               </div>
 
-              {/* Contrast Knob */}
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center space-y-1">
                 <div
-                  onClick={handleContrastTurn}
-                  style={{ transform: `rotate(${contrastRotation}deg)` }}
                   className="rotary-knob"
-                  title="Adjust CRT Screen Contrast"
+                  style={{ transform: `rotate(${knobAngle.contrast}deg)` }}
+                  onClick={() => handleKnobClick('contrast')}
+                  title="Contrast"
                 />
-                <span className="text-[8px] text-amber-600/80 font-typewriter uppercase mt-1 font-bold">
-                  CONTR
-                </span>
+                <span className="text-[7px] text-stone-600 font-typewriter uppercase tracking-wider">CONTR</span>
               </div>
             </div>
 
-            {/* Hardware Chassis Stamp */}
-            <div className="text-[7.5px] text-stone-600 font-typewriter text-center uppercase tracking-widest hidden md:block">
-              MK-IV
+            {/* Speaker grille bottom */}
+            <div className="speaker-grille w-full">
+              {[...Array(10)].map((_, i) => (
+                <div key={i} className="speaker-slit w-full" />
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Telemetry Output Log Window */}
-        {showQueryLog && (
-          <div className="crt-screen rounded-lg border-2 border-[#2b1212] overflow-hidden flex flex-col mt-2.5">
-            <div className="bg-[#140808] px-4 py-2 border-b border-[#2b1212] flex items-center justify-between text-xs relative z-30">
-              <span className="text-[10px] uppercase font-bold tracking-widest text-amber-500 font-typewriter flex items-center space-x-1.5">
+        {/* Bottom status bar */}
+        <div className="flex items-center justify-between px-3 pt-2 pb-1 mt-1 border-t border-[#2a1010]/60">
+          <span className="text-[8px] font-black tracking-widest text-stone-600 font-typewriter uppercase">
+            SIGNAL NO. FT-981 // FORENSIC INTERCEPT UNIT
+          </span>
+          <div className="flex items-center space-x-2">
+            <div className="status-led-green" />
+            <span className="text-[8px] text-stone-500 font-typewriter tracking-widest uppercase">
+              LINE CLEAR // READY
+            </span>
+          </div>
+        </div>
+
+        {/* === TELEMETRY LOG === */}
+        {showLog && (
+          <div className="crt-screen rounded-lg border-2 border-[#2b1010] mt-3 flex flex-col">
+            <div className="bg-[#120606] px-4 py-1.5 border-b border-[#221010] flex items-center justify-between relative z-30">
+              <span className="text-[9px] uppercase font-bold tracking-widest text-amber-500 font-typewriter flex items-center space-x-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                <span>FORENSIC TELEMETRY & DISPATCH RESULTS</span>
+                <span>FORENSIC TELEMETRY &amp; DISPATCH RESULTS</span>
               </span>
               <button
                 onClick={() => {
                   audioFx.playClick();
                   onClearLogs();
                 }}
-                className="text-[11px] text-stone-400 hover:text-white flex items-center space-x-1 font-typewriter transition"
-                title="Purge Terminal Telemetry Log"
+                className="text-[10px] text-stone-500 hover:text-white flex items-center space-x-1 font-typewriter transition"
               >
                 <Trash2 className="w-3 h-3" />
                 <span>PURGE LOG</span>
               </button>
             </div>
 
-            <div className="p-4 max-h-[280px] overflow-y-auto space-y-3 text-xs leading-relaxed bg-[#070303] relative z-30">
+            <div className="p-4 max-h-[260px] overflow-y-auto space-y-2.5 text-xs leading-relaxed bg-[#060202] relative z-30">
               {logs.length === 0 ? (
                 <div className="text-stone-600 text-[11px] italic text-center py-6 font-typewriter">
-                  -- NO ACTIVE INTERCEPT LOGS REGISTERED. WRITE A QUERY AND DISPATCH --
+                  -- NO ACTIVE INTERCEPT LOGS. WRITE A QUERY AND DISPATCH --
                 </div>
               ) : (
                 logs.map(log => {
                   if (log.type === 'input') {
                     return (
-                      <div key={log.id} className="flex items-start space-x-2 pt-1 font-semibold">
-                        <span className="text-theme-scarlet flex-shrink-0 select-none font-typewriter">
+                      <div key={log.id} className="flex items-start space-x-2 pt-0.5 font-semibold">
+                        <span className="text-theme-scarlet flex-shrink-0 font-typewriter select-none">
                           [DISPATCH]&gt;
                         </span>
                         <span className="text-amber-100 whitespace-pre-wrap break-all font-mono">
@@ -389,11 +351,11 @@ export const Terminal: React.FC<TerminalProps> = ({
                     return (
                       <div
                         key={log.id}
-                        className="pl-3 text-rose-300 whitespace-pre-wrap font-mono bg-[#2a0e0e] p-3 rounded-lg border-2 border-rose-900/80 text-xs shadow-inner flex items-start space-x-2"
+                        className="pl-3 text-rose-300 whitespace-pre-wrap font-mono bg-[#280c0c] p-3 rounded border-2 border-rose-900/80 flex items-start space-x-2"
                       >
                         <AlertTriangle className="w-4 h-4 text-rose-400 flex-shrink-0 mt-0.5" />
                         <div>
-                          <span className="text-[10px] font-black uppercase tracking-widest text-rose-400 block font-typewriter">
+                          <span className="text-[9px] font-black uppercase tracking-widest text-rose-400 block font-typewriter mb-0.5">
                             [DATA CORRUPTED // TRACE FAILED]:
                           </span>
                           <span>{log.text}</span>
@@ -406,11 +368,11 @@ export const Terminal: React.FC<TerminalProps> = ({
                     return (
                       <div
                         key={log.id}
-                        className="pl-3 text-emerald-200 whitespace-pre-wrap font-mono bg-[#0f2918] p-3 rounded-lg border-2 border-emerald-600/60 flex items-start space-x-2.5 text-xs shadow-lg animate-stamp-slam"
+                        className="pl-3 text-emerald-200 whitespace-pre-wrap font-mono bg-[#0d2418] p-3 rounded border-2 border-emerald-600/60 flex items-start space-x-2.5 animate-stamp-slam"
                       >
                         <ShieldCheck className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
                         <div>
-                          <div className="rubber-stamp rubber-stamp-green text-[10px] mb-1">
+                          <div className="rubber-stamp rubber-stamp-green text-[9px] mb-1">
                             ★ MATCH FOUND // WARRANT EXECUTED ★
                           </div>
                           <span className="font-semibold">{log.text}</span>
@@ -421,7 +383,7 @@ export const Terminal: React.FC<TerminalProps> = ({
 
                   if (log.type === 'system') {
                     return (
-                      <div key={log.id} className="text-stone-500 italic pl-2 text-[11px] font-typewriter">
+                      <div key={log.id} className="text-stone-500 italic pl-2 text-[10px] font-typewriter">
                         {log.text}
                       </div>
                     );

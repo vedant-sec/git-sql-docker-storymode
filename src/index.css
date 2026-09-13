@@ -2,557 +2,452 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom scrollbars for detective terminal feel */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
+/* ============================================================
+   SCROLLBARS
+   ============================================================ */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #0a0604; }
+::-webkit-scrollbar-thumb { background: #3d1f12; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #612d18; }
 
-::-webkit-scrollbar-track {
-  background: #0d0606;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #2a1515;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #4a1f1f;
-}
-
-/* ==========================================================================
-   DIEGETIC DETECTIVE'S DESK & RETRO FORENSIC INTERFACE
-   ========================================================================== */
-
-/* Top-Down Investigator's Wooden Desk Surface with Warm Overhead Lamp Spotlight */
-.detective-desk-bg, .wood-desk-surface {
-  background-color: #120805;
-  background-image: 
-    /* Warm overhead desk lamp spotlight casting pool of light from upper-right */
-    radial-gradient(ellipse 900px 750px at 78% 12%, rgba(255, 230, 165, 0.22) 0%, rgba(220, 145, 50, 0.10) 40%, transparent 72%),
-    /* Ambient warm fill around center desk blotter */
-    radial-gradient(ellipse 800px 600px at 48% 45%, rgba(70, 32, 18, 0.5) 0%, transparent 75%),
-    /* Heavy cinematic vignette darkening outer edges */
-    radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(4, 2, 2, 0.88) 100%),
-    /* Fine mahogany timber grain horizontal streaks */
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.015) 0px, rgba(255, 255, 255, 0.015) 1px, transparent 1px, transparent 18px),
-    /* Vertical wood grain variation */
-    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0px, rgba(0, 0, 0, 0.06) 2px, transparent 2px, transparent 36px);
-  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 72px, 72px 100%;
-}
-
-/* Central Leather Desk Blotter Pad */
-.leather-blotter {
-  background-color: #170d0a;
-  background-image: 
-    radial-gradient(circle at 65% 25%, rgba(60, 32, 22, 0.45) 0%, transparent 75%),
-    linear-gradient(to bottom, rgba(255,255,255,0.03), rgba(0,0,0,0.45));
-  box-shadow: 
-    0 16px 45px -8px rgba(0, 0, 0, 0.95),
-    inset 0 0 1px 1.5px rgba(255, 255, 255, 0.06),
-    inset 0 0 25px rgba(0, 0, 0, 0.7);
-  border: 1.5px solid #2e170e;
-  outline: 1.5px dashed rgba(190, 115, 60, 0.35);
-  outline-offset: -6px;
-}
-
-/* Worn Leather Case Binder */
-.leather-binder {
-  background-color: #1f0f09;
+/* ============================================================
+   DESK WORKSPACE — Dark mahogany with warm lamp pool
+   ============================================================ */
+.desk-workspace {
+  background-color: #150f0a;
   background-image:
-    linear-gradient(135deg, rgba(70, 36, 22, 0.45) 0%, rgba(18, 9, 5, 0.85) 100%),
-    radial-gradient(circle at 20% 30%, rgba(95, 48, 28, 0.3) 0%, transparent 50%),
-    repeating-linear-gradient(45deg, rgba(0,0,0,0.035) 0px, rgba(0,0,0,0.035) 2px, transparent 2px, transparent 6px);
+    radial-gradient(ellipse 55% 45% at 75% 10%, rgba(120, 65, 20, 0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 60% at 50% 50%, rgba(40, 18, 6, 0.45) 0%, transparent 80%),
+    radial-gradient(ellipse 100% 100% at 50% 50%, rgba(0, 0, 0, 0.55) 0%, transparent 100%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.008) 0px, rgba(255,255,255,0.008) 1px, transparent 1px, transparent 40px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.005) 0px, rgba(255,255,255,0.005) 1px, transparent 1px, transparent 40px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 80px 80px, 80px 80px;
+}
+
+/* Vignette overlay */
+.desk-workspace::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 90% 90% at 50% 50%, transparent 40%, rgba(0,0,0,0.72) 100%);
+  z-index: 0;
+}
+
+/* ============================================================
+   LEATHER CASE BINDER (Left sidebar)
+   ============================================================ */
+.leather-binder {
+  background-color: #1a0c06;
+  background-image:
+    linear-gradient(160deg, rgba(80, 40, 20, 0.35) 0%, rgba(10, 5, 2, 0.7) 100%),
+    radial-gradient(circle at 15% 25%, rgba(90, 50, 25, 0.22) 0%, transparent 55%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(0,0,0,0.04) 0px,
+      rgba(0,0,0,0.04) 1px,
+      transparent 1px,
+      transparent 8px
+    );
   box-shadow:
-    8px 0 30px rgba(0, 0, 0, 0.85),
-    inset 2px 0 8px rgba(255, 255, 255, 0.09),
-    inset -4px 0 10px rgba(0, 0, 0, 0.85);
-  border-right: 2.5px solid #3d1e13;
+    8px 0 32px rgba(0,0,0,0.85),
+    inset 3px 0 8px rgba(255,255,255,0.06),
+    inset -2px 0 10px rgba(0,0,0,0.9);
+  border-right: 2px solid #3d1f10;
 }
 
-/* Stacked Pages Shadow Behind Binder and Manila Folder */
-.stacked-pages-effect {
-  box-shadow:
-    0 1px 0 1px #ded3be,
-    0 2px 0 2px #cbbea7,
-    0 3px 0 3px #b8ab94,
-    0 8px 20px rgba(0, 0, 0, 0.6);
+/* Binder spine rivets strip */
+.binder-spine {
+  width: 14px;
+  background: linear-gradient(to bottom, #140b04, #1e1108, #140b04);
+  border-right: 1px solid #2e1608;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 12px 0;
+  flex-shrink: 0;
 }
 
-/* Brass Corner Protector Cap */
-.brass-corner {
-  width: 22px;
-  height: 22px;
-  background: linear-gradient(135deg, #dfbc55 0%, #a67c1e 50%, #dfbc55 100%);
-  border: 1px solid #6b4e10;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.7), inset 0 1px 1px rgba(255,255,255,0.7);
+.binder-rivet {
+  width: 7px;
+  height: 12px;
+  border-radius: 2px;
+  background: linear-gradient(to right, #8a7040, #d4af6a, #8a7040);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.9), inset 0 1px 1px rgba(255,255,255,0.5);
+  border: 1px solid #5a4020;
 }
 
-/* Protruding Physical Paper Index Tabs along Right Edge */
-.index-tab-paper {
-  background-color: #ece3cf;
-  background-image: linear-gradient(to bottom, rgba(255,255,255,0.65), rgba(0,0,0,0.05));
-  color: #1c140e;
-  box-shadow: 
-    3px 2px 8px rgba(0,0,0,0.55),
-    inset 0 0 4px rgba(180, 140, 90, 0.25);
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
-  border-top: 1px solid #dfd3bb;
-  border-right: 2px solid #c9b99a;
-  border-bottom: 2px solid #b8a584;
+/* Protruding Paper Index Tabs */
+.index-tab {
+  background-color: #e8dcc6;
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0.55), rgba(0,0,0,0.05));
+  color: #1a1208;
+  font-family: 'Special Elite', monospace;
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 7px;
+  border-radius: 0 4px 4px 0;
+  border-top: 1px solid #d9cdb0;
+  border-right: 1.5px solid #c2b48e;
+  border-bottom: 2px solid #b0a07c;
+  box-shadow: 3px 2px 7px rgba(0,0,0,0.5), inset 0 0 5px rgba(180,140,80,0.15);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.index-tab:hover {
+  background-color: #f2e8d4;
 }
 
 .index-tab-active {
-  background-color: #df3636;
-  background-image: linear-gradient(to bottom, #ef4444, #b91c1c);
-  color: #ffffff;
-  box-shadow: 
-    5px 3px 12px rgba(0,0,0,0.7),
-    0 0 12px rgba(220, 38, 38, 0.45);
-  border-top: 1px solid #f87171;
-  border-right: 2.5px solid #991b1b;
-  border-bottom: 3px solid #7f1d1d;
+  background-color: #c41a1a;
+  background-image: linear-gradient(to bottom, #e02020, #991515);
+  color: #fff;
+  border-top: 1px solid #e85555;
+  border-right: 2px solid #881010;
+  border-bottom: 2.5px solid #6d0d0d;
+  box-shadow: 4px 3px 12px rgba(0,0,0,0.7), 0 0 12px rgba(200,30,30,0.35);
 }
 
-/* Pinned Yellow Index Note Card */
-.pinned-yellow-card {
-  background-color: #fef08a;
+/* ============================================================
+   MANILA EVIDENCE FOLDER (ProblemCard)
+   ============================================================ */
+.manila-folder {
+  background-color: #f0e6cc;
   background-image:
-    linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(0,0,0,0.05)),
-    repeating-linear-gradient(0deg, transparent 0px, transparent 15px, rgba(74, 144, 226, 0.25) 15px, rgba(74, 144, 226, 0.25) 16px);
-  color: #1e293b;
-  box-shadow: 
-    0 6px 14px -2px rgba(0,0,0,0.5),
-    0 2px 4px rgba(0,0,0,0.3);
-  border: 1px solid #facc15;
-}
-
-/* Real Brass Pushpin */
-.brass-pushpin {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #ffd700 0%, #b8860b 60%, #5c4308 100%);
-  box-shadow: 0 3px 6px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.8);
-  border: 1px solid #8b6508;
-}
-
-/* Manila Folder / Aged Incident Report Paper */
-.manila-paper {
-  background-color: #f5eedf;
-  background-image:
-    linear-gradient(to bottom, rgba(255,255,255,0.45), rgba(0,0,0,0.03)),
-    radial-gradient(circle at 10% 20%, rgba(210, 180, 140, 0.12) 0%, transparent 50%);
+    linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(0,0,0,0.035)),
+    radial-gradient(circle at 8% 18%, rgba(200, 165, 110, 0.14) 0%, transparent 55%);
   box-shadow:
-    0 2px 5px rgba(0, 0, 0, 0.15),
-    0 18px 40px -6px rgba(0, 0, 0, 0.65),
-    inset 0 0 20px rgba(180, 150, 110, 0.12);
+    0 3px 8px rgba(0,0,0,0.18),
+    0 20px 48px -8px rgba(0,0,0,0.65),
+    inset 0 0 24px rgba(180,145,100,0.1);
 }
 
-/* Manila Folder Tab Top */
-.manila-tab {
-  background-color: #ebdcb9;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 16px;
-  box-shadow: 0 -4px 8px rgba(0,0,0,0.12);
+.manila-tab-label {
+  background-color: #e0d0a8;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 12px;
+  border: 2px solid #c9ba94;
+  border-bottom: none;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.08);
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 18px;
+  font-family: 'Special Elite', monospace;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #1a1208;
 }
 
-/* Silver Paperclip */
-.silver-paperclip {
-  filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.4));
-}
-
-/* Red Ink Rubber Stamps */
+/* Red rubber stamp */
 .rubber-stamp {
   display: inline-block;
   font-family: 'Special Elite', monospace;
-  text-transform: uppercase;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
   color: #b91c1c;
-  border: 2.5px dashed #b91c1c;
-  padding: 0.25rem 0.75rem;
+  border: 3px dashed #b91c1c;
+  padding: 4px 10px;
   border-radius: 4px;
-  text-shadow: 0 0 1px rgba(185, 28, 28, 0.3);
-  box-shadow: inset 0 0 4px rgba(185, 28, 28, 0.15), 0 0 2px rgba(185, 28, 28, 0.2);
+  text-shadow: 1px 1px 0 rgba(185,28,28,0.2);
+  box-shadow: inset 0 0 6px rgba(185,28,28,0.12), 0 0 3px rgba(185,28,28,0.18);
   user-select: none;
+  opacity: 0.9;
 }
 
 .rubber-stamp-diagonal {
-  transform: rotate(-9deg);
+  transform: rotate(-8deg);
+  border-style: double;
   border-width: 3px;
-  border-style: double;
-}
-
-.rubber-stamp-audit {
-  transform: rotate(-11deg);
-  border-width: 3.5px;
-  border-style: double;
-  border-color: #dc2626;
-  color: #dc2626;
-  text-shadow: 0 0 1px rgba(220, 38, 38, 0.4);
-  box-shadow: inset 0 0 5px rgba(220, 38, 38, 0.2), 0 0 3px rgba(220, 38, 38, 0.25);
 }
 
 .rubber-stamp-green {
-  color: #059669;
-  border-color: #059669;
-  text-shadow: 0 0 1px rgba(5, 150, 105, 0.3);
-  box-shadow: inset 0 0 4px rgba(5, 150, 105, 0.15), 0 0 2px rgba(5, 150, 105, 0.2);
+  color: #047857;
+  border-color: #047857;
+  text-shadow: 1px 1px 0 rgba(4,120,87,0.2);
+  box-shadow: inset 0 0 6px rgba(4,120,87,0.1), 0 0 3px rgba(4,120,87,0.15);
 }
 
-/* Handwritten Blue Pen Margin Note */
-.handwritten-blue-note {
-  font-family: 'Caveat', cursive;
-  color: #1d4ed8;
-  font-size: 1.15rem;
-  font-weight: 700;
-  line-height: 1.2;
-  text-shadow: 0 0 1px rgba(29, 78, 216, 0.3);
-  transform: rotate(-3deg);
-  display: inline-block;
-}
-
-/* Rubber Stamp Slam Animation on Objective Success */
-@keyframes stamp-slam {
-  0% {
-    opacity: 0;
-    transform: scale(2.4) rotate(-14deg);
-  }
-  65% {
-    opacity: 1;
-    transform: scale(0.96) rotate(-8deg);
-  }
-  82% {
-    transform: scale(1.04) rotate(-10deg);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) rotate(-9deg);
-  }
-}
-
-.animate-stamp-slam {
-  animation: stamp-slam 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-/* Brass Staple Accent */
+/* Brass staple */
 .brass-staple {
-  width: 28px;
-  height: 6px;
-  background: linear-gradient(to bottom, #d4af37, #997a15, #d4af37);
+  width: 26px;
+  height: 5px;
+  background: linear-gradient(to bottom, #d4af37, #a07820, #d4af37);
   border-radius: 1px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.6);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.55), inset 0 1px 1px rgba(255,255,255,0.55);
 }
 
-/* ==========================================================================
-   AUTHENTIC DESK PROPS (COFFEE STAIN, GLASSES, NOTEPAD, BRASS LAMP)
-   ========================================================================== */
+/* Silver paperclip SVG accent */
+.paperclip-accent {
+  color: #9ca3af;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+}
 
-/* Realistic Dried Coffee Mug Ring Stain on Timber */
-.coffee-ring-stain {
-  width: 95px;
-  height: 95px;
-  border-radius: 50%;
-  border: 3.5px solid rgba(105, 52, 20, 0.42);
-  position: relative;
-  pointer-events: none;
-  filter: blur(0.3px);
+/* ============================================================
+   RETRO CRT FORENSIC TERMINAL
+   ============================================================ */
+.crt-chassis {
+  background: linear-gradient(160deg, #1c1414 0%, #0d0808 45%, #181010 100%);
+  border: 4px solid #2a1818;
+  border-radius: 14px;
   box-shadow:
-    inset 0 0 12px rgba(85, 42, 15, 0.35),
-    0 0 6px rgba(115, 58, 25, 0.25);
+    0 24px 56px rgba(0,0,0,0.9),
+    inset 0 2px 4px rgba(255,255,255,0.09),
+    inset 0 -4px 8px rgba(0,0,0,0.95),
+    0 0 2px rgba(255,200,100,0.06);
 }
 
-.coffee-ring-stain::before {
-  content: "";
-  position: absolute;
-  top: 6px; left: 8px; right: 4px; bottom: 8px;
-  border-radius: 50%;
-  border: 2px solid rgba(85, 40, 15, 0.28);
-  filter: blur(0.4px);
-}
-
-.coffee-ring-stain::after {
-  content: "";
-  position: absolute;
-  bottom: 2px; right: 10px;
-  width: 14px; height: 8px;
-  border-radius: 50%;
-  background: rgba(85, 40, 15, 0.38);
-  filter: blur(0.8px);
-}
-
-/* Wireframe Detective Reading Glasses / Spectacles */
-.spectacles-prop {
-  position: relative;
-  width: 130px;
-  height: 55px;
-  pointer-events: none;
-  filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.75));
-}
-
-/* Spiral Detective Scratch Notepad */
-.spiral-notepad {
-  background-color: #fbf7ee;
-  background-image:
-    repeating-linear-gradient(0deg, transparent 0px, transparent 15px, rgba(147, 197, 253, 0.4) 15px, rgba(147, 197, 253, 0.4) 16px),
-    linear-gradient(90deg, transparent 24px, rgba(239, 68, 68, 0.35) 24px, rgba(239, 68, 68, 0.35) 25px, transparent 25px);
-  border-radius: 6px;
-  box-shadow:
-    3px 6px 18px rgba(0,0,0,0.65),
-    inset 0 0 10px rgba(180, 150, 110, 0.18);
-  border: 1px solid #dcd1ba;
-}
-
-/* Spiral Metal Rings */
-.spiral-ring {
-  width: 8px;
-  height: 18px;
-  border-radius: 4px;
-  background: linear-gradient(90deg, #9ca3af 0%, #f3f4f6 50%, #4b5563 100%);
-  box-shadow: 1px 1px 3px rgba(0,0,0,0.6);
-}
-
-/* Brass Desk Lamp Shade Fixture in Upper Right */
-.brass-lamp-fixture {
-  position: absolute;
-  top: -20px;
-  right: -10px;
-  width: 180px;
-  height: 140px;
-  pointer-events: none;
-  z-index: 25;
-}
-
-.brass-lamp-shade {
-  width: 140px;
-  height: 55px;
-  background: linear-gradient(135deg, #166534 0%, #14532d 60%, #052e16 100%);
-  border-radius: 60px 60px 8px 8px;
-  border: 2px solid #854d0e;
-  box-shadow:
-    0 12px 35px rgba(0, 0, 0, 0.8),
-    inset 0 2px 4px rgba(255, 255, 255, 0.3),
-    0 0 45px rgba(255, 220, 130, 0.5);
-  position: relative;
-}
-
-.brass-lamp-neck {
-  width: 12px;
-  height: 60px;
-  background: linear-gradient(90deg, #ca8a04 0%, #fef08a 40%, #854d0e 100%);
-  box-shadow: 2px 2px 6px rgba(0,0,0,0.7);
-  border-radius: 3px;
-  position: absolute;
-  top: 45px;
-  right: 50px;
-  transform: rotate(-15deg);
-}
-
-/* Blueprint / Transit Map peeking underneath */
-.blueprint-map {
-  background-color: #0d2847;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
-  background-size: 16px 16px;
-  border: 1px solid #1e4976;
-  box-shadow: 2px 4px 14px rgba(0,0,0,0.6);
-}
-
-/* ==========================================================================
-   RETRO CRT FORENSIC INTERCEPT TERMINAL & MONITOR CHASSIS
-   ========================================================================== */
-
-/* Monitor Outer Chassis - Vintage Grey-Brown Beveled Enclosure */
-.crt-monitor-chassis {
-  background: linear-gradient(145deg, #241c19 0%, #140e0c 60%, #1f1714 100%);
-  border: 5px solid #332420;
-  box-shadow: 
-    0 22px 50px rgba(0, 0, 0, 0.9),
-    inset 0 3px 5px rgba(255, 255, 255, 0.12),
-    inset 0 -4px 8px rgba(0, 0, 0, 0.95);
-  border-radius: 20px;
-}
-
-/* Speaker Grille Slits on Right Panel */
-.speaker-grille-slit {
-  width: 100%;
-  height: 3px;
-  background: #090403;
-  border-bottom: 1px solid #3d2a24;
-  border-radius: 1px;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.9);
-}
-
-/* Industrial Rotary Control Knobs */
-.rotary-knob {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 40% 40%, #3f312c 0%, #1c1412 70%, #0f0a09 100%);
-  border: 2px solid #523e38;
-  box-shadow: 
-    0 4px 8px rgba(0,0,0,0.8),
-    inset 0 1px 2px rgba(255,255,255,0.25);
-  position: relative;
-  cursor: pointer;
-  transition: transform 0.15s ease-out;
-}
-
-.rotary-knob::after {
-  content: "";
-  position: absolute;
-  top: 3px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 3px;
-  height: 9px;
-  background: #f59e0b;
-  border-radius: 1px;
-  box-shadow: 0 0 3px #f59e0b;
-}
-
-.rotary-knob:active {
-  transform: rotate(25deg);
-}
-
-/* Metal Stenciled Specification Plate Badge */
-.metal-spec-plate {
-  background: linear-gradient(180deg, #574c43 0%, #2e2621 100%);
-  border: 1px solid #75665a;
-  box-shadow: 
-    inset 0 1px 1px rgba(255,255,255,0.4),
-    0 1px 3px rgba(0,0,0,0.8);
-  border-radius: 3px;
-}
-
-/* Status Indicator LEDs */
-.status-led-green {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: #10b981;
-  box-shadow: 0 0 8px #10b981, 0 0 2px #ffffff;
-  border: 1px solid #064e3b;
-}
-
-.status-led-amber {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: #f59e0b;
-  box-shadow: 0 0 8px #f59e0b, 0 0 2px #ffffff;
-  border: 1px solid #78350f;
-}
-
-.status-led-red {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: #ef4444;
-  box-shadow: 0 0 8px #ef4444, 0 0 2px #ffffff;
-  border: 1px solid #7f1d1d;
-}
-
-/* Monitor Bezel Frame */
-.crt-bezel {
-  background: linear-gradient(145deg, #1e1212 0%, #0d0606 50%, #1a0f0f 100%);
-  border: 4px solid #2e1818;
-  box-shadow: 
-    0 18px 40px rgba(0, 0, 0, 0.85),
-    inset 0 2px 4px rgba(255, 255, 255, 0.1),
-    inset 0 -3px 6px rgba(0, 0, 0, 0.9);
-  border-radius: 16px;
-}
-
-/* CRT Screen with Scanlines */
 .crt-screen {
   position: relative;
   overflow: hidden;
-  background-color: #090404;
-  box-shadow: inset 0 0 22px rgba(0, 0, 0, 0.98);
+  background-color: #060202;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.97);
 }
 
+/* Scanlines overlay */
 .crt-screen::before {
   content: " ";
   display: block;
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.45) 50%);
-  background-size: 100% 4px;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0,0) 0px,
+    rgba(0,0,0,0) 2px,
+    rgba(0,0,0,0.35) 2px,
+    rgba(0,0,0,0.35) 4px
+  );
   z-index: 20;
   pointer-events: none;
-  opacity: 0.72;
 }
 
-/* Phosphor Amber Text & Glow */
-.amber-phosphor-text {
-  color: #fbbf24;
-  text-shadow: 0 0 6px rgba(251, 191, 36, 0.65), 0 0 14px rgba(245, 158, 11, 0.35);
+/* Amber phosphor glow */
+.amber-phosphor {
+  color: #f59e0b;
+  text-shadow: 0 0 7px rgba(245,158,11,0.7), 0 0 16px rgba(245,158,11,0.3);
 }
 
-/* Phosphor Amber Input Area */
 .amber-phosphor-input {
   color: #fcd34d;
-  text-shadow: 0 0 5px rgba(252, 211, 77, 0.55);
+  text-shadow: 0 0 6px rgba(252,211,77,0.6);
+  caret-color: #fbbf24;
 }
 
-/* Blinking Block Cursor */
-@keyframes block-blink {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
-}
-
-.crt-block-cursor {
-  display: inline-block;
-  width: 8px;
-  height: 14px;
-  background-color: #fbbf24;
-  box-shadow: 0 0 8px #fbbf24;
-  vertical-align: middle;
-  animation: block-blink 1s infinite;
-}
-
-/* Industrial Hex Screw Accent */
+/* Hex screws */
 .hex-screw {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #444 0%, #111 100%);
+  background: radial-gradient(circle at 35% 35%, #666 0%, #111 100%);
   border: 1px solid #555;
-  box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), 0 1px 2px rgba(0,0,0,0.8);
+  box-shadow: inset 0 1px 2px rgba(255,255,255,0.35), 0 1px 3px rgba(0,0,0,0.9);
   position: relative;
 }
 
 .hex-screw::after {
   content: "";
   position: absolute;
-  top: 3px; left: 1px; right: 1px; height: 1px;
-  background: #222;
+  top: 4px; left: 1.5px; right: 1.5px; height: 1.5px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 1px;
 }
 
-/* Corrupted Trace / Terminal Glitch Shake */
+/* Rotary knob */
+.rotary-knob {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 35%, #555 0%, #1a1a1a 70%, #0d0d0d 100%);
+  border: 2px solid #3a3a3a;
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.18),
+    0 3px 8px rgba(0,0,0,0.9),
+    0 1px 2px rgba(0,0,0,0.7);
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.1s;
+}
+
+.rotary-knob::after {
+  content: "";
+  position: absolute;
+  top: 3px; left: 50%; transform: translateX(-50%);
+  width: 2px; height: 7px;
+  background: rgba(255,210,80,0.8);
+  border-radius: 1px;
+}
+
+.rotary-knob:active {
+  transform: scale(0.95);
+}
+
+/* Status LED */
+.status-led-green {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e, 0 0 14px rgba(34,197,94,0.5);
+  border: 1px solid #16a34a;
+}
+
+.status-led-amber {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 6px #f59e0b, 0 0 14px rgba(245,158,11,0.5);
+  border: 1px solid #d97706;
+}
+
+/* Speaker grille slits */
+.speaker-grille {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.speaker-slit {
+  height: 2px;
+  background: #111;
+  border-radius: 1px;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.9);
+}
+
+/* ============================================================
+   PROP ELEMENTS
+   ============================================================ */
+
+/* Notepad */
+.spiral-notepad {
+  background-color: #f5f0e8;
+  border: 1px solid #d8d0be;
+  border-radius: 3px;
+  box-shadow: 2px 3px 10px rgba(0,0,0,0.55), inset 0 0 8px rgba(0,0,0,0.05);
+  position: relative;
+  overflow: visible;
+}
+
+/* Coffee ring stain */
+.coffee-stain {
+  border-radius: 50%;
+  border: 2px solid rgba(120, 70, 20, 0.35);
+  box-shadow:
+    inset 0 0 8px rgba(100, 55, 15, 0.2),
+    0 0 12px rgba(100, 55, 15, 0.1);
+}
+
+/* Brass desk lamp light pool */
+.lamp-pool {
+  background: radial-gradient(ellipse 50% 40% at 82% 6%, rgba(200, 140, 40, 0.14) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Blueprint map tint */
+.blueprint-map {
+  background-color: #2a3a4a;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(100,150,200,0.06) 0px,
+    rgba(100,150,200,0.06) 1px,
+    transparent 1px,
+    transparent 25px
+  ), repeating-linear-gradient(
+    0deg,
+    rgba(100,150,200,0.06) 0px,
+    rgba(100,150,200,0.06) 1px,
+    transparent 1px,
+    transparent 25px
+  );
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+@keyframes stamp-slam {
+  0%   { opacity: 0; transform: scale(2.2) rotate(-12deg); }
+  65%  { opacity: 1; transform: scale(0.97) rotate(-8deg); }
+  82%  { transform: scale(1.03) rotate(-9.5deg); }
+  100% { opacity: 1; transform: scale(1) rotate(-8deg); }
+}
+
+.animate-stamp-slam {
+  animation: stamp-slam 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes block-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.crt-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 13px;
+  background: #fbbf24;
+  box-shadow: 0 0 8px #fbbf24;
+  vertical-align: middle;
+  animation: block-blink 1s step-end infinite;
+}
+
 @keyframes glitch-shake {
-  0% { transform: translate(0, 0); }
-  20% { transform: translate(-3px, 2px); }
-  40% { transform: translate(3px, -1px); }
-  60% { transform: translate(-2px, -2px); }
-  80% { transform: translate(2px, 1px); }
-  100% { transform: translate(0, 0); }
+  0%   { transform: translate(0,0); }
+  20%  { transform: translate(-3px,2px); }
+  40%  { transform: translate(3px,-1px); }
+  60%  { transform: translate(-2px,-2px); }
+  80%  { transform: translate(2px,1px); }
+  100% { transform: translate(0,0); }
 }
 
 .glitch-active {
-  animation: glitch-shake 0.25s ease-in-out;
-  filter: drop-shadow(-2px 0 red) drop-shadow(2px 0 cyan);
+  animation: glitch-shake 0.22s ease-in-out;
+  filter: drop-shadow(-2px 0 #e00) drop-shadow(2px 0 cyan);
 }
 
-/* Corkboard & Red String */
-.red-string-line {
-  background: linear-gradient(90deg, #dc2626 0%, #ef4444 50%, #dc2626 100%);
-  box-shadow: 0 0 8px rgba(220, 38, 38, 0.9);
+/* Red string corkboard line */
+.red-string {
+  background: linear-gradient(90deg, #b91c1c 0%, #ef4444 50%, #b91c1c 100%);
+  box-shadow: 0 0 7px rgba(220,38,38,0.85);
 }
 
+/* Stacked pages effect */
+.stacked-pages::before,
+.stacked-pages::after {
+  content: "";
+  position: absolute;
+  background-color: #ede3cc;
+  border: 1px solid #cec0a4;
+  border-radius: inherit;
+}
 
+.stacked-pages::before {
+  inset: -4px -3px;
+  z-index: -1;
+  transform: rotate(1.5deg);
+}
+
+.stacked-pages::after {
+  inset: -7px -5px;
+  z-index: -2;
+  transform: rotate(-1deg);
+  background-color: #e8dbc6;
+}
+
+/* Handwritten margin note */
+.handwritten-note {
+  font-family: 'Caveat', cursive;
+  color: #1a40a0;
+  font-size: 14px;
+  line-height: 1.4;
+  transform: rotate(-2deg);
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.15));
+}

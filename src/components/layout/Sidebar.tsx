@@ -1,24 +1,15 @@
 import React, { useState } from 'react';
 import {
-  FolderKanban,
-  Archive,
-  GraduationCap,
-  Award,
-  Bot,
-  Settings,
-  Coins,
   ChevronDown,
   ChevronRight,
   Database,
   Lightbulb,
   FileCode,
-  Fingerprint,
   Radio,
   Volume2,
   VolumeX,
   ShieldCheck,
-  Paperclip,
-  Bookmark
+  Fingerprint,
 } from 'lucide-react';
 import { ChapterDefinition } from '../../types/game';
 import { audioFx } from '../../utils/audioEffects';
@@ -37,7 +28,11 @@ interface SidebarProps {
   tool: 'sql' | 'git' | 'docker';
 }
 
-const TAB_ROTATIONS = ['-rotate-1', 'rotate-1', '-rotate-2', 'rotate-2'];
+const TOOL_LABEL: Record<string, string> = {
+  sql: 'AUDIT',
+  git: 'TRANSACTION',
+  docker: 'INFRASTRUCTURE',
+};
 
 export const Sidebar: React.FC<SidebarProps> = ({
   chapters,
@@ -50,214 +45,160 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onOpenConcept,
   onOpenHint,
   onOpenFileEditor,
-  tool
+  tool,
 }) => {
-  const [expandedSeasonId, setExpandedSeasonId] = useState<string>(currentChapterId);
+  const [expandedId, setExpandedId] = useState<string>(currentChapterId);
   const [isMuted, setIsMuted] = useState<boolean>(audioFx.isMuted());
 
-  const toggleSeason = (chId: string) => {
+  const toggleChapter = (chId: string) => {
     audioFx.playPaper();
-    if (expandedSeasonId === chId) {
-      setExpandedSeasonId('');
+    if (expandedId === chId) {
+      setExpandedId('');
     } else {
-      setExpandedSeasonId(chId);
+      setExpandedId(chId);
       onSelectChapter(chId);
     }
   };
 
   const handleAudioToggle = () => {
-    const nextMuted = audioFx.toggleMute();
-    setIsMuted(nextMuted);
-    if (!nextMuted) {
-      audioFx.playClick();
-    }
+    const next = audioFx.toggleMute();
+    setIsMuted(next);
+    if (!next) audioFx.playClick();
   };
 
   return (
-    <aside className="w-80 h-full leather-binder text-stone-300 flex flex-col justify-between font-mono select-none flex-shrink-0 relative shadow-2xl z-30 border-r-4 border-[#33170c]">
-      {/* Brass Corner Caps */}
-      <div className="absolute top-0 left-0 brass-corner rounded-tl-sm pointer-events-none z-50" />
-      <div className="absolute bottom-0 left-0 brass-corner rounded-bl-sm pointer-events-none z-50" />
-
-      {/* Decorative Brass Spine Eyelets & Rivets on Left Edge */}
-      <div className="absolute left-1.5 top-0 bottom-0 flex flex-col justify-around pointer-events-none z-40 opacity-70">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            className="w-3.5 h-7 rounded-sm bg-gradient-to-r from-stone-600 via-amber-200 to-stone-800 shadow-[inset_0_1px_2px_rgba(0,0,0,0.9),0_2px_4px_rgba(0,0,0,0.9)] border border-stone-900"
-          />
+    <aside className="w-72 h-full leather-binder flex flex-col font-mono select-none flex-shrink-0 relative z-30">
+      {/* Binder spine rivets strip */}
+      <div className="binder-spine">
+        {[...Array(7)].map((_, i) => (
+          <div key={i} className="binder-rivet" />
         ))}
       </div>
 
-      {/* Main Leather Binder Content */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden pl-5 pr-2">
-        {/* Binder Header: Stamped Criminal Dossier Case Binder V4.1 */}
-        <div className="pt-4 pb-3 border-b-2 border-[#3d1f14]">
-          <div className="flex items-center justify-between mb-1.5">
-            <span className="rubber-stamp text-[8.5px] px-1.5 py-0.2 tracking-widest text-[#d93e3e] border-[#d93e3e]">
-              CLASSIFIED DOSSIER
+      {/* Main binder content sits next to spine */}
+      <div className="absolute left-[14px] top-0 bottom-0 right-0 flex flex-col overflow-hidden">
+
+        {/* === BINDER HEADER === */}
+        <div className="p-4 border-b border-[#3d1f10] bg-gradient-to-b from-[#2a1208] to-[#180a04] flex-shrink-0">
+          {/* Confidential stamp */}
+          <div className="flex items-center justify-between mb-2.5">
+            <span className="rubber-stamp text-[8px] px-1.5 py-0.5 tracking-widest">
+              CONFIDENTIAL
             </span>
-            <span className="text-[9px] text-amber-400 font-bold font-typewriter">
-              FILE REGISTRY #409-X
+            <span className="text-[9px] text-amber-600/60 font-typewriter font-bold tracking-widest">
+              REG #409-X
             </span>
           </div>
 
-          <div className="flex items-center space-x-2.5 mt-2">
-            <div className="w-9 h-9 rounded-md bg-[#130703] border border-[#522514] flex items-center justify-center text-amber-500 shadow-inner">
+          {/* Binder title */}
+          <div className="flex items-center space-x-2.5">
+            <div className="w-9 h-9 rounded-md bg-[#0e0502] border border-[#5a2a14] flex items-center justify-center shadow-inner flex-shrink-0">
               <Fingerprint className="w-5 h-5 text-amber-500" />
             </div>
             <div>
-              <div className="text-xs font-black tracking-wider text-stone-100 font-typewriter uppercase">
-                CRIMINAL DOSSIER Case Binder V4.1
+              <div className="text-[11px] font-black text-stone-100 font-typewriter uppercase tracking-wide leading-tight">
+                CRIMINAL DOSSIER
               </div>
-              <div className="text-[9px] text-amber-400/90 tracking-widest font-bold uppercase flex items-center space-x-1 font-typewriter">
-                <span>METROPOLITAN CRIME ARCHIVES</span>
+              <div className="text-[11px] font-black text-amber-400 font-typewriter uppercase tracking-wide">
+                Case Binder V4.1
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Pinned Yellow Index Note Card: CASE S03: INFRASTRUCTURE (or active case note) */}
-        <div className="my-3 p-3 rounded pinned-yellow-card relative shadow-lg transform -rotate-1 transition-transform hover:rotate-0">
-          {/* Brass Pushpin at top center */}
-          <div className="absolute -top-2 left-1/2 -translate-x-1/2 brass-pushpin z-20 pointer-events-none" />
-
-          <div className="text-[9px] font-bold tracking-wider text-stone-700 uppercase font-typewriter flex items-center justify-between">
-            <span>MEMO // ACTIVE TARGET</span>
-            <span className="text-red-700 font-black">PRIORITY 1</span>
-          </div>
-          <div className="text-xs font-black text-stone-900 font-typewriter mt-1 tracking-tight">
-            CASE S03: INFRASTRUCTURE & RECOVERY
-          </div>
-          <div className="text-[10px] text-stone-800 font-typewriter mt-0.5 leading-snug">
-            Exfiltrate root hashes • Decode network traces • Seize rogue nodes
-          </div>
-        </div>
-
-        {/* Investigator ID Record Badge */}
-        <div className="mb-3 p-2.5 rounded-lg bg-[#140804] border border-[#3d1c10] shadow-md relative overflow-hidden">
-          <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded bg-[#0a0402] border border-[#522514] flex items-center justify-center relative flex-shrink-0">
-              <span className="text-xs">🕵️‍♂️</span>
-              <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 animate-pulse ring-2 ring-black" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center justify-between">
-                <span className="text-[8.5px] font-bold text-stone-400 uppercase tracking-wider font-typewriter">
-                  ASSIGNED DETECTIVE
-                </span>
-                <span className="text-[8.5px] text-emerald-400 font-bold uppercase">
-                  ACTIVE WARRANT
-                </span>
-              </div>
-              <div className="text-xs font-bold text-stone-100 truncate font-typewriter">
+              <div className="text-[9px] text-stone-400 font-typewriter tracking-widest uppercase mt-0.5">
                 Dt. Arceus_101
               </div>
             </div>
           </div>
         </div>
 
-        {/* CASE DOSSIERS WITH PHYSICAL PROTRUDING PAPER INDEX TABS */}
-        <div className="py-1">
-          <div className="flex items-center justify-between px-1 mb-2.5">
-            <span className="text-[9.5px] font-bold text-amber-400/90 tracking-widest uppercase font-typewriter flex items-center space-x-1">
-              <Bookmark className="w-3 h-3 text-amber-500" />
-              <span>CASE INDEX TABS</span>
+        {/* === INVESTIGATOR ID CARD === */}
+        <div className="mx-3 mt-3 mb-2 p-2.5 rounded-lg bg-[#100502] border border-[#3d1c10] shadow-md flex-shrink-0">
+          <div className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 rounded bg-[#0a0301] border border-[#5a2a14] flex items-center justify-center relative flex-shrink-0">
+              <span className="text-sm">🕵️</span>
+              <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 animate-pulse ring-2 ring-black" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="text-[9px] font-bold text-stone-500 uppercase tracking-wider font-typewriter">
+                ACTIVE INVESTIGATOR
+              </div>
+              <div className="text-[11px] font-bold text-stone-100 font-typewriter truncate">
+                Dt. Arceus_101
+              </div>
+              <div className="text-[9px] text-emerald-400 font-bold font-typewriter">
+                ● ACTIVE WARRANT
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* === SCROLLABLE CASE TABS === */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden px-2 py-1">
+          {/* Case index label */}
+          <div className="px-2 mb-2.5 flex items-center justify-between">
+            <span className="text-[9px] font-bold text-amber-500/80 tracking-widest uppercase font-typewriter">
+              CASE INDEX TABS
             </span>
-            <span className="text-[9px] text-stone-500 font-mono">
+            <span className="text-[9px] text-stone-600 font-mono">
               {chapters.length} SEASONS
             </span>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             {chapters.map((ch, chIdx) => {
-              const seasonNum = chIdx + 1;
+              const seasonNum = String(chIdx + 1).padStart(2, '0');
+              const toolTag = TOOL_LABEL[ch.tool] || ch.tool.toUpperCase();
               const isSelected = ch.id === currentChapterId;
-              const isExpanded = expandedSeasonId === ch.id;
+              const isExpanded = expandedId === ch.id;
               const solvedCount = ch.puzzles.filter(p => completedPuzzleIds.includes(p.id)).length;
-              const isChapterComplete = solvedCount === ch.puzzles.length;
-              const rotationClass = TAB_ROTATIONS[chIdx % TAB_ROTATIONS.length];
-
-              // Diegetic tab labels matching physical case tabs
-              const tabLabel =
-                ch.tool === 'sql'
-                  ? `CASE S01: ${chIdx === 0 ? 'AUDIT' : 'ANALYSIS'}`
-                  : ch.tool === 'git'
-                  ? 'CASE S02: GIT FORENSICS'
-                  : 'CASE S03: DOCKER RUNTIME';
+              const isComplete = solvedCount === ch.puzzles.length;
 
               return (
                 <div
                   key={ch.id}
-                  className={`rounded-lg transition-all duration-200 border relative ${
+                  className={`rounded-lg border transition-all duration-200 ${
                     isSelected
-                      ? 'bg-[#1a0c06] border-[#6b2e16] shadow-xl shadow-black/80'
-                      : 'bg-[#110603] border-[#2e140b] hover:border-[#4d2212]'
+                      ? 'bg-[#1c0d06] border-[#703018] shadow-xl shadow-black/80'
+                      : 'bg-[#120703] border-[#2e1308] hover:border-[#4d2010]'
                   }`}
                 >
-                  {/* Protruding Physical Paper Index Tab sticking out to the right */}
-                  <div className="absolute -right-3 top-2.5 z-20 pointer-events-none">
-                    <div
-                      className={`text-[9px] font-black px-2 py-0.5 font-typewriter tracking-wider uppercase transition-transform transform shadow-lg ${rotationClass} ${
-                        isSelected
-                          ? 'index-tab-active scale-110 translate-x-1'
-                          : isChapterComplete
-                          ? 'bg-emerald-950 text-emerald-300 border border-emerald-700'
-                          : 'index-tab-paper'
-                      }`}
-                    >
-                      {tabLabel}
-                    </div>
-                  </div>
-                  {/* Protruding Paper Index Tab Header */}
+                  {/* Chapter Tab Header */}
                   <button
-                    onClick={() => toggleSeason(ch.id)}
-                    className="w-full flex items-center justify-between p-2 text-xs text-left group relative"
+                    onClick={() => toggleChapter(ch.id)}
+                    className="w-full flex items-center justify-between p-2 text-left group"
                   >
-                    <div className="flex items-center space-x-2 truncate">
-                      {/* Protruding Physical Paper Tab with Hand-Placed Rotation Angle */}
-                      <div
-                        className={`text-[10px] font-black px-2 py-0.5 font-typewriter tracking-wider uppercase transition-transform transform shadow-md ${rotationClass} ${
-                          isSelected
-                            ? 'index-tab-active scale-105'
-                            : isChapterComplete
-                            ? 'bg-emerald-950 text-emerald-300 border border-emerald-700'
-                            : 'index-tab-paper'
-                        }`}
-                      >
-                        CASE_S0{seasonNum}
-                      </div>
-                      <div className="truncate">
-                        <div className={`text-xs font-bold truncate font-typewriter ${isSelected ? 'text-amber-200' : 'text-stone-300'}`}>
+                    <div className="flex items-center space-x-2 min-w-0">
+                      {/* Index tab */}
+                      <span className={`index-tab flex-shrink-0 ${isSelected ? 'index-tab-active' : ''}`}>
+                        CASE S{seasonNum}: {toolTag}
+                      </span>
+
+                      <div className="min-w-0 flex-1">
+                        <div className={`text-[11px] font-bold font-typewriter truncate leading-tight ${isSelected ? 'text-amber-200' : 'text-stone-400'}`}>
                           {ch.title}
                         </div>
-                        <div className="text-[9px] text-stone-500 truncate uppercase">
-                          [{ch.tool} TOOLKIT]
+                        <div className="text-[9px] text-stone-600 font-typewriter uppercase">
+                          [{ch.tool}]
                         </div>
                       </div>
                     </div>
 
                     <div className="flex items-center space-x-1.5 flex-shrink-0">
-                      {isChapterComplete && (
-                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                      )}
-                      {isExpanded ? (
-                        <ChevronDown className="w-4 h-4 text-amber-400" />
-                      ) : (
-                        <ChevronRight className="w-4 h-4 text-stone-500 group-hover:text-stone-300" />
-                      )}
+                      {isComplete && <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />}
+                      {isExpanded
+                        ? <ChevronDown className="w-4 h-4 text-amber-500" />
+                        : <ChevronRight className="w-4 h-4 text-stone-600 group-hover:text-stone-400" />
+                      }
                     </div>
                   </button>
 
-                  {/* Case Docket Investigation Branches */}
+                  {/* Expanded chapter content */}
                   {isExpanded && (
-                    <div className="px-3 pb-3 pt-1 space-y-1.5 border-t border-[#33150b] bg-black/40">
-                      {/* Branch 1: Suspect Records / Crime Scene Database */}
+                    <div className="px-3 pb-3 pt-1 border-t border-[#331508] space-y-1 bg-black/40">
+                      {/* Schema / Files */}
                       <button
                         onClick={() => {
                           audioFx.playPaper();
                           if (isSelected) {
-                            if (tool === 'sql') onOpenSchema();
+                            if (ch.tool === 'sql') onOpenSchema();
                             else if (onOpenFileEditor) onOpenFileEditor();
                           } else {
                             onSelectChapter(ch.id);
@@ -267,18 +208,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
                             }, 100);
                           }
                         }}
-                        className="w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded text-[11px] text-stone-300 hover:text-white hover:bg-[#2e150c] transition group text-left border border-transparent hover:border-[#542514]"
+                        className="w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded text-[11px] text-stone-400 hover:text-white hover:bg-[#2e1208] transition text-left border border-transparent hover:border-[#542010]"
                       >
-                        <Database className="w-3.5 h-3.5 text-amber-500 group-hover:scale-110 transition flex-shrink-0" />
-                        <div className="truncate">
-                          <span className="font-bold font-typewriter">Suspect Records / Crime Scene DB</span>
-                          <span className="text-[9px] text-stone-500 block">
-                            {ch.tool === 'sql' ? 'Relational Schema & Tables' : 'Workspace Files'}
+                        <Database className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
+                        <div className="min-w-0">
+                          <span className="font-bold font-typewriter block truncate">Suspect Records / DB</span>
+                          <span className="text-[9px] text-stone-600">
+                            {ch.tool === 'sql' ? 'Relational Schema' : 'Workspace Files'}
                           </span>
                         </div>
                       </button>
 
-                      {/* Branch 2: Investigative Methodology */}
+                      {/* Concept */}
                       <button
                         onClick={() => {
                           audioFx.playPaper();
@@ -289,18 +230,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
                             setTimeout(() => onOpenConcept(), 100);
                           }
                         }}
-                        className="w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded text-[11px] text-stone-300 hover:text-white hover:bg-[#2e150c] transition group text-left border border-transparent hover:border-[#542514]"
+                        className="w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded text-[11px] text-stone-400 hover:text-white hover:bg-[#2e1208] transition text-left border border-transparent hover:border-[#542010]"
                       >
-                        <Lightbulb className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition flex-shrink-0" />
-                        <div className="truncate">
-                          <span className="font-bold font-typewriter">Investigative Methodology</span>
-                          <span className="text-[9px] text-stone-500 block">
-                            Techniques & Syntax Rules
-                          </span>
+                        <Lightbulb className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+                        <div className="min-w-0">
+                          <span className="font-bold font-typewriter block truncate">Investigative Method</span>
+                          <span className="text-[9px] text-stone-600">Techniques &amp; Syntax</span>
                         </div>
                       </button>
 
-                      {/* Branch 3: Informant Tip / Wiretap Hint */}
+                      {/* Hint */}
                       <button
                         onClick={() => {
                           audioFx.playClick();
@@ -311,18 +250,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
                             setTimeout(() => onOpenHint(), 100);
                           }
                         }}
-                        className="w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded text-[11px] text-stone-300 hover:text-white hover:bg-[#2e150c] transition group text-left border border-transparent hover:border-[#542514]"
+                        className="w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded text-[11px] text-stone-400 hover:text-white hover:bg-[#2e1208] transition text-left border border-transparent hover:border-[#542010]"
                       >
-                        <Radio className="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition flex-shrink-0" />
-                        <div className="truncate">
-                          <span className="font-bold font-typewriter">Informant Tip / Wiretap Hint</span>
-                          <span className="text-[9px] text-stone-500 block">
-                            Decrypted Informant Transcripts
-                          </span>
+                        <Radio className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                        <div className="min-w-0">
+                          <span className="font-bold font-typewriter block truncate">Informant Tip</span>
+                          <span className="text-[9px] text-stone-600">Wiretap Hints</span>
                         </div>
                       </button>
 
-                      {/* Optional Virtual Files if Git/Docker */}
+                      {/* File Editor for git/docker */}
                       {(ch.tool === 'git' || ch.tool === 'docker') && onOpenFileEditor && (
                         <button
                           onClick={() => {
@@ -330,36 +267,30 @@ export const Sidebar: React.FC<SidebarProps> = ({
                             if (!isSelected) onSelectChapter(ch.id);
                             onOpenFileEditor();
                           }}
-                          className="w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded text-[11px] text-stone-300 hover:text-white hover:bg-[#2e150c] transition group text-left border border-transparent hover:border-[#542514]"
+                          className="w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded text-[11px] text-stone-400 hover:text-white hover:bg-[#2e1208] transition text-left border border-transparent hover:border-[#542010]"
                         >
-                          <FileCode className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition flex-shrink-0" />
-                          <div className="truncate">
-                            <span className="font-bold font-typewriter">Exfiltrated Workspace Files</span>
-                            <span className="text-[9px] text-stone-500 block">
-                              Virtual Workspace Editor
-                            </span>
+                          <FileCode className="w-3.5 h-3.5 text-cyan-500 flex-shrink-0" />
+                          <div className="min-w-0">
+                            <span className="font-bold font-typewriter block truncate">Workspace Files</span>
+                            <span className="text-[9px] text-stone-600">Virtual File Editor</span>
                           </div>
                         </button>
                       )}
 
-                      {/* CORKBOARD RED STRING EVIDENCE PROGRESS TRACKER */}
-                      <div className="pt-2 pb-1 border-t border-[#33150b] mt-2">
-                        <div className="flex items-center justify-between text-[9px] font-bold text-stone-400 uppercase tracking-widest mb-2 font-typewriter">
+                      {/* Red string progress tracker */}
+                      <div className="pt-2 border-t border-[#331508] mt-1">
+                        <div className="flex items-center justify-between text-[9px] font-bold text-stone-500 uppercase tracking-widest mb-2 font-typewriter">
                           <span>LEADS ON CASE:</span>
-                          <span className="text-amber-400">
-                            {solvedCount}/{ch.puzzles.length} PURSUED
-                          </span>
+                          <span className="text-amber-500">{solvedCount}/{ch.puzzles.length} PURSUED</span>
                         </div>
 
-                        {/* Red String Line with Pinned Evidence Tags */}
                         <div className="relative flex items-center justify-between px-2 py-1.5">
-                          {/* Crimson Yarn / Red String */}
-                          <div className="absolute left-4 right-4 h-0.5 red-string-line z-0 top-1/2 -translate-y-1/2" />
+                          {/* Red string line */}
+                          <div className="absolute left-4 right-4 h-0.5 red-string z-0 top-1/2 -translate-y-1/2" />
 
                           {ch.puzzles.map((puz, pIdx) => {
-                            const isPuzActive = isSelected && pIdx === currentPuzzleIndex;
-                            const isPuzSolved = completedPuzzleIds.includes(puz.id);
-
+                            const isActive = isSelected && pIdx === currentPuzzleIndex;
+                            const isSolved = completedPuzzleIds.includes(puz.id);
                             return (
                               <button
                                 key={puz.id}
@@ -368,17 +299,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
                                   if (!isSelected) onSelectChapter(ch.id);
                                   onSelectPuzzleIndex(pIdx);
                                 }}
-                                className={`relative z-10 w-7 h-7 rounded flex items-center justify-center font-typewriter text-xs font-bold transition-transform duration-200 ${
-                                  isPuzActive
+                                className={`relative z-10 w-7 h-7 rounded font-typewriter text-xs font-bold transition-transform ${
+                                  isActive
                                     ? 'bg-theme-scarlet text-white ring-4 ring-[#8f0e0e]/50 scale-110 shadow-lg'
-                                    : isPuzSolved
-                                    ? 'bg-[#183a24] text-emerald-300 border border-emerald-500/70 shadow-sm'
-                                    : 'bg-[#1a0a05] text-stone-400 hover:bg-[#33150b] hover:text-white border border-[#421b0e]'
+                                    : isSolved
+                                    ? 'bg-[#183a24] text-emerald-300 border border-emerald-600/70'
+                                    : 'bg-[#1a0a05] text-stone-400 hover:bg-[#33150b] border border-[#42180e]'
                                 }`}
-                                title={`Pursue Lead ${pIdx + 1}: ${puz.title}`}
+                                title={`Lead ${pIdx + 1}: ${puz.title}`}
                               >
-                                {isPuzActive && (
-                                  <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-amber-400 border border-black shadow" />
+                                {isActive && (
+                                  <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-amber-400 border border-black" />
                                 )}
                                 {pIdx + 1}
                               </button>
@@ -392,99 +323,47 @@ export const Sidebar: React.FC<SidebarProps> = ({
               );
             })}
           </div>
-        </div>
 
-        {/* SECONDARY POLICE ARCHIVE NAVIGATION */}
-        <div className="px-2 py-2 border-t border-[#3d1f14] mt-2">
-          <div className="text-[9.5px] font-bold text-amber-500/80 tracking-wider uppercase px-2 mb-1.5 font-typewriter">
-            PRECINCT ARCHIVES
+          {/* Handwritten note pinned in binder */}
+          <div className="mx-2 mt-4 p-3 bg-[#fef9e7] border border-[#e8d88a] rounded shadow-md transform -rotate-1 relative">
+            <div className="text-[8px] font-bold text-amber-700 font-typewriter uppercase tracking-widest mb-1.5">
+              ★ INVESTIGATOR NOTES
+            </div>
+            <div className="handwritten-note text-[12px]">
+              Check sender-account data — Vance connection!
+            </div>
+            <div className="absolute top-1.5 right-2 w-2 h-2 rounded-full bg-[#dc2626] shadow" />
           </div>
-          <nav className="space-y-1 text-xs">
-            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-stone-300 hover:bg-[#2b140b] hover:text-white transition text-left">
-              <FolderKanban className="w-4 h-4 text-stone-400" />
-              <div>
-                <div className="font-semibold text-stone-200 font-typewriter">Incident Registry</div>
-                <div className="text-[9.5px] text-stone-500">Historical case records</div>
-              </div>
-            </button>
-
-            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-stone-300 hover:bg-[#2b140b] hover:text-white transition text-left">
-              <Archive className="w-4 h-4 text-stone-400" />
-              <div>
-                <div className="font-semibold text-stone-200 font-typewriter">Classified Vault</div>
-                <div className="text-[9.5px] text-stone-500">Sealed evidence exhibits</div>
-              </div>
-            </button>
-
-            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-stone-300 hover:bg-[#2b140b] hover:text-white transition text-left">
-              <GraduationCap className="w-4 h-4 text-stone-400" />
-              <div>
-                <div className="font-semibold text-stone-200 font-typewriter">Forensic Academy</div>
-                <div className="text-[9.5px] text-stone-500">Standard operating manuals</div>
-              </div>
-            </button>
-
-            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-stone-300 hover:bg-[#2b140b] hover:text-white transition text-left">
-              <Award className="w-4 h-4 text-stone-400" />
-              <div>
-                <div className="font-semibold text-stone-200 font-typewriter">Commendations</div>
-                <div className="text-[9.5px] text-stone-500">Solved case badges</div>
-              </div>
-            </button>
-
-            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-stone-300 hover:bg-[#2b140b] hover:text-white transition text-left">
-              <Bot className="w-4 h-4 text-amber-500" />
-              <div>
-                <div className="font-semibold text-stone-200 font-typewriter">AI Forensic Profiler</div>
-                <div className="text-[9.5px] text-stone-500">Investigative neural engine</div>
-              </div>
-            </button>
-
-            <button className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg text-stone-300 hover:bg-[#2b140b] hover:text-white transition text-left">
-              <Settings className="w-4 h-4 text-stone-400" />
-              <div>
-                <div className="font-semibold text-stone-200 font-typewriter">Desk Settings</div>
-                <div className="text-[9.5px] text-stone-500">Station configuration</div>
-              </div>
-            </button>
-          </nav>
         </div>
-      </div>
 
-      {/* FOOTER: Audio Effects Toggle */}
-      <div className="p-3 border-t border-[#3d1f14] bg-[#120703] text-xs">
-        <div className="flex items-center justify-between text-stone-400 px-1 mb-2">
-          <div className="flex items-center space-x-1.5 text-amber-400 font-bold font-typewriter">
-            <Coins className="w-4 h-4" />
-            <span className="text-xs">20 CREDITS</span>
+        {/* === FOOTER: Audio toggle === */}
+        <div className="p-3 border-t border-[#3d1f10] bg-[#110602] flex-shrink-0">
+          <div className="flex items-center justify-between">
+            <span className="text-[9px] text-stone-500 font-typewriter uppercase tracking-widest">
+              PRECINCT 101
+            </span>
+            <button
+              onClick={handleAudioToggle}
+              className={`flex items-center space-x-1.5 px-2.5 py-1 rounded text-[10px] font-bold uppercase font-typewriter transition border ${
+                isMuted
+                  ? 'bg-[#1e0a05] text-stone-600 border-[#3a1508]'
+                  : 'bg-[#331508] text-amber-400 border-[#62280e]'
+              }`}
+              title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
+            >
+              {isMuted ? (
+                <>
+                  <VolumeX className="w-3 h-3" />
+                  <span>MUTED</span>
+                </>
+              ) : (
+                <>
+                  <Volume2 className="w-3 h-3" />
+                  <span>AUDIO</span>
+                </>
+              )}
+            </button>
           </div>
-
-          {/* Sound FX Toggle Button */}
-          <button
-            onClick={handleAudioToggle}
-            className={`flex items-center space-x-1 px-2.5 py-1 rounded text-[10px] font-bold uppercase transition border ${
-              isMuted
-                ? 'bg-[#200d07] text-stone-500 border-[#3d1a0e]'
-                : 'bg-[#33150b] text-amber-400 border-[#662c17]'
-            }`}
-            title={isMuted ? 'Unmute Audio Effects' : 'Mute Audio Effects'}
-          >
-            {isMuted ? (
-              <>
-                <VolumeX className="w-3 h-3" />
-                <span>MUTED</span>
-              </>
-            ) : (
-              <>
-                <Volume2 className="w-3 h-3" />
-                <span>AUDIO FX</span>
-              </>
-            )}
-          </button>
-        </div>
-
-        <div className="text-[8.5px] text-center text-stone-500 font-typewriter pt-1 uppercase">
-          LEATHER CASE BINDER // PRECINCT 101
         </div>
       </div>
     </aside>
