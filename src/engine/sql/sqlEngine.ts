@@ -91,16 +91,25 @@ export class SqlEngine {
       };
     }
 
+    if (trimmed.toLowerCase() === 'clear') {
+      return {
+        columns: [],
+        values: [],
+        rowCount: 0
+      };
+    }
+
     const startTime = performance.now();
     try {
       const res = this.db.exec(trimmed);
       const executionTimeMs = Math.round((performance.now() - startTime) * 100) / 100;
 
       if (!res || res.length === 0) {
+        const rowsModified = typeof (this.db as any).getRowsModified === 'function' ? (this.db as any).getRowsModified() : 0;
         return {
-          columns: [],
-          values: [],
-          rowCount: 0,
+          columns: ['status'],
+          values: [[rowsModified > 0 ? `Query executed successfully (${rowsModified} row(s) affected)` : 'Query executed successfully (0 rows returned)']],
+          rowCount: rowsModified,
           executionTimeMs
         };
       }

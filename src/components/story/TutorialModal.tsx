@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, BookOpen, Radio, ShieldCheck } from 'lucide-react';
+import { X, BookOpen, MessageSquare, Terminal } from 'lucide-react';
 import { ChapterDefinition } from '../../types/game';
 import { CHARACTERS } from '../../data/storyline';
 import { audioFx } from '../../utils/audioEffects';
@@ -14,22 +14,19 @@ export const TutorialModal: React.FC<TutorialModalProps> = ({ isOpen, onClose, c
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 font-mono select-none">
-      <div className="bg-[#120808] border-2 border-[#4a1c1c] w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 select-none">
+      <div className="cyber-card w-full max-w-2xl rounded-2xl border border-cyan-500/30 overflow-hidden flex flex-col max-h-[85vh] animate-game-modal shadow-[0_0_50px_rgba(0,240,255,0.15)]">
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#1c0a0a] via-[#2a0e0e] to-[#1c0a0a] px-5 py-3.5 border-b-2 border-[#4a1c1c] flex items-center justify-between">
-          <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded bg-[#331111] border border-theme-scarlet/60 flex items-center justify-center">
-              <BookOpen className="w-4 h-4 text-theme-scarlet" />
+        <div className="bg-slate-900/90 px-6 py-4 border-b border-cyan-500/20 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 rounded-xl bg-cyan-950/60 border border-cyan-500/40 flex items-center justify-center text-cyan-400">
+              <BookOpen className="w-5 h-5" />
             </div>
             <div>
-              <div className="flex items-center space-x-2">
-                <span className="rubber-stamp text-[9px] px-1.5 py-0.2 tracking-widest text-[#d93e3e] border-[#d93e3e]">
-                  FIELD MANUAL
-                </span>
-                <span className="text-[10px] text-stone-400 font-typewriter">STANDARD OPERATING PROTOCOL</span>
-              </div>
-              <h3 className="text-sm font-black text-white uppercase font-typewriter mt-0.5">
+              <span className="text-[10px] tracking-widest uppercase font-bold text-cyan-400 bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-500/30">
+                MISSION BRIEFING MANUAL
+              </span>
+              <h3 className="text-base font-bold text-slate-100 mt-1">
                 {chapter.title} — {chapter.subtitle}
               </h3>
             </div>
@@ -39,22 +36,22 @@ export const TutorialModal: React.FC<TutorialModalProps> = ({ isOpen, onClose, c
               audioFx.playClick();
               onClose();
             }}
-            className="text-stone-400 hover:text-white p-1 rounded bg-[#2a0e0e] hover:bg-[#3d1515] transition border border-[#4a1c1c]"
+            className="text-slate-400 hover:text-white p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 transition"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-5 overflow-y-auto space-y-4 flex-1 bg-[#0d0505]">
-          {/* Radio Transmission */}
+        <div className="p-6 overflow-y-auto space-y-4 flex-1 bg-slate-950/60">
+          {/* Comms Intercept */}
           <div>
-            <div className="flex items-center space-x-2 text-xs font-bold text-stone-300 uppercase tracking-wider mb-2.5 font-typewriter">
-              <Radio className="w-3.5 h-3.5 text-theme-scarlet animate-pulse" />
-              <span>FORENSIC COMMS INTERCEPT TRANSCRIPT</span>
+            <div className="flex items-center space-x-2 text-xs font-bold text-cyan-400 uppercase tracking-wider mb-3">
+              <MessageSquare className="w-4 h-4" />
+              <span>INCOMING STORY TRANSMISSION</span>
             </div>
 
-            <div className="space-y-2.5">
+            <div className="space-y-3">
               {chapter.storyIntro.map((msg, idx) => {
                 const char =
                   Object.values(CHARACTERS).find(c => c.name.includes(msg.speaker)) ||
@@ -63,51 +60,51 @@ export const TutorialModal: React.FC<TutorialModalProps> = ({ isOpen, onClose, c
                 return (
                   <div
                     key={idx}
-                    className="bg-[#140808] border border-[#381616] rounded-lg p-3.5 text-xs shadow-sm"
+                    className="bg-slate-900/60 border border-slate-800 rounded-xl p-4 text-xs shadow-sm"
                   >
-                    <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center justify-between mb-1.5">
                       <span
-                        className="font-bold text-[11px] font-typewriter"
-                        style={{ color: char.badgeColor || '#d93e3e' }}
+                        className="font-bold text-xs"
+                        style={{ color: char.badgeColor || '#00f0ff' }}
                       >
-                        [CALLSIGN]: {msg.speaker}
+                        {msg.speaker} ({msg.role || 'Operative'})
                       </span>
                       {msg.timestamp && (
-                        <span className="text-[10px] text-stone-500 font-mono">{msg.timestamp}</span>
+                        <span className="text-[10px] text-slate-500 font-mono">{msg.timestamp}</span>
                       )}
                     </div>
-                    <p className="text-stone-200 leading-relaxed font-report text-xs">{msg.text}</p>
+                    <p className="text-slate-300 leading-relaxed text-xs">{msg.text}</p>
                   </div>
                 );
               })}
             </div>
           </div>
 
-          {/* Detective Field Guidelines */}
-          <div className="bg-[#140808] border-2 border-[#3d1818] rounded-lg p-4">
-            <div className="flex items-center space-x-2 text-xs font-bold text-theme-scarlet uppercase tracking-wider mb-2 font-typewriter">
-              <ShieldCheck className="w-4 h-4 text-theme-scarlet" />
-              <span>DETECTIVE INVESTIGATION PROTOCOL</span>
+          {/* Gameplay Instructions */}
+          <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+            <div className="flex items-center space-x-2 text-xs font-bold text-slate-200 uppercase tracking-wider mb-2.5">
+              <Terminal className="w-4 h-4 text-cyan-400" />
+              <span>GAMEPLAY RULES & CONTROLS</span>
             </div>
-            <ul className="text-xs text-stone-300 space-y-2.5 font-report">
-              <li>• Inspect the <strong>Incident Memorandum</strong> on the desk above for your specific target instruction.</li>
-              <li>• Dispatch queries or commands directly into the <strong>Forensic Mainframe</strong> below.</li>
-              <li>• Click <strong>TEST INTERCEPT</strong> to preview output, or <strong>EXECUTE WARRANT</strong> to officially file and validate the evidence.</li>
-              <li>• Open the left <strong>Criminal Dossier</strong> to consult <strong>Crime Scene Records</strong>, review <strong>Forensic Methodology</strong>, or tap <strong>Wiretap Intel</strong>.</li>
+            <ul className="text-xs text-slate-300 space-y-2">
+              <li>• Read the current <strong>Mission Objective</strong> on the left panel.</li>
+              <li>• Use <strong>Auto-Fill</strong> to paste the template query or write your own commands directly in the terminal.</li>
+              <li>• Click <strong>[EXECUTE]</strong> or press <kbd className="px-1.5 py-0.5 bg-slate-800 rounded text-cyan-300 font-mono">Enter</kbd> to run your command against SQLite, Git, or Docker.</li>
+              <li>• Complete objectives to level up, earn XP, and collect forensic clues in your inventory.</li>
             </ul>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="bg-[#140808] px-5 py-3 border-t-2 border-[#4a1c1c] flex justify-end">
+        <div className="bg-slate-900/90 px-6 py-3 border-t border-slate-800 flex justify-end">
           <button
             onClick={() => {
               audioFx.playClick();
               onClose();
             }}
-            className="px-5 py-1.5 text-xs bg-theme-bloodRed hover:bg-theme-bloodRedHover text-white font-bold rounded font-typewriter transition border border-theme-scarlet"
+            className="btn-cyber-primary px-5 py-1.5 text-xs"
           >
-            REPORT FOR DUTY
+            Start Mission
           </button>
         </div>
       </div>

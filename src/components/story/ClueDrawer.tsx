@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, ShieldCheck, FolderSearch, Tag } from 'lucide-react';
+import { X, Award, Sparkles, FolderSearch } from 'lucide-react';
 import { Clue } from '../../types/game';
 import { audioFx } from '../../utils/audioEffects';
 
@@ -13,23 +13,20 @@ export const ClueDrawer: React.FC<ClueDrawerProps> = ({ isOpen, onClose, clues }
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 font-mono select-none">
-      <div className="bg-[#120808] border-2 border-[#4a1c1c] w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 select-none">
+      <div className="cyber-card w-full max-w-2xl rounded-2xl border border-purple-500/30 overflow-hidden flex flex-col max-h-[85vh] animate-game-modal shadow-[0_0_50px_rgba(168,85,247,0.15)]">
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#1c0a0a] via-[#2a0e0e] to-[#1c0a0a] px-5 py-3.5 border-b-2 border-[#4a1c1c] flex items-center justify-between">
-          <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded bg-[#152e1c] border border-emerald-500/50 flex items-center justify-center">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+        <div className="bg-slate-900/90 px-6 py-4 border-b border-purple-500/20 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 rounded-xl bg-purple-950/60 border border-purple-500/40 flex items-center justify-center text-purple-400">
+              <Award className="w-5 h-5" />
             </div>
             <div>
-              <div className="flex items-center space-x-2">
-                <span className="rubber-stamp rubber-stamp-green text-[9px] px-1.5 py-0.2 tracking-widest">
-                  EVIDENCE VAULT
-                </span>
-                <span className="text-[10px] text-stone-400 font-typewriter">CHAIN OF CUSTODY LOG</span>
-              </div>
-              <h3 className="text-sm font-black tracking-wide text-white uppercase font-typewriter mt-0.5">
-                SECURED EXHIBITS ({clues.length} ARTIFACTS CONFIRMED)
+              <span className="text-[10px] tracking-widest uppercase font-bold text-purple-400 bg-purple-950/80 px-2 py-0.5 rounded border border-purple-500/30">
+                PLAYER INVENTORY
+              </span>
+              <h3 className="text-base font-bold text-slate-100 mt-1">
+                Collected Mission Intel ({clues.length} Items)
               </h3>
             </div>
           </div>
@@ -38,41 +35,41 @@ export const ClueDrawer: React.FC<ClueDrawerProps> = ({ isOpen, onClose, clues }
               audioFx.playClick();
               onClose();
             }}
-            className="text-stone-400 hover:text-white p-1 rounded bg-[#2a0e0e] hover:bg-[#3d1515] transition border border-[#4a1c1c]"
+            className="text-slate-400 hover:text-white p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 transition"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Clues Content */}
-        <div className="p-5 overflow-y-auto space-y-3.5 flex-1 bg-[#0d0505]">
+        <div className="p-6 overflow-y-auto space-y-3 flex-1 bg-slate-950/60">
           {clues.length === 0 ? (
-            <div className="text-center py-12 text-stone-500 flex flex-col items-center font-typewriter">
-              <FolderSearch className="w-12 h-12 mb-3 text-stone-600 stroke-[1.5]" />
-              <p className="text-xs font-bold text-stone-400">NO FORENSIC EVIDENCE FILED YET.</p>
-              <p className="text-[11px] text-stone-600 mt-1 max-w-sm">
-                Execute queries and commands in the forensic terminal to uncover financial records, git commits, and runtime artifacts.
+            <div className="text-center py-14 text-slate-500 flex flex-col items-center">
+              <FolderSearch className="w-12 h-12 mb-3 text-slate-700 stroke-[1.5]" />
+              <p className="text-sm font-bold text-slate-400">NO INTEL COLLECTED YET</p>
+              <p className="text-xs text-slate-600 mt-1 max-w-sm">
+                Complete mission objectives across SQL, Git, and Docker to unlock encrypted forensic evidence and collect rewards.
               </p>
             </div>
           ) : (
             clues.map((clue, idx) => (
               <div
                 key={clue.id || idx}
-                className="bg-[#140808] border-2 border-[#3d1818] rounded-lg p-3.5 hover:border-emerald-500/60 transition relative overflow-hidden group shadow-md"
+                className="bg-slate-900/60 border border-purple-500/30 rounded-xl p-4 hover:border-purple-400/60 transition group shadow-sm relative overflow-hidden"
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#102919] text-emerald-300 border border-emerald-700/50 font-typewriter flex items-center space-x-1">
-                    <Tag className="w-2.5 h-2.5" />
-                    <span>EXHIBIT #{idx + 1} // {clue.category}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-purple-950/80 text-purple-300 border border-purple-700/50 flex items-center space-x-1">
+                    <Sparkles className="w-3 h-3 text-purple-400" />
+                    <span>LOOT #{idx + 1} // {clue.category}</span>
                   </span>
                   {clue.discoveredAt && (
-                    <span className="text-[10px] text-stone-500 font-mono">{clue.discoveredAt}</span>
+                    <span className="text-[10px] text-slate-500 font-mono">{clue.discoveredAt}</span>
                   )}
                 </div>
-                <h4 className="text-xs font-bold text-stone-100 group-hover:text-emerald-300 transition font-typewriter">
+                <h4 className="text-sm font-bold text-slate-100 group-hover:text-purple-300 transition">
                   {clue.title}
                 </h4>
-                <p className="text-[12px] text-stone-300 mt-1.5 leading-relaxed font-report">
+                <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
                   {clue.description}
                 </p>
               </div>
@@ -81,18 +78,15 @@ export const ClueDrawer: React.FC<ClueDrawerProps> = ({ isOpen, onClose, clues }
         </div>
 
         {/* Footer */}
-        <div className="bg-[#140808] px-5 py-3 border-t-2 border-[#4a1c1c] flex justify-between items-center text-xs">
-          <span className="text-[10px] text-stone-500 font-typewriter">
-            SEALED EVIDENCE // METROPOLITAN CRIME LAB
-          </span>
+        <div className="bg-slate-900/90 px-6 py-3 border-t border-slate-800 flex justify-end">
           <button
             onClick={() => {
               audioFx.playClick();
               onClose();
             }}
-            className="px-4 py-1.5 text-xs bg-[#240e0e] hover:bg-[#381616] text-stone-300 hover:text-white rounded font-bold font-typewriter transition border border-[#4a1c1c]"
+            className="px-4 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg font-semibold transition"
           >
-            LOCK VAULT
+            Close Inventory
           </button>
         </div>
       </div>

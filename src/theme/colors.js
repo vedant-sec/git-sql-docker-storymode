@@ -1,54 +1,31 @@
 /**
- * SQL CASE FILES // THEME COLOR SCHEME
- * ------------------------------------
- * Edit this single file to change the color scheme across the entire website.
+ * CYBER GAMING COLOR SCHEME
+ * -------------------------
+ * Neon Cyberpunk & Arcade Mission Palette
  */
 
 export const themeColors = {
-  // Sidebar - Complete Black
-  sidebar: '#000000',
-  sidebarSurface: '#180d0d',
-  sidebarBorder: '#2d1414',
+  // Deep Cyber Space Canvas
+  canvas: '#080c14',
+  canvasElevated: '#0f172a',
+  card: '#131c31',
+  cardBorder: '#1e293b',
+  cardHover: '#1e293b',
 
-  // Main Canvas & Cards - Platinum Off-White
-  canvas: '#EFEFEF',
-  card: '#FFFFFF',
-  cardBorder: '#ded5d5',
-  cardCallout: '#f8f5f5',
+  // Cyber Accents
+  neonCyan: '#00f0ff',
+  neonCyanGlow: 'rgba(0, 240, 255, 0.35)',
+  neonGreen: '#00ff88',
+  neonGreenGlow: 'rgba(0, 255, 136, 0.35)',
+  neonPurple: '#a855f7',
+  neonPurpleGlow: 'rgba(168, 85, 247, 0.35)',
+  neonAmber: '#fbbf24',
+  neonRed: '#f43f5e',
 
-  // Terminal & Header - Midnight Onyx
-  onyx: '#170E0E',
-  terminalInner: '#100909',
-  terminalToolbar: '#1a0f0f',
-  darkSurface: '#241616',
-  darkSurfaceHover: '#331c1c',
-  darkBorder: '#3d1515',
-  darkBorderSubtle: '#2d1212',
-
-  // Accents
-  bloodRed: '#8F0E0E',
-  bloodRedHover: '#a81212',
-  scarlet: '#D93E3E',
-  scarletHover: '#c02e2e',
-
-  // Typography
-  textDark: '#170E0E',
-  textSubtle: '#2b1f1f',
-  textLight: '#EFEFEF',
-  textMuted: '#997777',
-  textPlaceholder: '#775555',
-  white: '#FFFFFF',
-
-  // Physical Detective Materials & CRT Mainframe
-  manilaPaper: '#F5EFE1',
-  manilaTab: '#E5DCBE',
-  manilaBorder: '#D2C4A7',
-  stampRed: '#B91C1C',
-  stampRedBorder: '#991B1B',
-  deskSurface: '#120909',
-  deskVignette: '#0A0404',
-  pinRed: '#DC2626',
-  stringRed: '#EF4444',
-  amberPhosphor: '#F59E0B',
+  // Terminal & Tech
+  terminalBg: '#070b13',
+  terminalBorder: '#1e293b',
+  textBright: '#f8fafc',
+  textMuted: '#94a3b8',
+  textDim: '#475569',
 };
-

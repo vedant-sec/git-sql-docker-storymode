@@ -1,0 +1,9 @@
+services:
+  forensic-terminal:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: forensic-storymode
+    ports:
+      - "3000:80"
+    restart: unless-stopped

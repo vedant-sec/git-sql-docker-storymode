@@ -3,451 +3,155 @@
 @tailwind utilities;
 
 /* ============================================================
-   SCROLLBARS
+   CYBER ARCADE SCROLLBAR
    ============================================================ */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: #0a0604; }
-::-webkit-scrollbar-thumb { background: #3d1f12; border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: #612d18; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #070b13; }
+::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
 
 /* ============================================================
-   DESK WORKSPACE — Dark mahogany with warm lamp pool
+   CYBER GAMING ENVIRONMENT
    ============================================================ */
-.desk-workspace {
-  background-color: #150f0a;
-  background-image:
-    radial-gradient(ellipse 55% 45% at 75% 10%, rgba(120, 65, 20, 0.22) 0%, transparent 70%),
-    radial-gradient(ellipse 70% 60% at 50% 50%, rgba(40, 18, 6, 0.45) 0%, transparent 80%),
-    radial-gradient(ellipse 100% 100% at 50% 50%, rgba(0, 0, 0, 0.55) 0%, transparent 100%),
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.008) 0px, rgba(255,255,255,0.008) 1px, transparent 1px, transparent 40px),
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.005) 0px, rgba(255,255,255,0.005) 1px, transparent 1px, transparent 40px);
-  background-size: 100% 100%, 100% 100%, 100% 100%, 80px 80px, 80px 80px;
-}
-
-/* Vignette overlay */
-.desk-workspace::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(ellipse 90% 90% at 50% 50%, transparent 40%, rgba(0,0,0,0.72) 100%);
-  z-index: 0;
-}
-
-/* ============================================================
-   LEATHER CASE BINDER (Left sidebar)
-   ============================================================ */
-.leather-binder {
-  background-color: #1a0c06;
-  background-image:
-    linear-gradient(160deg, rgba(80, 40, 20, 0.35) 0%, rgba(10, 5, 2, 0.7) 100%),
-    radial-gradient(circle at 15% 25%, rgba(90, 50, 25, 0.22) 0%, transparent 55%),
-    repeating-linear-gradient(
-      45deg,
-      rgba(0,0,0,0.04) 0px,
-      rgba(0,0,0,0.04) 1px,
-      transparent 1px,
-      transparent 8px
-    );
-  box-shadow:
-    8px 0 32px rgba(0,0,0,0.85),
-    inset 3px 0 8px rgba(255,255,255,0.06),
-    inset -2px 0 10px rgba(0,0,0,0.9);
-  border-right: 2px solid #3d1f10;
-}
-
-/* Binder spine rivets strip */
-.binder-spine {
-  width: 14px;
-  background: linear-gradient(to bottom, #140b04, #1e1108, #140b04);
-  border-right: 1px solid #2e1608;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  padding: 12px 0;
-  flex-shrink: 0;
-}
-
-.binder-rivet {
-  width: 7px;
-  height: 12px;
-  border-radius: 2px;
-  background: linear-gradient(to right, #8a7040, #d4af6a, #8a7040);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.9), inset 0 1px 1px rgba(255,255,255,0.5);
-  border: 1px solid #5a4020;
-}
-
-/* Protruding Paper Index Tabs */
-.index-tab {
-  background-color: #e8dcc6;
-  background-image: linear-gradient(to bottom, rgba(255,255,255,0.55), rgba(0,0,0,0.05));
-  color: #1a1208;
-  font-family: 'Special Elite', monospace;
-  font-weight: 700;
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 3px 7px;
-  border-radius: 0 4px 4px 0;
-  border-top: 1px solid #d9cdb0;
-  border-right: 1.5px solid #c2b48e;
-  border-bottom: 2px solid #b0a07c;
-  box-shadow: 3px 2px 7px rgba(0,0,0,0.5), inset 0 0 5px rgba(180,140,80,0.15);
-  cursor: pointer;
-  user-select: none;
-  white-space: nowrap;
-  transition: all 0.15s;
-}
-
-.index-tab:hover {
-  background-color: #f2e8d4;
-}
-
-.index-tab-active {
-  background-color: #c41a1a;
-  background-image: linear-gradient(to bottom, #e02020, #991515);
-  color: #fff;
-  border-top: 1px solid #e85555;
-  border-right: 2px solid #881010;
-  border-bottom: 2.5px solid #6d0d0d;
-  box-shadow: 4px 3px 12px rgba(0,0,0,0.7), 0 0 12px rgba(200,30,30,0.35);
-}
-
-/* ============================================================
-   MANILA EVIDENCE FOLDER (ProblemCard)
-   ============================================================ */
-.manila-folder {
-  background-color: #f0e6cc;
-  background-image:
-    linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(0,0,0,0.035)),
-    radial-gradient(circle at 8% 18%, rgba(200, 165, 110, 0.14) 0%, transparent 55%);
-  box-shadow:
-    0 3px 8px rgba(0,0,0,0.18),
-    0 20px 48px -8px rgba(0,0,0,0.65),
-    inset 0 0 24px rgba(180,145,100,0.1);
-}
-
-.manila-tab-label {
-  background-color: #e0d0a8;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 12px;
-  border: 2px solid #c9ba94;
-  border-bottom: none;
-  box-shadow: 0 -2px 5px rgba(0,0,0,0.08);
-  display: inline-flex;
-  align-items: center;
-  padding: 5px 18px;
-  font-family: 'Special Elite', monospace;
-  font-weight: 700;
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #1a1208;
-}
-
-/* Red rubber stamp */
-.rubber-stamp {
-  display: inline-block;
-  font-family: 'Special Elite', monospace;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: #b91c1c;
-  border: 3px dashed #b91c1c;
-  padding: 4px 10px;
-  border-radius: 4px;
-  text-shadow: 1px 1px 0 rgba(185,28,28,0.2);
-  box-shadow: inset 0 0 6px rgba(185,28,28,0.12), 0 0 3px rgba(185,28,28,0.18);
-  user-select: none;
-  opacity: 0.9;
-}
-
-.rubber-stamp-diagonal {
-  transform: rotate(-8deg);
-  border-style: double;
-  border-width: 3px;
-}
-
-.rubber-stamp-green {
-  color: #047857;
-  border-color: #047857;
-  text-shadow: 1px 1px 0 rgba(4,120,87,0.2);
-  box-shadow: inset 0 0 6px rgba(4,120,87,0.1), 0 0 3px rgba(4,120,87,0.15);
-}
-
-/* Brass staple */
-.brass-staple {
-  width: 26px;
-  height: 5px;
-  background: linear-gradient(to bottom, #d4af37, #a07820, #d4af37);
-  border-radius: 1px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.55), inset 0 1px 1px rgba(255,255,255,0.55);
-}
-
-/* Silver paperclip SVG accent */
-.paperclip-accent {
-  color: #9ca3af;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
-}
-
-/* ============================================================
-   RETRO CRT FORENSIC TERMINAL
-   ============================================================ */
-.crt-chassis {
-  background: linear-gradient(160deg, #1c1414 0%, #0d0808 45%, #181010 100%);
-  border: 4px solid #2a1818;
-  border-radius: 14px;
-  box-shadow:
-    0 24px 56px rgba(0,0,0,0.9),
-    inset 0 2px 4px rgba(255,255,255,0.09),
-    inset 0 -4px 8px rgba(0,0,0,0.95),
-    0 0 2px rgba(255,200,100,0.06);
-}
-
-.crt-screen {
-  position: relative;
+body {
+  background-color: #070a12;
+  color: #e2e8f0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overflow: hidden;
-  background-color: #060202;
-  box-shadow: inset 0 0 30px rgba(0,0,0,0.97);
 }
 
-/* Scanlines overlay */
-.crt-screen::before {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(0,0,0,0) 0px,
-    rgba(0,0,0,0) 2px,
-    rgba(0,0,0,0.35) 2px,
-    rgba(0,0,0,0.35) 4px
-  );
-  z-index: 20;
-  pointer-events: none;
-}
-
-/* Amber phosphor glow */
-.amber-phosphor {
-  color: #f59e0b;
-  text-shadow: 0 0 7px rgba(245,158,11,0.7), 0 0 16px rgba(245,158,11,0.3);
-}
-
-.amber-phosphor-input {
-  color: #fcd34d;
-  text-shadow: 0 0 6px rgba(252,211,77,0.6);
-  caret-color: #fbbf24;
-}
-
-/* Hex screws */
-.hex-screw {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #666 0%, #111 100%);
-  border: 1px solid #555;
-  box-shadow: inset 0 1px 2px rgba(255,255,255,0.35), 0 1px 3px rgba(0,0,0,0.9);
-  position: relative;
-}
-
-.hex-screw::after {
-  content: "";
-  position: absolute;
-  top: 4px; left: 1.5px; right: 1.5px; height: 1.5px;
-  background: rgba(0,0,0,0.6);
-  border-radius: 1px;
-}
-
-/* Rotary knob */
-.rotary-knob {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 38% 35%, #555 0%, #1a1a1a 70%, #0d0d0d 100%);
-  border: 2px solid #3a3a3a;
-  box-shadow:
-    inset 0 2px 4px rgba(255,255,255,0.18),
-    0 3px 8px rgba(0,0,0,0.9),
-    0 1px 2px rgba(0,0,0,0.7);
-  cursor: pointer;
-  position: relative;
-  transition: transform 0.1s;
-}
-
-.rotary-knob::after {
-  content: "";
-  position: absolute;
-  top: 3px; left: 50%; transform: translateX(-50%);
-  width: 2px; height: 7px;
-  background: rgba(255,210,80,0.8);
-  border-radius: 1px;
-}
-
-.rotary-knob:active {
-  transform: scale(0.95);
-}
-
-/* Status LED */
-.status-led-green {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 6px #22c55e, 0 0 14px rgba(34,197,94,0.5);
-  border: 1px solid #16a34a;
-}
-
-.status-led-amber {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #f59e0b;
-  box-shadow: 0 0 6px #f59e0b, 0 0 14px rgba(245,158,11,0.5);
-  border: 1px solid #d97706;
-}
-
-/* Speaker grille slits */
-.speaker-grille {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.speaker-slit {
-  height: 2px;
-  background: #111;
-  border-radius: 1px;
-  box-shadow: inset 0 1px 1px rgba(0,0,0,0.9);
+.cyber-grid-bg {
+  background-color: #060910;
+  background-image: 
+    radial-gradient(ellipse 60% 50% at 50% -20%, rgba(0, 240, 255, 0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 85% 90%, rgba(168, 85, 247, 0.10) 0%, transparent 60%),
+    linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
 }
 
 /* ============================================================
-   PROP ELEMENTS
+   GAMING HUD & CARD COMPONENTS
    ============================================================ */
-
-/* Notepad */
-.spiral-notepad {
-  background-color: #f5f0e8;
-  border: 1px solid #d8d0be;
-  border-radius: 3px;
-  box-shadow: 2px 3px 10px rgba(0,0,0,0.55), inset 0 0 8px rgba(0,0,0,0.05);
-  position: relative;
-  overflow: visible;
+.cyber-card {
+  background: rgba(13, 20, 36, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(30, 41, 59, 0.8);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
 }
 
-/* Coffee ring stain */
-.coffee-stain {
-  border-radius: 50%;
-  border: 2px solid rgba(120, 70, 20, 0.35);
-  box-shadow:
-    inset 0 0 8px rgba(100, 55, 15, 0.2),
-    0 0 12px rgba(100, 55, 15, 0.1);
+.cyber-card-active {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.12);
 }
 
-/* Brass desk lamp light pool */
-.lamp-pool {
-  background: radial-gradient(ellipse 50% 40% at 82% 6%, rgba(200, 140, 40, 0.14) 0%, transparent 70%);
-  pointer-events: none;
+.cyber-terminal {
+  background: #050811;
+  border: 1px solid rgba(30, 58, 138, 0.35);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 240, 255, 0.06);
 }
 
-/* Blueprint map tint */
-.blueprint-map {
-  background-color: #2a3a4a;
-  background-image: repeating-linear-gradient(
-    90deg,
-    rgba(100,150,200,0.06) 0px,
-    rgba(100,150,200,0.06) 1px,
-    transparent 1px,
-    transparent 25px
-  ), repeating-linear-gradient(
-    0deg,
-    rgba(100,150,200,0.06) 0px,
-    rgba(100,150,200,0.06) 1px,
-    transparent 1px,
-    transparent 25px
-  );
+/* Cyber Glow Buttons */
+.btn-cyber-primary {
+  background: linear-gradient(135deg, #00f0ff 0%, #0284c7 100%);
+  color: #030712;
+  font-weight: 700;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.35);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-cyber-primary:hover:not(:disabled) {
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
+  transform: translateY(-1px);
+}
+.btn-cyber-primary:active:not(:disabled) {
+  transform: translateY(1px);
 }
 
-/* ============================================================
-   ANIMATIONS
-   ============================================================ */
-
-@keyframes stamp-slam {
-  0%   { opacity: 0; transform: scale(2.2) rotate(-12deg); }
-  65%  { opacity: 1; transform: scale(0.97) rotate(-8deg); }
-  82%  { transform: scale(1.03) rotate(-9.5deg); }
-  100% { opacity: 1; transform: scale(1) rotate(-8deg); }
+.btn-cyber-success {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #022c22;
+  font-weight: 700;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.35);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-cyber-success:hover:not(:disabled) {
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.6);
+  transform: translateY(-1px);
 }
 
-.animate-stamp-slam {
-  animation: stamp-slam 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+.btn-cyber-ghost {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(71, 85, 105, 0.5);
+  color: #cbd5e1;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.btn-cyber-ghost:hover:not(:disabled) {
+  background: rgba(51, 65, 85, 0.8);
+  border-color: #00f0ff;
+  color: #00f0ff;
 }
 
-@keyframes block-blink {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
+/* Neon Text Glow */
+.text-glow-cyan {
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.6), 0 0 20px rgba(0, 240, 255, 0.3);
 }
 
-.crt-cursor {
-  display: inline-block;
-  width: 8px;
-  height: 13px;
-  background: #fbbf24;
-  box-shadow: 0 0 8px #fbbf24;
-  vertical-align: middle;
-  animation: block-blink 1s step-end infinite;
+.text-glow-green {
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.6), 0 0 20px rgba(16, 185, 129, 0.3);
 }
 
-@keyframes glitch-shake {
-  0%   { transform: translate(0,0); }
-  20%  { transform: translate(-3px,2px); }
-  40%  { transform: translate(3px,-1px); }
-  60%  { transform: translate(-2px,-2px); }
-  80%  { transform: translate(2px,1px); }
-  100% { transform: translate(0,0); }
+.text-glow-amber {
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
 }
 
-.glitch-active {
-  animation: glitch-shake 0.22s ease-in-out;
-  filter: drop-shadow(-2px 0 #e00) drop-shadow(2px 0 cyan);
+.text-glow-purple {
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
 }
 
-/* Red string corkboard line */
-.red-string {
-  background: linear-gradient(90deg, #b91c1c 0%, #ef4444 50%, #b91c1c 100%);
-  box-shadow: 0 0 7px rgba(220,38,38,0.85);
+/* Game Level XP Bar */
+.xp-bar-track {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 9999px;
+  overflow: hidden;
 }
 
-/* Stacked pages effect */
-.stacked-pages::before,
-.stacked-pages::after {
-  content: "";
-  position: absolute;
-  background-color: #ede3cc;
-  border: 1px solid #cec0a4;
-  border-radius: inherit;
+.xp-bar-fill {
+  background: linear-gradient(90deg, #8b5cf6 0%, #00f0ff 50%, #10b981 100%);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
+  transition: width 0.5s ease-out;
 }
 
-.stacked-pages::before {
-  inset: -4px -3px;
-  z-index: -1;
-  transform: rotate(1.5deg);
+/* Glowing Pulsing Node */
+@keyframes cyber-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(0, 240, 255, 0);
+  }
 }
 
-.stacked-pages::after {
-  inset: -7px -5px;
-  z-index: -2;
-  transform: rotate(-1deg);
-  background-color: #e8dbc6;
+.node-active {
+  animation: cyber-pulse 2s infinite;
 }
 
-/* Handwritten margin note */
-.handwritten-note {
-  font-family: 'Caveat', cursive;
-  color: #1a40a0;
-  font-size: 14px;
-  line-height: 1.4;
-  transform: rotate(-2deg);
-  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.15));
+/* Simple Smooth Fade Animation */
+@keyframes modal-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-game-modal {
+  animation: modal-fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

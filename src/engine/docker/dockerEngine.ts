@@ -60,6 +60,41 @@ export class DockerEngine {
 
   execute(commandLine: string): DockerCommandResult {
     const raw = commandLine.trim();
+
+    // Support command chaining with &&
+    if (raw.includes('&&')) {
+      const subCommands = raw.split('&&').map(c => c.trim()).filter(Boolean);
+      const outputs: string[] = [];
+      let lastResult: DockerCommandResult = { output: '', error: false, state: this.getState() };
+      for (const subCmd of subCommands) {
+        lastResult = this.execute(subCmd);
+        if (lastResult.output) outputs.push(lastResult.output);
+        if (lastResult.error) {
+          return { output: outputs.join('\n'), error: true, state: this.getState() };
+        }
+      }
+      return { output: outputs.join('\n'), error: false, state: this.getState() };
+    }
+
+    // Support command chaining with ;
+    if (raw.includes(';') && !raw.includes(';;')) {
+      const subCommands = raw.split(';').map(c => c.trim()).filter(Boolean);
+      const outputs: string[] = [];
+      let lastResult: DockerCommandResult = { output: '', error: false, state: this.getState() };
+      for (const subCmd of subCommands) {
+        lastResult = this.execute(subCmd);
+        if (lastResult.output) outputs.push(lastResult.output);
+        if (lastResult.error) {
+          return { output: outputs.join('\n'), error: true, state: this.getState() };
+        }
+      }
+      return { output: outputs.join('\n'), error: false, state: this.getState() };
+    }
+
+    if (raw === 'clear') {
+      return { output: '', error: false, state: this.getState() };
+    }
+
     if (!raw.startsWith('docker')) {
       return {
         output: `Command '${raw.split(' ')[0]}' not recognized. Use 'docker <command>'`,
@@ -87,6 +122,10 @@ export class DockerEngine {
         return this.handleRun(args);
       case 'ps':
         return this.handlePs(args);
+      case 'start':
+        return this.handleStart(args);
+      case 'restart':
+        return this.handleRestart(args);
       case 'stop':
         return this.handleStop(args);
       case 'rm':
@@ -97,14 +136,35 @@ export class DockerEngine {
         return this.handleImages(args);
       case 'image':
         if (args[0] === 'ls') return this.handleImages(args.slice(1));
-        return { output: 'Usage: docker image ls', error: true, state: this.getState() };
+        if (args[0] === 'rm') return this.handleRmi(args.slice(1));
+        return { output: 'Usage: docker image [ls|rm]', error: true, state: this.getState() };
       case 'container':
         if (args[0] === 'ls') return this.handlePs(args.slice(1));
-        return { output: 'Usage: docker container ls', error: true, state: this.getState() };
+        if (args[0] === 'stop') return this.handleStop(args.slice(1));
+        if (args[0] === 'rm') return this.handleRm(args.slice(1));
+        return { output: 'Usage: docker container [ls|stop|rm]', error: true, state: this.getState() };
       case 'logs':
         return this.handleLogs(args);
       case 'exec':
         return this.handleExec(args);
+      case 'inspect':
+        return this.handleInspect(args);
+      case 'port':
+        return this.handlePort(args);
+      case 'top':
+        return this.handleTop(args);
+      case 'version':
+        return {
+          output: 'Docker version 25.0.3, build 4debf41\nAPI version: 1.44\nGo version: go1.21.7\nOS/Arch: linux/amd64',
+          error: false,
+          state: this.getState()
+        };
+      case 'info':
+        return {
+          output: `Client: Docker Engine - Community\n Version:    25.0.3\nServer:\n Containers: ${Object.keys(this.state.containers).length}\n Running: ${Object.values(this.state.containers).filter(c => c.status === 'running').length}\n Paused: 0\n Stopped: ${Object.values(this.state.containers).filter(c => c.status !== 'running').length}\n Images: ${Object.keys(this.state.images).length}`,
+          error: false,
+          state: this.getState()
+        };
       default:
         return {
           output: `docker: '${subCommand}' is not a docker command.\nSee 'docker --help'`,
@@ -636,6 +696,118 @@ export class DockerEngine {
 
     return {
       output: `Executed: ${execCmd}\nOutput: command completed successfully.`,
+      error: false,
+      state: this.getState()
+    };
+  }
+
+  private handleStart(args: string[]): DockerCommandResult {
+    if (args.length === 0) {
+      return { output: '"docker start" requires at least 1 argument.', error: true, state: this.getState() };
+    }
+    const target = args[0];
+    const container = this.state.containers[target];
+    if (!container) {
+      return { output: `Error response from daemon: No such container: ${target}`, error: true, state: this.getState() };
+    }
+    container.status = 'running';
+    return { output: target, error: false, state: this.getState() };
+  }
+
+  private handleRestart(args: string[]): DockerCommandResult {
+    if (args.length === 0) {
+      return { output: '"docker restart" requires at least 1 argument.', error: true, state: this.getState() };
+    }
+    const target = args[0];
+    const container = this.state.containers[target];
+    if (!container) {
+      return { output: `Error response from daemon: No such container: ${target}`, error: true, state: this.getState() };
+    }
+    container.status = 'running';
+    return { output: target, error: false, state: this.getState() };
+  }
+
+  private handleInspect(args: string[]): DockerCommandResult {
+    if (args.length === 0) {
+      return { output: '"docker inspect" requires at least 1 container/image name or ID.', error: true, state: this.getState() };
+    }
+    const target = args[0];
+    const container = this.state.containers[target];
+    if (container) {
+      const inspectData = [{
+        Id: container.id,
+        Created: new Date().toISOString(),
+        Path: container.cmd[0] || 'sh',
+        Args: container.cmd.slice(1),
+        State: {
+          Status: container.status,
+          Running: container.status === 'running',
+          Pid: container.status === 'running' ? 4182 : 0,
+          ExitCode: 0,
+          StartedAt: '2026-09-12T03:10:00.000Z',
+          FinishedAt: '0001-01-01T00:00:00Z'
+        },
+        Image: container.imageId,
+        Name: `/${container.name}`,
+        NetworkSettings: {
+          IPAddress: '172.17.0.2',
+          Ports: container.ports.reduce((acc, p) => {
+            acc[`${p.containerPort}/tcp`] = [{ HostIp: '0.0.0.0', HostPort: String(p.hostPort) }];
+            return acc;
+          }, {} as Record<string, any>)
+        },
+        Config: {
+          Env: Object.entries(container.env).map(([k, v]) => `${k}=${v}`),
+          Cmd: container.cmd,
+          Image: container.imageName
+        }
+      }];
+      return { output: JSON.stringify(inspectData, null, 2), error: false, state: this.getState() };
+    }
+
+    const image = this.state.images[target];
+    if (image) {
+      const inspectData = [{
+        Id: `sha256:${image.id}`,
+        RepoTags: [`${image.repository}:${image.tag}`],
+        Created: image.created,
+        Size: image.size,
+        Config: {
+          Cmd: image.cmd,
+          Env: Object.entries(image.env).map(([k, v]) => `${k}=${v}`),
+          ExposedPorts: image.exposedPorts.reduce((acc, p) => ({ ...acc, [`${p}/tcp`]: {} }), {})
+        }
+      }];
+      return { output: JSON.stringify(inspectData, null, 2), error: false, state: this.getState() };
+    }
+
+    return { output: `Error: No such object: ${target}`, error: true, state: this.getState() };
+  }
+
+  private handlePort(args: string[]): DockerCommandResult {
+    if (args.length === 0) {
+      return { output: '"docker port" requires at least 1 container name or ID.', error: true, state: this.getState() };
+    }
+    const target = args[0];
+    const container = this.state.containers[target];
+    if (!container) {
+      return { output: `Error response from daemon: No such container: ${target}`, error: true, state: this.getState() };
+    }
+    const lines = container.ports.map(p => `${p.containerPort}/tcp -> 0.0.0.0:${p.hostPort}`);
+    return { output: lines.join('\n'), error: false, state: this.getState() };
+  }
+
+  private handleTop(args: string[]): DockerCommandResult {
+    if (args.length === 0) {
+      return { output: '"docker top" requires at least 1 container name or ID.', error: true, state: this.getState() };
+    }
+    const target = args[0];
+    const container = this.state.containers[target];
+    if (!container || container.status !== 'running') {
+      return { output: `Error response from daemon: Container ${target} is not running`, error: true, state: this.getState() };
+    }
+    return {
+      output: 'UID\tPID\tPPID\tC\tSTIME\tTTY\tTIME\tCMD\nroot\t4182\t4160\t0\t03:10\t?\t00:00:01\t' + container.cmd.join(' '),
       error: false,
       state: this.getState()
     };

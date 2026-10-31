@@ -59,6 +59,41 @@ export class GitEngine {
 
   execute(commandLine: string): GitCommandResult {
     const raw = commandLine.trim();
+
+    // Support command chaining with &&
+    if (raw.includes('&&')) {
+      const subCommands = raw.split('&&').map(c => c.trim()).filter(Boolean);
+      const outputs: string[] = [];
+      let lastResult: GitCommandResult = { output: '', error: false, state: this.getState() };
+      for (const subCmd of subCommands) {
+        lastResult = this.execute(subCmd);
+        if (lastResult.output) outputs.push(lastResult.output);
+        if (lastResult.error) {
+          return { output: outputs.join('\n'), error: true, state: this.getState() };
+        }
+      }
+      return { output: outputs.join('\n'), error: false, state: this.getState() };
+    }
+
+    // Support command chaining with ;
+    if (raw.includes(';') && !raw.includes(';;')) {
+      const subCommands = raw.split(';').map(c => c.trim()).filter(Boolean);
+      const outputs: string[] = [];
+      let lastResult: GitCommandResult = { output: '', error: false, state: this.getState() };
+      for (const subCmd of subCommands) {
+        lastResult = this.execute(subCmd);
+        if (lastResult.output) outputs.push(lastResult.output);
+        if (lastResult.error) {
+          return { output: outputs.join('\n'), error: true, state: this.getState() };
+        }
+      }
+      return { output: outputs.join('\n'), error: false, state: this.getState() };
+    }
+
+    if (raw === 'clear') {
+      return { output: '', error: false, state: this.getState() };
+    }
+
     if (!raw.startsWith('git')) {
       return {
         output: `Command '${raw.split(' ')[0]}' not recognized. Use 'git <command>'`,
@@ -100,9 +135,21 @@ export class GitEngine {
         return this.handleLog(args);
       case 'diff':
         return this.handleDiff(args);
+      case 'show':
+        return this.handleShow(args);
+      case 'reset':
+        return this.handleReset(args);
+      case 'restore':
+        return this.handleRestore(args);
+      case 'cat-file':
+        return this.handleCatFile(args);
+      case 'config':
+        return this.handleConfig(args);
+      case 'remote':
+        return this.handleRemote(args);
       default:
         return {
-          output: `git: '${subCommand}' is not a git command. See 'git --help'.\nAvailable commands: init, status, add, commit, branch, checkout, merge, log, diff`,
+          output: `git: '${subCommand}' is not a git command. See 'git --help'.\nAvailable commands: init, status, add, commit, branch, checkout, switch, merge, log, diff, show, reset, restore`,
           error: true,
           state: this.getState()
         };
@@ -635,6 +682,133 @@ export class GitEngine {
 
     return {
       output: diffs.length > 0 ? diffs.join('\n') : '',
+      error: false,
+      state: this.getState()
+    };
+  }
+
+  private handleShow(args: string[]): GitCommandResult {
+    if (!this.state.initialized) {
+      return { output: 'fatal: not a git repository', error: true, state: this.getState() };
+    }
+
+    const targetHash = args[0] || (this.state.HEAD.type === 'branch' ? this.state.branches[this.state.HEAD.ref] : this.state.HEAD.ref);
+    if (!targetHash || !this.state.commits[targetHash]) {
+      return { output: `fatal: ambiguous argument '${targetHash}': unknown revision or path`, error: true, state: this.getState() };
+    }
+
+    const commit = this.state.commits[targetHash];
+    const lines = [
+      `\x1b[33mcommit ${commit.hash}\x1b[0m`,
+      `Author: ${commit.author}`,
+      `Date:   ${commit.date}\n`,
+      `    ${commit.message}\n`,
+      `diff --git snapshot:`
+    ];
+    for (const [file, content] of Object.entries(commit.files)) {
+      lines.push(`--- /dev/null`);
+      lines.push(`+++ b/${file}`);
+      for (const l of content.split('\n').slice(0, 10)) {
+        if (l) lines.push(`\x1b[32m+${l}\x1b[0m`);
+      }
+    }
+
+    return {
+      output: lines.join('\n'),
+      error: false,
+      state: this.getState()
+    };
+  }
+
+  private handleReset(args: string[]): GitCommandResult {
+    if (!this.state.initialized) {
+      return { output: 'fatal: not a git repository', error: true, state: this.getState() };
+    }
+
+    if (args.includes('--hard')) {
+      const currentCommit = this.getCurrentCommit();
+      this.state.staging = currentCommit ? { ...currentCommit.files } : {};
+      this.state.workingDirectory = currentCommit ? { ...currentCommit.files } : {};
+      this.state.conflictedFiles = [];
+      this.state.isMerging = false;
+      return {
+        output: `HEAD is now at ${currentCommit ? currentCommit.hash : 'initial'}`,
+        error: false,
+        state: this.getState()
+      };
+    }
+
+    // Unstage files
+    this.state.staging = {};
+    return {
+      output: 'Unstaged changes after reset',
+      error: false,
+      state: this.getState()
+    };
+  }
+
+  private handleRestore(args: string[]): GitCommandResult {
+    if (!this.state.initialized) {
+      return { output: 'fatal: not a git repository', error: true, state: this.getState() };
+    }
+
+    const isStaged = args.includes('--staged');
+    const files = args.filter(a => !a.startsWith('-'));
+
+    if (isStaged) {
+      const currentCommit = this.getCurrentCommit();
+      for (const f of files) {
+        if (currentCommit && currentCommit.files[f]) {
+          this.state.staging[f] = currentCommit.files[f];
+        } else {
+          delete this.state.staging[f];
+        }
+      }
+      return { output: '', error: false, state: this.getState() };
+    }
+
+    // Restore working tree from staging or commit
+    const currentCommit = this.getCurrentCommit();
+    for (const f of files) {
+      if (this.state.staging[f] !== undefined) {
+        this.state.workingDirectory[f] = this.state.staging[f];
+      } else if (currentCommit && currentCommit.files[f] !== undefined) {
+        this.state.workingDirectory[f] = currentCommit.files[f];
+      }
+    }
+
+    return { output: '', error: false, state: this.getState() };
+  }
+
+  private handleCatFile(args: string[]): GitCommandResult {
+    if (!this.state.initialized) {
+      return { output: 'fatal: not a git repository', error: true, state: this.getState() };
+    }
+    const hash = args.find(a => !a.startsWith('-'));
+    if (!hash || !this.state.commits[hash]) {
+      return { output: 'fatal: Not a valid object name', error: true, state: this.getState() };
+    }
+    const commit = this.state.commits[hash];
+    return {
+      output: `tree ${generateShortHash()}\nparent ${commit.parents.join(' ')}\nauthor ${commit.author}\ncommitter ${commit.author}\n\n${commit.message}`,
+      error: false,
+      state: this.getState()
+    };
+  }
+
+  private handleConfig(args: string[]): GitCommandResult {
+    if (args.includes('user.name')) {
+      return { output: 'Investigator Cipher', error: false, state: this.getState() };
+    }
+    if (args.includes('user.email')) {
+      return { output: 'cipher@nexus-forensics.internal', error: false, state: this.getState() };
+    }
+    return { output: 'user.name=Investigator Cipher\nuser.email=cipher@nexus-forensics.internal', error: false, state: this.getState() };
+  }
+
+  private handleRemote(_args: string[]): GitCommandResult {
+    return {
+      output: 'origin\tsftp://nexus-vault.internal:22/forensics/repo.git (fetch)\norigin\tsftp://nexus-vault.internal:22/forensics/repo.git (push)',
       error: false,
       state: this.getState()
     };

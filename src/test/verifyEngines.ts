@@ -287,10 +287,55 @@ async function testSqlValidationRules() {
   assert(p4Valid.isCorrect, 'Chapter 1 Puzzle 1.4 validator matches offshore transaction subquery');
 }
 
+async function testEngineChainingAndCommands() {
+  console.log('\n--- TESTING COMMAND CHAINING (&&) AND ENHANCED COMMANDS ---');
+
+  // Test Git command chaining: git init && git add . && git commit -m "..."
+  const git = new GitEngine({
+    workingDirectory: { 'notes.txt': 'suspect report' }
+  });
+  const gitChainRes = git.execute('git init && git add . && git commit -m "chained baseline"');
+  assert(!gitChainRes.error, 'Git chaining executes multi-command cleanly');
+  assert(git.getState().initialized, 'Git chain initialized repository');
+  assert(Object.keys(git.getState().commits).length === 1, 'Git chain created baseline commit');
+
+  // Test git show
+  const showRes = git.execute('git show');
+  assert(!showRes.error && showRes.output.includes('chained baseline'), 'git show displays commit details');
+
+  // Test Docker command chaining: docker stop && docker rm
+  const docker = new DockerEngine({
+    images: {
+      'test-image:v1': {
+        id: 'img1', repository: 'test-image', tag: 'v1', created: '1m', size: '10MB',
+        layers: [], exposedPorts: [8080], env: {}, cmd: ['sh']
+      }
+    },
+    containers: {
+      'target-container': {
+        id: 'c123', name: 'target-container', imageId: 'img1', imageName: 'test-image:v1',
+        created: '1m', status: 'running', ports: [{ hostPort: 8080, containerPort: 8080 }],
+        volumes: [], env: {}, logs: ['listening'], cmd: ['sh']
+      }
+    }
+  });
+
+  const dockerChainRes = docker.execute('docker stop target-container && docker rm target-container');
+  assert(!dockerChainRes.error, 'Docker chaining executes stop && rm cleanly');
+  assert(!docker.getState().containers['target-container'], 'Target container successfully removed via chained command');
+
+  // Test docker run and docker inspect
+  const runRes = docker.execute('docker run -d -p 8080:8080 --name test-svc test-image:v1');
+  assert(!runRes.error, 'docker run creates test container');
+  const inspectRes = docker.execute('docker inspect test-svc');
+  assert(!inspectRes.error && inspectRes.output.includes('"IPAddress": "172.17.0.2"'), 'docker inspect outputs valid JSON metadata');
+}
+
 async function main() {
   await testGitEngine();
   await testDockerEngine();
   await testSqlValidationRules();
+  await testEngineChainingAndCommands();
   console.log('\n🎉 ALL INTEGRATION & VALIDATION TESTS PASSED SUCCESSFULLY!\n');
 }
 

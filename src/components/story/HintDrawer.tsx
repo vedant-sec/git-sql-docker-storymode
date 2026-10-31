@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Radio, Key, Sparkles, ChevronRight, ShieldAlert } from 'lucide-react';
+import { X, HelpCircle, ChevronRight, Lock, Unlock } from 'lucide-react';
 import { PuzzleDefinition } from '../../types/game';
 import { audioFx } from '../../utils/audioEffects';
 
@@ -23,23 +23,20 @@ export const HintDrawer: React.FC<HintDrawerProps> = ({
   const tiers: (1 | 2 | 3)[] = [1, 2, 3];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 font-mono select-none">
-      <div className="bg-[#120808] border-2 border-[#4a1c1c] w-full max-w-xl rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 select-none">
+      <div className="cyber-card w-full max-w-xl rounded-2xl border border-amber-500/30 overflow-hidden flex flex-col max-h-[85vh] animate-game-modal shadow-[0_0_50px_rgba(245,158,11,0.15)]">
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#1c0a0a] via-[#2a0e0e] to-[#1c0a0a] px-5 py-3.5 border-b-2 border-[#4a1c1c] flex items-center justify-between">
-          <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded bg-[#331111] border border-theme-scarlet/60 flex items-center justify-center">
-              <Radio className="w-4 h-4 text-emerald-400 animate-pulse" />
+        <div className="bg-slate-900/90 px-6 py-4 border-b border-amber-500/20 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-950/60 border border-amber-500/40 flex items-center justify-center text-amber-400">
+              <HelpCircle className="w-5 h-5" />
             </div>
             <div>
-              <div className="flex items-center space-x-2">
-                <span className="rubber-stamp text-[9px] px-1.5 py-0.2 tracking-widest text-emerald-400 border-emerald-500">
-                  WIRETAP INTERCEPT
-                </span>
-                <span className="text-[10px] text-stone-400 font-typewriter">FREQ: 142.85 MHz</span>
-              </div>
-              <h3 className="text-sm font-black tracking-wide text-white uppercase font-typewriter mt-0.5">
-                INFORMANT TIP // WIRETAP HINT
+              <span className="text-[10px] tracking-widest uppercase font-bold text-amber-400 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-500/30">
+                TACTICAL GUIDANCE
+              </span>
+              <h3 className="text-base font-bold text-slate-100 mt-1">
+                Mission Clues & Hints
               </h3>
             </div>
           </div>
@@ -48,54 +45,57 @@ export const HintDrawer: React.FC<HintDrawerProps> = ({
               audioFx.playClick();
               onClose();
             }}
-            className="text-stone-400 hover:text-white p-1 rounded bg-[#2a0e0e] hover:bg-[#3d1515] transition border border-[#4a1c1c]"
+            className="text-slate-400 hover:text-white p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 transition"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Hints Container */}
-        <div className="p-5 overflow-y-auto space-y-3.5 flex-1 bg-[#0d0505]">
-          <div className="text-[11px] text-stone-400 font-report leading-relaxed bg-[#170909] p-2.5 rounded border border-[#2e1212]">
-            Informant transmissions are encrypted progressively. Unlock Tier 1 first for an investigative nudge without blowing suspect cover.
+        <div className="p-6 overflow-y-auto space-y-4 flex-1 bg-slate-950/60">
+          <div className="text-xs text-slate-400 leading-relaxed bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            Hints unlock progressively. Tier 1 gives a gentle nudge, Tier 2 provides technical syntax hints, and Tier 3 gives the direct command solution.
           </div>
 
           {tiers.map(tierNum => {
-            const hint = puzzle.hints.find(h => h.tier === tierNum);
+            const hint = puzzle.hints?.find(h => h.tier === tierNum);
             const isUnlocked = unlockedTier >= tierNum;
 
             return (
               <div
                 key={tierNum}
-                className={`border-2 rounded-lg p-3.5 transition ${
+                className={`border rounded-xl p-4 transition ${
                   isUnlocked
-                    ? 'bg-[#180b0b] border-[#4a1c1c] text-stone-200'
-                    : 'bg-[#100707] border-[#240e0e] text-stone-600 opacity-60'
+                    ? 'bg-slate-900/80 border-amber-500/40 text-slate-200'
+                    : 'bg-slate-950 border-slate-800/60 text-slate-500 opacity-60'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center space-x-2">
-                    <span className="w-2 h-2 rounded-full bg-theme-scarlet" />
-                    <span className="text-xs font-bold uppercase tracking-wider font-typewriter">
-                      INTERCEPT TIER {tierNum}: {hint?.label || 'Informant Lead'}
+                    <span className="text-xs font-bold text-amber-400 uppercase tracking-wide">
+                      TIER {tierNum}: {hint?.label || 'Intel Tip'}
                     </span>
                   </div>
-                  <span className="text-[10px] font-typewriter tracking-widest uppercase">
+                  <span className="text-[10px] font-mono tracking-wider uppercase">
                     {isUnlocked ? (
-                      <span className="text-emerald-400 font-bold">● DECRYPTED AUDIO</span>
+                      <span className="text-emerald-400 font-bold flex items-center gap-1">
+                        <Unlock size={12} /> UNLOCKED
+                      </span>
                     ) : (
-                      <span className="text-stone-600">ENCRYPTED STREAM</span>
+                      <span className="text-slate-500 flex items-center gap-1">
+                        <Lock size={12} /> LOCKED
+                      </span>
                     )}
                   </span>
                 </div>
 
                 {isUnlocked ? (
-                  <div className="mt-2 text-xs text-stone-200 font-typewriter bg-[#090404] p-3 rounded border border-[#2e1212] whitespace-pre-wrap leading-relaxed shadow-inner">
-                    "{hint?.content}"
+                  <div className="mt-2 text-xs text-amber-200 bg-slate-950 p-3 rounded-lg border border-amber-500/20 whitespace-pre-wrap leading-relaxed font-mono">
+                    {hint?.content}
                   </div>
                 ) : (
-                  <div className="text-[11px] italic text-stone-500 font-typewriter">
-                    -- Decrypt Tier {tierNum} transcript to intercept wiretap audio --
+                  <div className="text-xs italic text-slate-600">
+                    Unlock Tier {tierNum} to view this clue.
                   </div>
                 )}
               </div>
@@ -104,15 +104,15 @@ export const HintDrawer: React.FC<HintDrawerProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="bg-[#140808] px-5 py-3 border-t-2 border-[#4a1c1c] flex justify-between items-center">
+        <div className="bg-slate-900/90 px-6 py-3.5 border-t border-slate-800 flex justify-between items-center">
           <button
             onClick={() => {
               audioFx.playClick();
               onClose();
             }}
-            className="px-3.5 py-1.5 text-xs text-stone-400 hover:text-white rounded bg-[#210d0d] hover:bg-[#331414] font-typewriter transition border border-[#3d1515]"
+            className="px-4 py-1.5 text-xs text-slate-400 hover:text-white rounded-lg bg-slate-800 hover:bg-slate-700 transition"
           >
-            DISCONNECT WIRE
+            Close
           </button>
 
           {unlockedTier < 3 && (
@@ -121,9 +121,9 @@ export const HintDrawer: React.FC<HintDrawerProps> = ({
                 audioFx.playClick();
                 onUnlockNextTier();
               }}
-              className="px-4 py-1.5 text-xs bg-theme-bloodRed hover:bg-theme-bloodRedHover text-white rounded font-bold font-typewriter flex items-center space-x-1.5 transition shadow-lg shadow-black/60 border border-theme-scarlet"
+              className="btn-cyber-primary px-4 py-1.5 text-xs flex items-center space-x-1.5"
             >
-              <span>DECRYPT TIER {unlockedTier + 1} INTEL</span>
+              <span>Unlock Tier {unlockedTier + 1} Hint</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </button>
           )}
